@@ -1,8 +1,8 @@
 package main
 
 import (
+	"fmt"
 	"log"
-	"os"
 
 	nrt "github.com/nsip/dev-nrt"
 )
@@ -10,32 +10,34 @@ import (
 func main() {
 
 	//
-	// obtain reader for file of interest
-	//
-	f, _ := os.Open("../../testdata/n2sif.xml") // normal sample xml file
-	// f, _ := os.Open("../../testdata/rrd.xml") // large 500Mb sample file
-	defer f.Close()
-
-	//
 	// superset of data objects we can extract from the
 	// stream
 	//
 	var dataTypes = []string{
-		"NAPStudentResponseSet",
-		"NAPEventStudentLink",
-		"StudentPersonal",
-		"NAPTestlet",
-		"NAPTestItem",
-		"NAPTest",
-		"NAPCodeFrame",
+		// "NAPStudentResponseSet",
+		// "NAPEventStudentLink",
+		// "StudentPersonal",
+		// "NAPTestlet",
+		// "NAPTestItem",
+		// "NAPTest",
+		// "NAPCodeFrame",
 		"SchoolInfo",
-		"NAPTestScoreSummary",
+		// "NAPTestScoreSummary",
 	}
 
-	// err := nrt.StreamToJsonFile(f, "./out/rrd.json", dataTypes...)
-	err := nrt.StreamToKVStore(f, "./kv/", nrt.IdxSifObjectByRefId(), dataTypes...)
+	fileName := "../../testdata/n2sif.xml"
+	// fileName := "../../testdata/rrd.xml"
+
+	// err := nrt.ConvertXMLToJsonFile(fileName, "./out/rrd.json", dataTypes...)
+	// if err != nil {
+	// 	log.Println("error converting xml file:", err)
+	// }
+	// fmt.Println("--- Conversion to file complete.")
+
+	err = nrt.StreamToKVStore(fileName, "./kv/", nrt.IdxSifObjectByRefId(), dataTypes...)
 	if err != nil {
 		log.Println("error converting xml file:", err)
 	}
+	fmt.Println("--- Storage to kv db complete.")
 
 }

@@ -2,7 +2,6 @@ package nrt
 
 import (
 	"errors"
-	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -25,15 +24,21 @@ type IndexFunc func([]byte) ([]byte, error)
 //
 // For SIF objects each is given the key of its RefId
 //
-// xmlStream: input file/stream of xml results data
+// xmlFileName: input file/stream of xml results data
 // dbFolderName: the directory to create the datastore in
 // idxf: index functio to use to generate keys for these data objects in the k/v store
 // dataObjects: the data types to extract from the stream (e.g. StudentPersonal, SchoolInfo etc.)
 //
-func StreamToKVStore(xmlStream io.Reader, dbFolderName string, idxf IndexFunc, dataObjects ...string) error {
+func StreamToKVStore(xmlFileName string, dbFolderName string, idxf IndexFunc, dataObjects ...string) error {
+
+	// open the xml file
+	size, xmlStream, err := OpenXMLFile(xmlFileName)
+	if err != nil {
+		return err
+	}
 
 	// remove any existing dbs
-	err := os.RemoveAll(filepath.Dir(dbFolderName))
+	err = os.RemoveAll(filepath.Dir(dbFolderName))
 	if err != nil {
 		return err
 	}
@@ -53,8 +58,16 @@ func StreamToKVStore(xmlStream io.Reader, dbFolderName string, idxf IndexFunc, d
 	wb := db.NewWriteBatch()
 	defer wb.Cancel()
 
+	// initialise the extractor
+	opts := []Option{
+		ObjectsToExtract(dataObjects),
+		ProgressBar(size),
+	}
+	sec, err := NewStreamExtractConverter(xmlStream, opts...)
+	if err != nil {
+		return err
+	}
 	// iterate the xml stream and save each object to db
-	sec := NewStreamExtractConverter(xmlStream, dataObjects...)
 	count := 0
 	for jsonBytes := range sec.Stream() {
 
@@ -69,7 +82,7 @@ func StreamToKVStore(xmlStream io.Reader, dbFolderName string, idxf IndexFunc, d
 		count++
 	}
 	wb.Flush()
-	log.Printf("%d data-objects parsed\n", count)
+	log.Printf("%d data-objects parsed\n\n", count)
 
 	return nil
 }
