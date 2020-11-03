@@ -3,7 +3,6 @@ package nrt
 import (
 	"archive/zip"
 	"io"
-	"log"
 	"os"
 )
 
@@ -13,20 +12,14 @@ import (
 // File can be zipped or regular, but this method
 // does not handle password protected zip files.
 //
-func OpenXMLFile(fname string) (io.Reader, error) {
-	var xmlFile io.Reader
-	var ferr error
+// returns fileSize in bytes, reader for file, any errors
+//
+func OpenXMLFile(fname string) (int, io.Reader, error) {
 
 	if isZipFile(fname) {
-		xmlFile, ferr = openDataFileZip(fname)
-	} else {
-		xmlFile, ferr = openDataFile(fname)
+		return openDataFileZip(fname)
 	}
-	if ferr != nil {
-		return xmlFile, ferr
-	}
-
-	return xmlFile, ferr
+	return openDataFile(fname)
 
 }
 
@@ -42,30 +35,36 @@ func isZipFile(fname string) bool {
 
 }
 
-func openDataFileZip(fname string) (io.Reader, error) {
+func openDataFileZip(fname string) (int, io.Reader, error) {
 
 	xmlZipFile, err := zip.OpenReader(fname)
 	if err != nil {
-		log.Println("Unable to open zip file: ", err)
-		return nil, err
+		return 0, nil, err
 	}
 	// assume only one file in the archive
 	xmlFile, err := xmlZipFile.File[0].Open()
 	if err != nil {
-		return xmlFile, err
+		return 0, nil, err
 	}
+	size := xmlZipFile.File[0].FileHeader.UncompressedSize64
 
-	return xmlFile, nil
+	return int(size), xmlFile, nil
 
 }
 
-func openDataFile(fname string) (io.Reader, error) {
+func openDataFile(fname string) (int, io.Reader, error) {
 
 	xmlFile, err := os.Open(fname)
 	if err != nil {
-		return xmlFile, err
+		return 0, nil, err
 	}
-	return xmlFile, nil
+	info, err := xmlFile.Stat()
+	if err != nil {
+		return 0, nil, err
+	}
+	size := info.Size()
+
+	return int(size), xmlFile, nil
 
 }
 

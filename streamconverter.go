@@ -2,10 +2,13 @@ package nrt
 
 import (
 	"bufio"
+	"errors"
+	"fmt"
 	"io"
 
 	"strings"
 
+	"github.com/gosuri/uiprogress"
 	jsoniter "github.com/json-iterator/go"
 	xmlparser "github.com/tamerh/xml-stream-parser"
 )
@@ -14,7 +17,22 @@ import (
 // number of objects to extract (mostly when testing/experimenting)
 // set to -1 for no restriction
 //
-var defaultSampleSize int = -1
+var defaultSampleSize int = 0
+
+//
+// when element has attributes that become json keys
+// use this token to identify the original innertext
+// of the element
+// (defaults to PESC json 'value')
+//
+var defaultContentToken string = "value"
+
+//
+// optional identifier prepended to attributes
+// that have been made into json oject keys
+// for easier identification
+//
+var defaultAttributePrefix string = ""
 
 //
 // Reads from an xml stream (typically a file), extracts selected object types
@@ -27,24 +45,35 @@ type StreamExtractConverter struct {
 	dataObjects   []string    // list of data objects (e.g. StudentPersonal, ScholInfo etc.) to extract
 	resultChannel chan []byte // channel to export json blobs
 	sampleSize    int         // numer of objects to extract, -1 for no restrictions
+	attrPrefix    string      // flag attributes with this prefix
+	contentToken  string      // identify element content to distinguish from attributes
+	progressBar   bool        // show a progress bar for reading xml input
+	streamSize    int         // size of target input stream (typically file) for use with progress bar
 }
 
 //
 // Initilaises the extractor with the stream to read and the
 // data objects of interest
 //
-func NewStreamExtractConverter(r io.Reader, dataObjects ...string) *StreamExtractConverter {
+func NewStreamExtractConverter(r io.Reader, opts ...Option) (*StreamExtractConverter, error) {
 
+	// initialise default converter
 	sec := &StreamExtractConverter{
 		reader:        r,
 		dataObjects:   []string{},
 		resultChannel: make(chan []byte, 256),
+		progressBar:   false,
 		sampleSize:    defaultSampleSize,
+		attrPrefix:    defaultAttributePrefix,
+		contentToken:  defaultContentToken,
 	}
-	for _, obj := range dataObjects {
-		sec.dataObjects = append(sec.dataObjects, obj)
+
+	// appply all options
+	if err := sec.setOptions(opts...); err != nil {
+		return nil, err
 	}
-	return sec
+
+	return sec, nil
 }
 
 //
@@ -54,7 +83,7 @@ func NewStreamExtractConverter(r io.Reader, dataObjects ...string) *StreamExtrac
 //
 func (sec *StreamExtractConverter) Stream() chan []byte {
 
-	go sec.extractAndConvert(sec.sampleSize)
+	go sec.extractAndConvert()
 
 	return sec.resultChannel
 }
@@ -62,21 +91,37 @@ func (sec *StreamExtractConverter) Stream() chan []byte {
 //
 // parses the xml stream ans converts the xml elements to json
 //
-func (sec *StreamExtractConverter) extractAndConvert(sampleSize int) {
+func (sec *StreamExtractConverter) extractAndConvert() {
 
 	defer close(sec.resultChannel)
-	br := bufio.NewReaderSize(sec.reader, 65536)
+	fmt.Printf("\nProcessing XML File:\n")
 
+	var uip *uiprogress.Progress
+	var bar *uiprogress.Bar
+	if sec.progressBar {
+		uip = uiprogress.New()
+		defer uip.Stop()
+		uip.Start()                      // start rendering
+		bar = uip.AddBar(sec.streamSize) // Add a new bar
+		bar.AppendCompleted().PrependElapsed()
+	}
+
+	br := bufio.NewReaderSize(sec.reader, 65536)
 	parser := xmlparser.NewXMLParser(br, sec.dataObjects...)
 
 	count := 0
 	for xml := range parser.Stream() {
 
-		jsonBytes := convertXML(xml)
+		jsonBytes := convertXML(xml, sec.attrPrefix, sec.contentToken)
 		sec.resultChannel <- jsonBytes
 
+		if sec.progressBar {
+			bar.Incr()
+			bar.Set(int(parser.TotalReadSize))
+		}
+
 		count++
-		if sampleSize != -1 && count == sampleSize {
+		if sec.sampleSize > 0 && count == sec.sampleSize {
 			break
 		}
 	}
@@ -95,9 +140,9 @@ type JsonMap map[string]interface{}
 // xml: element supplied from the parser
 // returns: []byte json block
 //
-func convertXML(xml *xmlparser.XMLElement) []byte {
+func convertXML(xml *xmlparser.XMLElement, attrPrefix, contentToken string) []byte {
 
-	result := convertNode(*xml) //deref pointer to make recursive method easier
+	result := convertNode(*xml, attrPrefix, contentToken) //deref pointer to make recursive method easier
 
 	// var json = jsoniter.ConfigCompatibleWithStandardLibrary
 	var json = jsoniter.ConfigFastest
@@ -118,7 +163,7 @@ func convertXML(xml *xmlparser.XMLElement) []byte {
 // returns: JsonMap -> alias for classic golang generic json map[string]interface{} representation
 //
 //
-func convertNode(target xmlparser.XMLElement) JsonMap {
+func convertNode(target xmlparser.XMLElement, attrPrefix, contentToken string) JsonMap {
 
 	// initialise the json strucure for this node
 	node := JsonMap{target.Name: JsonMap{}}
@@ -150,10 +195,11 @@ func convertNode(target xmlparser.XMLElement) JsonMap {
 	//
 	if len(target.Attrs) > 0 {
 		for k, v := range target.Attrs {
-			jm[k] = v
+			k2 := fmt.Sprintf("%s%s", attrPrefix, k)
+			jm[k2] = v
 		}
 		if target.InnerText != "" { // attribues under PESC force innertext to be assigned to a value member
-			jm["value"] = target.InnerText
+			jm[contentToken] = target.InnerText
 			return node // if thre's content, we're a terminal leaf node
 		}
 	}
@@ -167,11 +213,11 @@ func convertNode(target xmlparser.XMLElement) JsonMap {
 	// iterate subtree
 	for key, elements := range target.Childs {
 		switch {
-		case len(elements) > 1 || strings.HasSuffix(target.Name, "List"):
+		case len(elements) > 1 || strings.HasSuffix(target.Name, "List"): // elements designated as list under PESC must still be a list even if only one item
 			// handler for elements that contain arrays
 			list := []JsonMap{}
 			for _, e := range elements {
-				for k, v := range convertNode(e) {
+				for k, v := range convertNode(e, attrPrefix, contentToken) {
 					// can be k/v pair or full object
 					v2, ok := v.(JsonMap)
 					if ok {
@@ -187,7 +233,7 @@ func convertNode(target xmlparser.XMLElement) JsonMap {
 		default:
 			// handler for individual objects
 			e := elements[0]
-			for k, v := range convertNode(e) {
+			for k, v := range convertNode(e, attrPrefix, contentToken) {
 				jm[k] = v
 			}
 
@@ -196,4 +242,91 @@ func convertNode(target xmlparser.XMLElement) JsonMap {
 
 	return node
 
+}
+
+type Option func(*StreamExtractConverter) error
+
+//
+// apply all supplied options to the converter
+// returns any error encountered while applying the options
+//
+func (sec *StreamExtractConverter) setOptions(options ...Option) error {
+	for _, opt := range options {
+		if err := opt(sec); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+//
+// Attributes are flattened to become regular
+// members of the converted json object.
+// The supplied prefix will be added to the
+// attribute name for visibility.
+//
+func AttributePrefix(prefix string) Option {
+	return func(sec *StreamExtractConverter) error {
+		sec.attrPrefix = prefix
+		return nil
+	}
+}
+
+//
+// When attribtues become regular members of the converted json
+// the xml's original value (innertext) needs a key. This token
+// will be used for that - defaults to "value" in accordance with
+// PESC json.
+//
+func ContentToken(token string) Option {
+	return func(sec *StreamExtractConverter) error {
+		sec.contentToken = token
+		return nil
+	}
+}
+
+//
+// Working with big files it can be useful to limit output
+// to a few examples, this sets how many objects will be
+// output from the converter
+// set size to 0 (default) for no restrictions
+//
+func SampleSize(size int) Option {
+	return func(sec *StreamExtractConverter) error {
+		sec.sampleSize = size
+		return nil
+	}
+}
+
+//
+// Pass the size of the stream to be read in order
+// to display a progress-bar
+// streamSize of 0 will mean no progress-bar displayed
+//
+// Default is no progress bar
+//
+func ProgressBar(streamSize int) Option {
+	return func(sec *StreamExtractConverter) error {
+		if streamSize == 0 {
+			sec.progressBar = false
+			return nil
+		}
+		sec.streamSize = streamSize
+		sec.progressBar = true
+		return nil
+	}
+}
+
+//
+// You must specifiy the objects/xml Types to be
+// extracted and converted from the stream
+//
+func ObjectsToExtract(dataObjects []string) Option {
+	return func(sec *StreamExtractConverter) error {
+		if len(dataObjects) == 0 {
+			return errors.New("must specify objects to extract")
+		}
+		sec.dataObjects = append(sec.dataObjects, dataObjects...)
+		return nil
+	}
 }
