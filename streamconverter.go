@@ -15,7 +15,7 @@ import (
 
 //
 // number of objects to extract (mostly when testing/experimenting)
-// set to -1 for no restriction
+// set to 0 for no restriction
 //
 var defaultSampleSize int = 0
 
