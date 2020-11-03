@@ -2,7 +2,6 @@ package nrt
 
 import (
 	"bufio"
-	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -12,13 +11,20 @@ import (
 // Takes an input stream of xml, converts to json and
 // writes json to a file.
 //
-// xmlStream: input file/stream of xml results data
+// xmlFileName: input file of xml results data
 // jsonFileName: the ouput file for the converted json data
 // dataObjects: the data types to extract from the stream (e.g. StudentPersonal, SchoolInfo etc.)
 //
-func StreamToJsonFile(xmlStream io.Reader, jsonFileName string, dataObjects ...string) error {
+func ConvertXMLToJsonFile(xmlFileName string, jsonFileName string, dataObjects ...string) error {
 
-	err := os.MkdirAll(filepath.Dir(jsonFileName), os.ModePerm)
+	// open the xml file
+	size, xmlStream, err := OpenXMLFile(xmlFileName)
+	if err != nil {
+		return err
+	}
+
+	// create the output file
+	err = os.MkdirAll(filepath.Dir(jsonFileName), os.ModePerm)
 	if err != nil {
 		return err
 	}
@@ -31,7 +37,18 @@ func StreamToJsonFile(xmlStream io.Reader, jsonFileName string, dataObjects ...s
 	bw := bufio.NewWriterSize(f, 65536)
 	bw.WriteString(`[`)
 
-	sec := NewStreamExtractConverter(xmlStream, dataObjects...)
+	opts := []Option{
+		ObjectsToExtract(dataObjects),
+		// SampleSize(5),
+		// AttributePrefix("ATTR_"),
+		// ContentToken("innerText"),
+		ProgressBar(size),
+	}
+	sec, err := NewStreamExtractConverter(xmlStream, opts...)
+	if err != nil {
+		return err
+	}
+
 	count := 0
 	for jsonBytes := range sec.Stream() {
 
@@ -46,7 +63,7 @@ func StreamToJsonFile(xmlStream io.Reader, jsonFileName string, dataObjects ...s
 
 	bw.WriteString(`]`)
 	bw.Flush()
-	log.Printf("%d data-objects parsed\n", count)
+	log.Printf("%d data-objects parsed\n\n", count)
 
 	return nil
 
