@@ -1,4 +1,4 @@
-package nrt
+package sec
 
 import (
 	"bufio"
@@ -35,6 +35,16 @@ var defaultContentToken string = "value"
 var defaultAttributePrefix string = ""
 
 //
+// Captures output from the converter
+// Name: the class/type/object name of the converted entity
+// Json: the generated json from the converter
+//
+type Result struct {
+	Name string
+	Json []byte
+}
+
+//
 // Reads from an xml stream (typically a file), extracts selected object types
 // and converts them to xml.
 // Steam() exposes a channel on which results are published as the
@@ -43,7 +53,7 @@ var defaultAttributePrefix string = ""
 type StreamExtractConverter struct {
 	reader        io.Reader   // the file/stream of xml to process
 	dataObjects   []string    // list of data objects (e.g. StudentPersonal, ScholInfo etc.) to extract
-	resultChannel chan []byte // channel to export json blobs
+	resultChannel chan Result // channel to export json blobs
 	sampleSize    int         // numer of objects to extract, -1 for no restrictions
 	attrPrefix    string      // flag attributes with this prefix
 	contentToken  string      // identify element content to distinguish from attributes
@@ -61,7 +71,7 @@ func NewStreamExtractConverter(r io.Reader, opts ...Option) (*StreamExtractConve
 	sec := &StreamExtractConverter{
 		reader:        r,
 		dataObjects:   []string{},
-		resultChannel: make(chan []byte, 256),
+		resultChannel: make(chan Result, 256),
 		progressBar:   false,
 		sampleSize:    defaultSampleSize,
 		attrPrefix:    defaultAttributePrefix,
@@ -81,7 +91,7 @@ func NewStreamExtractConverter(r io.Reader, opts ...Option) (*StreamExtractConve
 // of the input stream, and channal can be ranged over
 // to collect json blob results
 //
-func (sec *StreamExtractConverter) Stream() chan []byte {
+func (sec *StreamExtractConverter) Stream() chan Result {
 
 	go sec.extractAndConvert()
 
@@ -112,8 +122,8 @@ func (sec *StreamExtractConverter) extractAndConvert() {
 	count := 0
 	for xml := range parser.Stream() {
 
-		jsonBytes := convertXML(xml, sec.attrPrefix, sec.contentToken)
-		sec.resultChannel <- jsonBytes
+		result := convertXML(xml, sec.attrPrefix, sec.contentToken)
+		sec.resultChannel <- result
 
 		if sec.progressBar {
 			bar.Incr()
@@ -140,15 +150,15 @@ type JsonMap map[string]interface{}
 // xml: element supplied from the parser
 // returns: []byte json block
 //
-func convertXML(xml *xmlparser.XMLElement, attrPrefix, contentToken string) []byte {
+func convertXML(xml *xmlparser.XMLElement, attrPrefix, contentToken string) Result {
 
-	result := convertNode(*xml, attrPrefix, contentToken) //deref pointer to make recursive method easier
+	name, data := convertNode(*xml, attrPrefix, contentToken) //deref pointer to make recursive method easier
 
 	// var json = jsoniter.ConfigCompatibleWithStandardLibrary
 	var json = jsoniter.ConfigFastest
-	b, _ := json.Marshal(result)
+	b, _ := json.Marshal(data)
 
-	return b
+	return Result{Name: name, Json: b}
 
 }
 
@@ -160,10 +170,12 @@ func convertXML(xml *xmlparser.XMLElement, attrPrefix, contentToken string) []by
 // 'value' member if a node has attributes.
 //
 // target: node from the xml parser
-// returns: JsonMap -> alias for classic golang generic json map[string]interface{} representation
+// returns:
+// string: Name of the converted object
+// JsonMap -> alias for classic golang generic json map[string]interface{} representation
 //
 //
-func convertNode(target xmlparser.XMLElement, attrPrefix, contentToken string) JsonMap {
+func convertNode(target xmlparser.XMLElement, attrPrefix, contentToken string) (string, JsonMap) {
 
 	// initialise the json strucure for this node
 	node := JsonMap{target.Name: JsonMap{}}
@@ -176,10 +188,10 @@ func convertNode(target xmlparser.XMLElement, attrPrefix, contentToken string) J
 	// original xml in output json as key:{} elements
 	//
 	if target.Attrs["xsi:nil"] == "true" {
-		return nil
+		return target.Name, nil
 	}
 	if len(target.Attrs) == 0 && len(target.Childs) == 0 && target.InnerText == "" {
-		return nil
+		return target.Name, nil
 	}
 
 	//
@@ -200,14 +212,14 @@ func convertNode(target xmlparser.XMLElement, attrPrefix, contentToken string) J
 		}
 		if target.InnerText != "" { // attribues under PESC force innertext to be assigned to a value member
 			jm[contentToken] = target.InnerText
-			return node // if thre's content, we're a terminal leaf node
+			return target.Name, node // if thre's content, we're a terminal leaf node
 		}
 	}
 
 	// check if we are a terminatng leaf
 	if target.InnerText != "" {
 		node[target.Name] = target.InnerText
-		return node
+		return target.Name, node
 	}
 
 	// iterate subtree
@@ -217,7 +229,8 @@ func convertNode(target xmlparser.XMLElement, attrPrefix, contentToken string) J
 			// handler for elements that contain arrays
 			list := []JsonMap{}
 			for _, e := range elements {
-				for k, v := range convertNode(e, attrPrefix, contentToken) {
+				_, childData := convertNode(e, attrPrefix, contentToken)
+				for k, v := range childData {
 					// can be k/v pair or full object
 					v2, ok := v.(JsonMap)
 					if ok {
@@ -233,14 +246,15 @@ func convertNode(target xmlparser.XMLElement, attrPrefix, contentToken string) J
 		default:
 			// handler for individual objects
 			e := elements[0]
-			for k, v := range convertNode(e, attrPrefix, contentToken) {
+			_, childData := convertNode(e, attrPrefix, contentToken)
+			for k, v := range childData {
 				jm[k] = v
 			}
 
 		}
 	}
 
-	return node
+	return target.Name, node
 
 }
 

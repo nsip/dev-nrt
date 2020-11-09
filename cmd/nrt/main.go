@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	nrt "github.com/nsip/dev-nrt"
@@ -9,35 +8,31 @@ import (
 
 func main() {
 
-	//
-	// superset of data objects we can extract from the
-	// stream
-	//
-	var dataTypes = []string{
-		// "NAPStudentResponseSet",
-		// "NAPEventStudentLink",
-		// "StudentPersonal",
-		// "NAPTestlet",
-		// "NAPTestItem",
-		// "NAPTest",
-		// "NAPCodeFrame",
-		"SchoolInfo",
-		// "NAPTestScoreSummary",
-	}
+	resultsFolder := "../../testdata/"
 
-	fileName := "../../testdata/n2sif.xml"
-	// fileName := "../../testdata/rrd.xml"
-
-	// err := nrt.ConvertXMLToJsonFile(fileName, "./out/rrd.json", dataTypes...)
-	// if err != nil {
-	// 	log.Println("error converting xml file:", err)
-	// }
-	// fmt.Println("--- Conversion to file complete.")
-
-	err = nrt.StreamToKVStore(fileName, "./kv/", nrt.IdxSifObjectByRefId(), dataTypes...)
+	err := nrt.IngestResults(resultsFolder)
 	if err != nil {
-		log.Println("error converting xml file:", err)
+		log.Fatal(err)
 	}
-	fmt.Println("--- Storage to kv db complete.")
+
+	//
+	// stream results
+	// multi-call vs. multi goroutines speed check
+	//
+	// then 2 streams; event-based, student-based
+	//
+
+	//
+	// attach reports
+	//
+
+	//
+	// split
+	//
+	//
+
+	//
+	//
+	//
 
 }

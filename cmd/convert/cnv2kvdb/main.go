@@ -1,22 +1,45 @@
-package nrt
+package main
 
 import (
-	"errors"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
 
 	badger "github.com/dgraph-io/badger/v2"
-	"github.com/tidwall/gjson"
+	"github.com/nsip/dev-nrt/files"
+	"github.com/nsip/dev-nrt/repo"
+	"github.com/nsip/dev-nrt/sec"
 )
 
-//
-// signature for an indexing function to
-// use on the data objects;
-// takes in a json blob, returns the key for that
-// blob as bytes.
-//
-type IndexFunc func([]byte) ([]byte, error)
+func main() {
+
+	//
+	// superset of data objects we can extract from the
+	// stream
+	//
+	var dataTypes = []string{
+		"NAPStudentResponseSet",
+		"NAPEventStudentLink",
+		"StudentPersonal",
+		"NAPTestlet",
+		"NAPTestItem",
+		"NAPTest",
+		"NAPCodeFrame",
+		"SchoolInfo",
+		"NAPTestScoreSummary",
+	}
+
+	fileName := "../../../testdata/n2sif.xml"
+	// fileName := "../../../testdata/rrd.xml"
+
+	err := StreamToKVStore(fileName, "./kv/", repo.IdxSifObjectByTypeAndRefId(), dataTypes...)
+	if err != nil {
+		log.Println("error converting xml file:", err)
+	}
+	fmt.Println("--- Storage to kv db complete.")
+
+}
 
 //
 // Takes an input stream of xml, converts to json and
@@ -29,10 +52,10 @@ type IndexFunc func([]byte) ([]byte, error)
 // idxf: index functio to use to generate keys for these data objects in the k/v store
 // dataObjects: the data types to extract from the stream (e.g. StudentPersonal, SchoolInfo etc.)
 //
-func StreamToKVStore(xmlFileName string, dbFolderName string, idxf IndexFunc, dataObjects ...string) error {
+func StreamToKVStore(xmlFileName string, dbFolderName string, idxf repo.IndexFunc, dataObjects ...string) error {
 
 	// open the xml file
-	size, xmlStream, err := OpenXMLFile(xmlFileName)
+	size, xmlStream, err := files.OpenXMLFile(xmlFileName)
 	if err != nil {
 		return err
 	}
@@ -59,23 +82,23 @@ func StreamToKVStore(xmlFileName string, dbFolderName string, idxf IndexFunc, da
 	defer wb.Cancel()
 
 	// initialise the extractor
-	opts := []Option{
-		ObjectsToExtract(dataObjects),
-		ProgressBar(size),
+	opts := []sec.Option{
+		sec.ObjectsToExtract(dataObjects),
+		sec.ProgressBar(size),
 	}
-	sec, err := NewStreamExtractConverter(xmlStream, opts...)
+	sec, err := sec.NewStreamExtractConverter(xmlStream, opts...)
 	if err != nil {
 		return err
 	}
 	// iterate the xml stream and save each object to db
 	count := 0
-	for jsonBytes := range sec.Stream() {
+	for result := range sec.Stream() {
 
-		key, err := idxf(jsonBytes)
+		key, err := idxf(result)
 		if err != nil {
 			return err
 		}
-		err = wb.Set(key, jsonBytes)
+		err = wb.Set(key, result.Json)
 		if err != nil {
 			return err
 		}
@@ -85,20 +108,4 @@ func StreamToKVStore(xmlFileName string, dbFolderName string, idxf IndexFunc, da
 	log.Printf("%d data-objects parsed\n\n", count)
 
 	return nil
-}
-
-//
-// index func to retrieve sif object refid
-// only index needed for majority of the objects
-//
-func IdxSifObjectByRefId() IndexFunc {
-
-	return func(json []byte) ([]byte, error) {
-		refid := gjson.GetBytes(json, "*.RefId")
-		if !refid.Exists() {
-			return nil, errors.New("could not find RefId")
-		}
-		return []byte(refid.String()), nil
-	}
-
 }

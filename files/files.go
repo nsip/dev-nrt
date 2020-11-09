@@ -1,9 +1,11 @@
-package nrt
+package files
 
 import (
 	"archive/zip"
 	"io"
+	"log"
 	"os"
+	"path/filepath"
 )
 
 //
@@ -68,22 +70,22 @@ func openDataFile(fname string) (int, io.Reader, error) {
 
 }
 
-// //
-// // look for results data files
-// //
-// func parseResultsFileDirectory() []string {
+//
+// look for results data files in specified folder
+//
+func ParseResultsDirectory(folderName string) []string {
 
-// 	files := make([]string, 0)
+	files := make([]string, 0)
+	fn := filepath.Dir(folderName)
+	zipFiles, _ := filepath.Glob(fn + "/*.zip")
+	xmlFiles, _ := filepath.Glob(fn + "/*.xml")
 
-// 	zipFiles, _ := filepath.Glob("./in/*.zip")
-// 	xmlFiles, _ := filepath.Glob("./in/*.xml")
+	files = append(files, zipFiles...)
+	files = append(files, xmlFiles...)
+	if len(files) == 0 {
+		log.Fatalln("No results data *.zip *.xml.zip or *.xml files found in input folder", fn)
+	}
 
-// 	files = append(files, zipFiles...)
-// 	files = append(files, xmlFiles...)
-// 	if len(files) == 0 {
-// 		log.Fatalln("No results data *.zip *.xml.zip or *.xml files found in input folder /in.")
-// 	}
+	return files
 
-// 	return files
-
-// }
+}
