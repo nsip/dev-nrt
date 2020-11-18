@@ -1,4 +1,4 @@
-package repo
+package repository
 
 import (
 	"errors"
@@ -36,10 +36,10 @@ func IdxSifObjectByTypeAndRefId() IndexFunc {
 }
 
 //
-// index event by student and test
-// Creates an index key in the form StudentPersonalRefId:NAPTestRefId
+// index object (e.g. result-set) by student and test
+// Creates an index key in the form ObjectName:StudentPersonalRefId:NAPTestRefId
 //
-func IdxEventByStudentAndTest() IndexFunc {
+func IdxByTypeStudentAndTest() IndexFunc {
 
 	return func(r sec.Result) ([]byte, error) {
 		sprefid := gjson.GetBytes(r.Json, "*.StudentPersonalRefId")
@@ -50,7 +50,7 @@ func IdxEventByStudentAndTest() IndexFunc {
 		if !testrefid.Exists() {
 			return nil, errors.New("could not find NAPTestRefId")
 		}
-		idxKey := fmt.Sprintf("%s:%s", sprefid.String(), testrefid.String())
+		idxKey := fmt.Sprintf("%s:%s:%s", r.Name, sprefid.String(), testrefid.String())
 
 		return []byte(idxKey), nil
 	}

@@ -1,4 +1,4 @@
-package repo
+package repository
 
 import (
 	"os"
@@ -50,6 +50,30 @@ func NewBadgerRepo(dbFolderName string) (*BadgerRepo, error) {
 }
 
 //
+// open a repo that's already got data in it
+//
+func OpenExistingBadgerRepo(dbFolderName string) (*BadgerRepo, error) {
+
+	// create new badger instance
+	db, err := badger.Open(badger.DefaultOptions(dbFolderName))
+	if err != nil {
+		return nil, err
+	}
+	// create a (fast) writebatch on the db
+	wb := db.NewWriteBatch()
+
+	return &BadgerRepo{db: db, wb: wb}, nil
+
+}
+
+//
+// access to underlying data store for iterator queries
+//
+func (br *BadgerRepo) DB() *badger.DB {
+	return br.db
+}
+
+//
 // ensure all writes to disk are completed
 //
 func (br *BadgerRepo) Close() {
@@ -77,11 +101,11 @@ func (br *BadgerRepo) Store(r sec.Result, idxf IndexFunc) error {
 	return nil
 }
 
-//
-// pass in a query to retrieve data from the repository
-// returns an arrray of byte-array records containing the json
-// objects returned from the db
-//
-func (br *BadgerRepo) Fetch(qf BadgerQueryFunc) ([][]byte, error) {
-	return nil, nil
-}
+// //
+// // pass in a query to retrieve data from the repository
+// // returns an arrray of byte-array records containing the json
+// // objects returned from the db
+// //
+// func (br *BadgerRepo) Fetch(qf BadgerQueryFunc) ([][]byte, error) {
+// 	return nil, nil
+// }

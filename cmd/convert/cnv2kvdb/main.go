@@ -8,7 +8,7 @@ import (
 
 	badger "github.com/dgraph-io/badger/v2"
 	"github.com/nsip/dev-nrt/files"
-	"github.com/nsip/dev-nrt/repo"
+	repo "github.com/nsip/dev-nrt/repository"
 	"github.com/nsip/dev-nrt/sec"
 )
 

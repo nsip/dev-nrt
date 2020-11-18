@@ -15,6 +15,11 @@ func main() {
 		log.Fatal(err)
 	}
 
+	err = nrt.StreamResults()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	//
 	// stream results
 	// multi-call vs. multi goroutines speed check

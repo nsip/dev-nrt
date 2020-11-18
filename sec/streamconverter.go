@@ -99,12 +99,11 @@ func (sec *StreamExtractConverter) Stream() chan Result {
 }
 
 //
-// parses the xml stream ans converts the xml elements to json
+// parses the xml stream and converts the xml elements to json
 //
 func (sec *StreamExtractConverter) extractAndConvert() {
 
 	defer close(sec.resultChannel)
-	fmt.Printf("\nProcessing XML File:\n")
 
 	var uip *uiprogress.Progress
 	var bar *uiprogress.Bar

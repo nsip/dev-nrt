@@ -3,12 +3,16 @@ module github.com/nsip/dev-nrt
 go 1.14
 
 require (
+	github.com/PuerkitoBio/goquery v1.6.0
 	github.com/VividCortex/ewma v1.1.1 // indirect
+	github.com/clipperhouse/jargon v1.0.7
+	github.com/dgraph-io/badger v1.6.2
 	github.com/dgraph-io/badger/v2 v2.2007.2
 	github.com/gosuri/uilive v0.0.4 // indirect
 	github.com/gosuri/uiprogress v0.0.1
 	github.com/json-iterator/go v1.1.10
 	github.com/mattn/go-isatty v0.0.12 // indirect
+	github.com/nats-io/nuid v1.0.1
 	github.com/tamerh/xml-stream-parser v1.4.0
 	github.com/tamerh/xpath v1.0.0 // indirect
 	github.com/tidwall/gjson v1.6.1

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/nsip/dev-nrt/files"
-	"github.com/nsip/dev-nrt/repo"
+	repo "github.com/nsip/dev-nrt/repository"
 	"github.com/nsip/dev-nrt/sec"
 )
 
@@ -18,6 +18,7 @@ func IngestResults(folderName string) error {
 
 	resultsFiles := files.ParseResultsDirectory(folderName)
 	for _, file := range resultsFiles {
+		fmt.Printf("\nProcessing XML File:\t(%s)\n", file)
 		err := streamToRepo(file, r)
 		if err != nil {
 			return err
@@ -74,8 +75,8 @@ func streamToRepo(xmlFileName string, db *repo.BadgerRepo) error {
 	for result := range sec.Stream() {
 		r := result
 		switch r.Name {
-		case "NAPEventStudentLink":
-			db.Store(r, repo.IdxEventByStudentAndTest())
+		case "NAPStudentResponseSet":
+			db.Store(r, repo.IdxByTypeStudentAndTest())
 		default:
 			db.Store(r, repo.IdxSifObjectByTypeAndRefId())
 		}
