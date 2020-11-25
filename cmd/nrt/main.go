@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	nrt "github.com/nsip/dev-nrt"
@@ -8,14 +9,22 @@ import (
 
 func main() {
 
+	// create the output folder
+
 	resultsFolder := "../../testdata/"
 
-	err := nrt.IngestResults(resultsFolder)
+	totals, err := nrt.IngestResults(resultsFolder)
 	if err != nil {
 		log.Fatal(err)
 	}
+	// show the ingest stats
+	fmt.Println()
+	for k, v := range totals {
+		fmt.Printf("\t%s: %d\n", k, v)
+	}
+	fmt.Println()
 
-	err = nrt.StreamResults()
+	err = nrt.StreamResults(totals)
 	if err != nil {
 		log.Fatal(err)
 	}

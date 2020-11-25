@@ -38,7 +38,10 @@ func NewBadgerRepo(dbFolderName string) (*BadgerRepo, error) {
 	}
 
 	// create new badger instance
-	db, err := badger.Open(badger.DefaultOptions(dbFolderName))
+	opts := badger.DefaultOptions(dbFolderName)
+	opts = opts.WithLoggingLevel(badger.WARNING)
+	// db, err := badger.Open(badger.DefaultOptions(dbFolderName))
+	db, err := badger.Open(opts)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +58,10 @@ func NewBadgerRepo(dbFolderName string) (*BadgerRepo, error) {
 func OpenExistingBadgerRepo(dbFolderName string) (*BadgerRepo, error) {
 
 	// create new badger instance
-	db, err := badger.Open(badger.DefaultOptions(dbFolderName))
+	opts := badger.DefaultOptions(dbFolderName)
+	opts = opts.WithLoggingLevel(badger.WARNING)
+	// db, err := badger.Open(badger.DefaultOptions(dbFolderName))
+	db, err := badger.Open(opts)
 	if err != nil {
 		return nil, err
 	}

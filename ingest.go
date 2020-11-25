@@ -8,23 +8,57 @@ import (
 	"github.com/nsip/dev-nrt/sec"
 )
 
-func IngestResults(folderName string) error {
+func IngestResults(folderName string) (map[string]int, error) {
 
+	//
+	// create a repo for the data
+	//
 	r, err := repo.NewBadgerRepo("./kv/")
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer r.Close()
 
+	//
+	// capture stats from each file ingested
+	//
+	stats := []map[string]int{}
+
+	//
+	// parse all results files in folder
+	//
 	resultsFiles := files.ParseResultsDirectory(folderName)
 	for _, file := range resultsFiles {
 		fmt.Printf("\nProcessing XML File:\t(%s)\n", file)
-		err := streamToRepo(file, r)
+		stat, err := streamToRepo(file, r)
 		if err != nil {
-			return err
+			return nil, err
+		}
+		stats = append(stats, stat)
+	}
+	return cumulativeStats(stats)
+}
+
+//
+// if multiple files were ingested, accumulate the stats about
+// objects stored
+//
+func cumulativeStats(s []map[string]int) (map[string]int, error) {
+
+	// quick optimisation for single-file case
+	if len(s) == 1 {
+		return s[0], nil
+	}
+
+	cs := map[string]int{}
+	for _, stats := range s {
+		for k, v := range stats {
+			cs[k] = cs[k] + v
 		}
 	}
-	return nil
+
+	return cs, nil
+
 }
 
 //
@@ -36,12 +70,14 @@ func IngestResults(folderName string) error {
 // xmlFileName: input file/stream of xml results data
 // repo: the repository to write the converted data into
 //
-func streamToRepo(xmlFileName string, db *repo.BadgerRepo) error {
+// returns a summary stats map of object-types and their counts
+//
+func streamToRepo(xmlFileName string, db *repo.BadgerRepo) (map[string]int, error) {
 
 	// open the xml file
 	size, xmlStream, err := files.OpenXMLFile(xmlFileName)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	//
@@ -67,7 +103,7 @@ func streamToRepo(xmlFileName string, db *repo.BadgerRepo) error {
 	}
 	sec, err := sec.NewStreamExtractConverter(xmlStream, opts...)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	// iterate the xml stream and save each object to db
 	count := 0
@@ -84,10 +120,6 @@ func streamToRepo(xmlFileName string, db *repo.BadgerRepo) error {
 		count++
 	}
 	fmt.Printf("\n\t%d data-objects parsed\n\n", count)
-	for k, v := range totals {
-		fmt.Printf("\t%s: %d\n", k, v)
-	}
-	fmt.Println()
 
-	return nil
+	return totals, nil
 }

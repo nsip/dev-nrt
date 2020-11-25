@@ -7,7 +7,6 @@ import (
 
 	"github.com/dgraph-io/badger/v2"
 	repo "github.com/nsip/dev-nrt/repository"
-	"github.com/tidwall/gjson"
 )
 
 var (
@@ -16,15 +15,6 @@ var (
 	ErrMissingTest     = errors.New("No test found for event")
 	ErrMissingResponse = errors.New("No student response found for event")
 )
-
-//
-// convenience function pass any json data blob and the
-// gjson path to retrieve the value at that location as a
-// string
-//
-func GetValueString(data []byte, path string) string {
-	return gjson.GetBytes(data, path).String()
-}
 
 //
 // iterates datastore and emits stream of results records.
@@ -103,6 +93,7 @@ func (e *Emitter) emitEventOrientedRecords() {
 				return txnErr
 			}
 			eor.NAPEventStudentLink = nesl
+			eor.HasNAPEventStudentLink = true
 			//
 			// get the student
 			//
@@ -122,6 +113,7 @@ func (e *Emitter) emitEventOrientedRecords() {
 				return txnErr
 			}
 			eor.StudentPersonal = sp
+			eor.HasStudentPersonal = true
 			//
 			// get the school
 			//
@@ -141,6 +133,7 @@ func (e *Emitter) emitEventOrientedRecords() {
 				return txnErr
 			}
 			eor.SchoolInfo = si
+			eor.HasSchoolInfo = true
 			//
 			// get the test
 			//
@@ -160,6 +153,7 @@ func (e *Emitter) emitEventOrientedRecords() {
 				return txnErr
 			}
 			eor.NAPTest = nt
+			eor.HasNAPTest = true
 			//
 			// get the response
 			//
@@ -179,6 +173,7 @@ func (e *Emitter) emitEventOrientedRecords() {
 				return txnErr
 			}
 			eor.NAPStudentResponseSet = nsrs
+			eor.HasNAPStudentResponseSet = true
 
 			e.eorstream <- eor
 		}

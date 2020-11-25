@@ -13,9 +13,11 @@ require (
 	github.com/json-iterator/go v1.1.10
 	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/nats-io/nuid v1.0.1
+	github.com/pelletier/go-toml v1.2.0
 	github.com/tamerh/xml-stream-parser v1.4.0
 	github.com/tamerh/xpath v1.0.0 // indirect
 	github.com/tidwall/gjson v1.6.1
+	github.com/tidwall/sjson v1.1.2
 	github.com/vbauerster/mpb/v5 v5.3.0
 	golang.org/x/sys v0.0.0-20201101102859-da207088b7d1 // indirect
 )

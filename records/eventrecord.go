@@ -1,18 +1,25 @@
 package records
 
 import (
+	"log"
 	"strings"
 
 	"github.com/tidwall/gjson"
 )
 
 type EventOrientedRecord struct {
-	NAPEventStudentLink   []byte
-	StudentPersonal       []byte
-	SchoolInfo            []byte
-	NAPTest               []byte
-	NAPStudentResponseSet []byte
-	Err                   error
+	NAPEventStudentLink      []byte
+	StudentPersonal          []byte
+	SchoolInfo               []byte
+	NAPTest                  []byte
+	NAPStudentResponseSet    []byte
+	CalculatedFields         []byte
+	Err                      error
+	HasNAPEventStudentLink   bool
+	HasStudentPersonal       bool
+	HasSchoolInfo            bool
+	HasNAPTest               bool
+	HasNAPStudentResponseSet bool
 }
 
 func (eor *EventOrientedRecord) StudentPersonalRefId() string {
@@ -35,4 +42,36 @@ func (eor *EventOrientedRecord) IsWritingResponse() bool {
 func (eor *EventOrientedRecord) ParticipatedInTest() bool {
 	pc := gjson.GetBytes(eor.NAPTest, "NAPEventStudentLink.ParticipationCode").String()
 	return strings.EqualFold(pc, "P")
+}
+
+//
+// pass a json path to retrieve the value at that location as a
+// string
+//
+func (eor *EventOrientedRecord) GetValueString(queryPath string) string {
+
+	//
+	// get the root object
+	//
+	objName := strings.Split(queryPath, ".")[0]
+	var data []byte
+	switch objName {
+	case "NAPEventStudentLink":
+		data = eor.NAPEventStudentLink
+	case "StudentPersonal":
+		data = eor.StudentPersonal
+	case "SchoolInfo":
+		data = eor.SchoolInfo
+	case "NAPTest":
+		data = eor.NAPTest
+	case "NAPStudentResponseSet":
+		data = eor.NAPStudentResponseSet
+	case "CalculatedFields":
+		data = eor.CalculatedFields
+	default:
+		log.Println("Event record cannot find value for path:", queryPath)
+		return ""
+	}
+
+	return gjson.GetBytes(data, queryPath).String()
 }

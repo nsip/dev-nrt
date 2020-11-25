@@ -1,0 +1,34 @@
+[usage]
+reportName = "Writing Extract"
+activated = true
+outputFileName = "./out/writing_extract/writing_extract.csv"
+
+[[fields]]
+"Test Year" = "NAPTest.TestContent.TestYear"
+"Test level"="NAPTest.TestContent.TestLevel.Code"
+"Jurisdiction Id"="StudentPersonal.OtherIdList.OtherId.#[Type==JurisdictionId].value"
+"ACARA ID" = "SchoolInfo.ACARAId"
+"PSI" = "StudentPersonal.OtherIdList.OtherId.#[Type==NAPPlatformStudentId].value"
+"Local school student ID" = "StudentPersonal.LocalId"
+"TAA student ID" = "StudentPersonal.OtherIdList.OtherId.#[Type==TAAStudentId].value"
+"Participation Code" = "NAPEventStudentLink.ParticipationCode"
+# raw response from original xml
+# "Item Response" = "NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.Response"
+# we actually ouptut this one (below), which has been escaped by the report engine
+"Item Response" = "CalculatedFields.EscapedResponse"
+"Anonymised Id" = "CalculatedFields.AnonId"
+"Test Id" = "NAPTest.TestContent.NAPTestLocalId"
+"Word Count" = "CalculatedFields.WordCount"
+"Date" = "NAPEventStudentLink.Date"
+"StartTime" = "NAPEventStudentLink.StartTime"
+
+
+
+
+
+
+
+
+
+
+
