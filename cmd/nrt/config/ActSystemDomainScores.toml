@@ -1,0 +1,38 @@
+[usage]
+reportName = "Domain Scores (ACT spec.)"
+activated = true
+outputFileName = "./out/system_reports/actSystemDomainScores.csv"
+
+# order of fileds below is left to right order
+# columns will appear in final output, can be changed as needed.
+# commenting out a ke/value pair will remove that column from the
+# final report
+[[fields]]
+"ACARA ID" = "SchoolInfo.ACARAId"
+[[fields]]
+"School Name" = "SchoolInfo.SchoolName"
+[[fields]]
+"Family Name" = "StudentPersonal.PersonInfo.Name.FamilyName"
+[[fields]]
+"Given Name" = "StudentPersonal.PersonInfo.Name.GivenName"
+[[fields]]
+"Student PSI" = "NAPEventStudentLink.PlatformStudentIdentifier"
+[[fields]]
+"SRN" = "StudentPersonal.LocalId"
+[[fields]]
+"Year Level" = "StudentPersonal.MostRecent.YearLevel.Code"
+[[fields]]
+"Test Level" = "NAPTest.TestContent.TestLevel.Code"
+[[fields]]
+"Test Domain" = "NAPTest.TestContent.Domain"
+[[fields]]
+"Domain Band" = "NAPStudentResponseSet.DomainScore.StudentDomainBand"
+[[fields]]
+"Raw Score"	= "NAPStudentResponseSet.DomainScore.RawScore"
+[[fields]]
+"Scaled Score"	= "NAPStudentResponseSet.DomainScore.ScaledScoreValue"
+[[fields]]
+"Parallel Path"	= "NAPStudentResponseSet.ParallelTest"
+# "Parallel Path"	= "NAPStudentResponseSet.EquatingSampleFlag"
+[[fields]]
+"Participation"	= "NAPEventStudentLink.ParticipationCode"

@@ -11,7 +11,7 @@ import (
 //
 // options common to all reports
 //
-type reportConfig struct {
+type baseConfig struct {
 	// whether the report proceses data..
 	// if a report is de-activated it can still be part of a
 	// processing pipeline, it will just act as a simple
@@ -36,7 +36,7 @@ type baseReport struct {
 	// location of report's config file
 	configFileName string
 	// internal config block
-	config *reportConfig
+	config *baseConfig
 	// file to write results to
 	outF *os.File
 }
@@ -121,10 +121,10 @@ func createOutputFile(fileName string) (*os.File, error) {
 // if any errors are encoutered a default config with the report
 // de-activated will be returned to prevent side-effects
 //
-func readConfigFromFile(configFilePath string) *reportConfig {
+func readConfigFromFile(configFilePath string) *baseConfig {
 
 	// create a safe default config
-	config := reportConfig{
+	config := baseConfig{
 		activated:      false,
 		outputFileName: "",
 		header:         make([]string, 0),

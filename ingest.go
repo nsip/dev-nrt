@@ -2,6 +2,7 @@ package nrt
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/nsip/dev-nrt/files"
 	repo "github.com/nsip/dev-nrt/repository"
@@ -9,6 +10,8 @@ import (
 )
 
 func IngestResults(folderName string) (map[string]int, error) {
+
+	defer timeTrack(time.Now(), "IngestResults()")
 
 	//
 	// create a repo for the data

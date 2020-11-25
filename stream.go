@@ -26,9 +26,23 @@ func StreamResults(stats map[string]int) error {
 	// create the reporting pipelines
 	//
 	fmt.Printf("\n\n--- Initialising Reports:\n")
-	epl := reports.NewEventPipeline(
+	epl1 := reports.NewEventPipeline(
+		reports.ActSystemDomainScoresReport(),
+		reports.QldStudentScoreReport(),
+		// insert w/e filters here...
+		// filter should come only before writing-extract reports
+		// reports.WritingExtractReport(),
+		// reports.WritingExtractQaPSIReport(),
+	)
+
+	epl2 := reports.NewEventPipeline(
+		// reports.ActSystemDomainScoresReport(),
+		// reports.QldStudentScoreReport(),
+		// insert w/e filters here...
+		// filter should come only before writing-extract reports
 		reports.WritingExtractReport(),
-		// reports.WritingExtractReport(),//nb may have to add w/e whitelist filter.
+		reports.WritingExtractQaPSIReport(),
+		reports.SaHomeschooledTestsReport(),
 	)
 
 	//
@@ -49,6 +63,11 @@ func StreamResults(stats map[string]int) error {
 		return err
 	}
 
+	em2, err := records.NewEmitter(opts...)
+	if err != nil {
+		return err
+	}
+
 	//
 	// set up the progress bars
 	//
@@ -57,7 +76,8 @@ func StreamResults(stats map[string]int) error {
 	uip = uiprogress.New()
 	eventBar = uip.AddBar(stats["NAPEventStudentLink"]) // Add a new bar
 	eventBar.AppendCompleted().PrependElapsed()
-	studentBar = uip.AddBar(stats["StudentPersonal"])
+	// studentBar = uip.AddBar(stats["StudentPersonal"])
+	studentBar = uip.AddBar(stats["NAPEventStudentLink"])
 	studentBar.AppendCompleted().PrependElapsed()
 	eventBar.PrependFunc(func(b *uiprogress.Bar) string {
 		return strutil.Resize(" Event-based reports:", 25)
@@ -82,15 +102,36 @@ func StreamResults(stats map[string]int) error {
 		// NOTE: must be handler here even with empty body
 		// otherwise exit channel blocks for pipeline
 		//
-		go epl.Dequeue(func(eor *records.EventOrientedRecord) {
+		go epl1.Dequeue(func(eor *records.EventOrientedRecord) {
 			// easy win no-op, also reclaims memory
 			eor = nil
 			eventBar.Incr()
 		})
-		defer epl.Close()
+		defer epl1.Close()
 		defer wg.Done()
 		for eor := range em.EventBasedStream() {
-			epl.Enqueue(eor)
+			epl1.Enqueue(eor)
+		}
+	}()
+
+	wg.Add(1)
+	go func() {
+		//
+		// register an output handler for pipeline, used for progress-bar
+		// but could also be audit sink, backup of processed records etc.
+		//
+		// NOTE: must be handler here even with empty body
+		// otherwise exit channel blocks for pipeline
+		//
+		go epl2.Dequeue(func(eor *records.EventOrientedRecord) {
+			// easy win no-op, also reclaims memory
+			eor = nil
+			studentBar.Incr()
+		})
+		defer epl2.Close()
+		defer wg.Done()
+		for eor := range em2.EventBasedStream() {
+			epl2.Enqueue(eor)
 		}
 	}()
 

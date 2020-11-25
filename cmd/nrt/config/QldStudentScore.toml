@@ -1,0 +1,25 @@
+[usage]
+reportName = "Student Scores (QLD spec.)"
+activated = true
+outputFileName = "./out/system_reports/qldStudentScore.csv"
+
+# order of fileds below is left to right order
+# columns will appear in final output, can be changed as needed.
+# commenting out a ke/value pair will remove that column from the
+# final report
+[[fields]]
+"Student ID" = "StudentPersonal.OtherIdList.OtherId.#[Type==TAAStudentId].value"
+[[fields]]
+"Strand" = "NAPTest.TestContent.Domain"
+[[fields]]
+"Test Level" = "NAPTest.TestContent.TestLevel.Code"
+[[fields]]
+"Year" = "NAPTest.TestContent.TestYear"
+[[fields]]
+"Raw Score"= "NAPStudentResponseSet.DomainScore.RawScore"
+[[fields]]
+"Scaled Score" = "NAPStudentResponseSet.DomainScore.ScaledScoreValue"
+[[fields]]
+"Band" = "NAPStudentResponseSet.DomainScore.StudentDomainBand"
+[[fields]]
+"Participation Code" = "NAPEventStudentLink.ParticipationCode"

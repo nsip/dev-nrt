@@ -20,6 +20,10 @@ type WritingExtract struct {
 	baseReport // embed common setup capability
 }
 
+//
+// creates file used to feed student writing responses into
+// local marking systems
+//
 func WritingExtractReport() *WritingExtract {
 
 	we := WritingExtract{}
