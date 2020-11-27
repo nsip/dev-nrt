@@ -83,7 +83,7 @@ func (e *Emitter) emitEventOrientedRecords() {
 		defer it.Close()
 		prefix := []byte("NAPEventStudentLink")
 		for it.Seek(prefix); it.ValidForPrefix(prefix); it.Next() {
-			eor := &EventOrientedRecord{}
+			eor := &EventOrientedRecord{CalculatedFields: []byte{}}
 			//
 			// get the event
 			//

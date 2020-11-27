@@ -27,8 +27,10 @@ func StreamResults(stats map[string]int) error {
 	//
 	fmt.Printf("\n\n--- Initialising Reports:\n")
 	epl1 := reports.NewEventPipeline(
-		reports.ActSystemDomainScoresReport(),
-		reports.QldStudentScoreReport(),
+		// reports.ActSystemDomainScoresReport(),
+		// reports.QldStudentScoreReport(),
+		reports.ItemExtractorReport(),
+		reports.ItemPrintingReport(),
 		// insert w/e filters here...
 		// filter should come only before writing-extract reports
 		// reports.WritingExtractReport(),
@@ -36,8 +38,8 @@ func StreamResults(stats map[string]int) error {
 	)
 
 	epl2 := reports.NewEventPipeline(
-		// reports.ActSystemDomainScoresReport(),
-		// reports.QldStudentScoreReport(),
+		reports.ActSystemDomainScoresReport(),
+		reports.QldStudentScoreReport(),
 		// insert w/e filters here...
 		// filter should come only before writing-extract reports
 		reports.WritingExtractReport(),

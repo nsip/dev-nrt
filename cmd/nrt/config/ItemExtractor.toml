@@ -1,0 +1,9 @@
+[usage]
+reportName = "Item Extractor (supports Item Printing)"
+activated = true
+outputFileName = "./out/null/itemextractor.csv"
+
+
+[[fields]]
+"no-op" = "no-op"
+# no fields needed for this report

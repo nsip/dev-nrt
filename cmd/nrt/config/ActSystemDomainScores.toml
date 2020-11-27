@@ -33,6 +33,5 @@ outputFileName = "./out/system_reports/actSystemDomainScores.csv"
 "Scaled Score"	= "NAPStudentResponseSet.DomainScore.ScaledScoreValue"
 [[fields]]
 "Parallel Path"	= "NAPStudentResponseSet.ParallelTest"
-# "Parallel Path"	= "NAPStudentResponseSet.EquatingSampleFlag"
 [[fields]]
 "Participation"	= "NAPEventStudentLink.ParticipationCode"

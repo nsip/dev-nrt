@@ -1,0 +1,61 @@
+
+[usage]
+reportName = "Item Score Printing"
+activated = true
+outputFileName = "./out/item_printing/itemPrinting.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+# "School" = "CalculatedFields.SchoolId"
+[[fields]]
+# "YrLevel" = "CalculatedFields.YrLevel"
+[[fields]]
+# "Domain" = "CalculatedFields.Domain"
+#
+# fields ablve are for report splitting 
+#
+
+[[fields]]
+"Test Name" = "NAPTest.TestContent.TestName"
+[[fields]]
+"Test level" = "NAPTest.TestContent.TestLevel.Code"
+[[fields]]
+"Test Domain" = "NAPTest.TestContent.Domain"
+[[fields]]
+"ItemRefID" = "CalculatedFields.ItemResponse.NAPTestItemRefId"
+[[fields]]
+"Test Item Local Id" = "CalculatedFields.ItemResponse.NAPTestItemLocalId"
+[[fields]]
+"Test Item Name" = "CalculatedFields.ItemResponse.NAPTestItemLocalId"
+[[fields]]
+# "Subdomain" = "TestItem.TestItemContent.Subdomain"
+[[fields]]
+# "Writing Genre" = "TestItem.TestItemContent.WritingGenre"
+[[fields]]
+"Birth Date" = "StudentPersonal.PersonInfo.Demographics.BirthDate"
+[[fields]]
+"ACARA ID" = "SchoolInfo.ACARAId"
+[[fields]]
+"PSI" = "NAPEventStudentLink.PlatformStudentIdentifier"
+[[fields]]
+# this field never existed
+# "Testlet Score" = "Response.TestletList.Testlet.0.TestletScore"
+[[fields]]
+"Item Score" = "CalculatedFields.ItemResponse.Score"
+[[fields]]
+"Item Lapsed Time" = "CalculatedFields.ItemResponse.LapsedTimeItem"
+[[fields]]
+"Item Response" = "CalculatedFields.ItemResponse.Response"
+[[fields]]
+"Participation Code" = "NAPEventStudentLink.ParticipationCode"
+[[fields]]
+# "NAPTestletLocalId" = "Response.TestletList.Testlet.0.NapTestletLocalId"
+[[fields]]
+"Response Correctness" = "CalculatedFields.ItemResponse.ResponseCorrectness"
+[[fields]]
+# "ItemSubstitutedForList" = "TestItem.TestItemContent.ItemSubstitutedForList"

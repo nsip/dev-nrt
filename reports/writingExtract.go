@@ -69,11 +69,6 @@ func (we *WritingExtract) ProcessEventRecords(in chan *records.EventOrientedReco
 					if err := w.Write(row); err != nil {
 						fmt.Println("Warning: error writing record to csv:", we.config.name, err)
 					}
-					//
-					// in this case no need to preserve the calculated
-					// fields for any other purpose
-					//
-					eor.CalculatedFields = []byte{}
 				}
 			}
 			out <- eor
@@ -95,12 +90,11 @@ func (we *WritingExtract) calculateFields(eor *records.EventOrientedRecord) []by
 	ir = html.UnescapeString(ir) // html of writing response needs unescaping
 	wc := strconv.Itoa(countwords(ir))
 
-	json := []byte{}
+	json := eor.CalculatedFields
 	json, _ = sjson.SetBytes(json, "CalculatedFields.AnonId", anonid)
 	json, _ = sjson.SetBytes(json, "CalculatedFields.WordCount", wc)
 	json, _ = sjson.SetBytes(json, "CalculatedFields.EscapedResponse", ir)
 
-	// fmt.Println("CF:json:", string(json))
 	return json
 }
 
