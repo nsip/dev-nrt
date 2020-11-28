@@ -1,0 +1,9 @@
+[usage]
+reportName = "Splitter Block (supports splitting reports by school, yr level & domain)"
+activated = true
+outputFileName = "./out/null/blocksplitter.csv"
+
+
+[[fields]]
+"no-op" = "no-op"
+

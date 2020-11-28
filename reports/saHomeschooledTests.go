@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/nsip/dev-nrt/records"
+	"github.com/tidwall/gjson"
 )
 
 type SaHomeschooledTests struct {
@@ -41,6 +42,9 @@ func (r *SaHomeschooledTests) ProcessEventRecords(in chan *records.EventOriented
 
 		for eor := range in {
 			if r.config.activated { // only process if active
+				if !isHomeSchooledStudent(eor.StudentPersonal) {
+					continue
+				}
 				//
 				// now loop through the ouput definitions to create a
 				// row of results
@@ -61,4 +65,15 @@ func (r *SaHomeschooledTests) ProcessEventRecords(in chan *records.EventOriented
 		}
 	}()
 	return out
+}
+
+//
+// check the student personal for home-school flag
+//
+func isHomeSchooledStudent(sp []byte) bool {
+	hs := gjson.GetBytes(sp, "StudentPersonal.HomeSchooledStudent")
+	if hs.String() == "Y" {
+		return true
+	}
+	return false
 }

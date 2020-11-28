@@ -27,6 +27,7 @@ func StreamResults(stats map[string]int) error {
 	//
 	fmt.Printf("\n\n--- Initialising Reports:\n")
 	epl1 := reports.NewEventPipeline(
+		reports.SplitterBlockReport(),
 		// reports.ActSystemDomainScoresReport(),
 		// reports.QldStudentScoreReport(),
 		reports.ItemExtractorReport(),
@@ -38,6 +39,7 @@ func StreamResults(stats map[string]int) error {
 	)
 
 	epl2 := reports.NewEventPipeline(
+		reports.SplitterBlockReport(),
 		reports.ActSystemDomainScoresReport(),
 		reports.QldStudentScoreReport(),
 		// insert w/e filters here...
