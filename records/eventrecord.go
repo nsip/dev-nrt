@@ -40,7 +40,7 @@ func (eor *EventOrientedRecord) IsWritingResponse() bool {
 }
 
 func (eor *EventOrientedRecord) ParticipatedInTest() bool {
-	pc := gjson.GetBytes(eor.NAPTest, "NAPEventStudentLink.ParticipationCode").String()
+	pc := gjson.GetBytes(eor.NAPEventStudentLink, "NAPEventStudentLink.ParticipationCode").String()
 	return strings.EqualFold(pc, "P")
 }
 

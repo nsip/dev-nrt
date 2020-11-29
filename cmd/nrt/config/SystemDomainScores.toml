@@ -1,0 +1,40 @@
+
+[usage]
+reportName = "Domain Scores"
+activated = true
+outputFileName = "./out/system_reports/systemDomainScores.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+# "School" = "CalculatedFields.SchoolId"
+[[fields]]
+# "YrLevel" = "CalculatedFields.YrLevel"
+[[fields]]
+# "Domain" = "CalculatedFields.Domain"
+#
+# fields ablve are for report splitting 
+#
+
+[[fields]]
+"Student PSI" = "NAPStudentResponseSet.PlatformStudentIdentifier"
+[[fields]]
+"Year Level" = "NAPTest.TestContent.TestLevel.Code"
+[[fields]]
+"Test Domain" = "NAPTest.TestContent.Domain"
+[[fields]]
+"Domain Band" = "NAPStudentResponseSet.DomainScore.StudentDomainBand"
+[[fields]]
+"Raw Score" = "NAPStudentResponseSet.DomainScore.RawScore"
+[[fields]]
+"Scaled Score" = "NAPStudentResponseSet.DomainScore.ScaledScoreValue"
+[[fields]]
+"Scaled Score Std. Error" = "NAPStudentResponseSet.DomainScore.ScaledScoreStandardError"
+[[fields]]
+"Scaled Score Logit" = "NAPStudentResponseSet.DomainScore.ScaledScoreLogitValue"
+[[fields]]
+"Scaled Score Logit Std. Error" = "NAPStudentResponseSet.DomainScore.ScaledScoreLogitStandardError"

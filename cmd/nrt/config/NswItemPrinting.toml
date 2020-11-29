@@ -1,0 +1,36 @@
+
+[usage]
+reportName = "NSW Variant of Item Printing (simplified to; student, item, score)"
+activated = true
+outputFileName = "./out/item_printing/nswItemPrinting.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"School" = "CalculatedFields.SchoolId"
+[[fields]]
+"YrLevel" = "CalculatedFields.YrLevel"
+[[fields]]
+"Domain" = "CalculatedFields.Domain"
+#
+# fields ablve are for report splitting 
+#
+
+[[fields]]
+"Item GUID" = "CalculatedFields.ItemResponse.NAPTestItemRefId"
+[[fields]]
+"Item Local ID" = "CalculatedFields.ItemResponse.NAPTestItemLocalId"
+[[fields]]
+"Platform Student ID" = "NAPEventStudentLink.PlatformStudentIdentifier"
+[[fields]]
+"Test Domain" = "NAPTest.TestContent.Domain"
+[[fields]]
+"Item Score" = "CalculatedFields.ItemResponse.Score"
+[[fields]]
+# "Item Descriptor" = "TestItem.TestItemContent.ItemDescriptor"
+[[fields]]
+# "Item Difficulty" = "TestItem.TestItemContent.ItemDifficulty"
