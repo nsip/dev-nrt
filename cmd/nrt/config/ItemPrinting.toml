@@ -2,7 +2,7 @@
 [usage]
 reportName = "Item Score Printing"
 activated = true
-outputFileName = "./out/item_printing/itemPrinting.csv"
+outputFileName = "./out/item_printing/itemResults.csv"
 
 # Order of fields below is left to right order
 # columns will appear in final output, can be changed as needed.

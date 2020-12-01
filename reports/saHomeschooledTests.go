@@ -43,6 +43,7 @@ func (r *SaHomeschooledTests) ProcessEventRecords(in chan *records.EventOriented
 		for eor := range in {
 			if r.config.activated { // only process if active
 				if !isHomeSchooledStudent(eor.StudentPersonal) {
+					out <- eor
 					continue
 				}
 				//

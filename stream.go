@@ -31,22 +31,23 @@ func StreamResults(stats map[string]int) error {
 		reports.ItemExtractorReport(),
 		reports.ItemPrintingReport(),
 		reports.NswItemPrintingReport(),
-		// insert w/e filters here...
-		// filter should come only before writing-extract reports
-		// reports.WritingExtractReport(),
-		// reports.WritingExtractQaPSIReport(),
 	)
 
 	epl2 := reports.NewEventPipeline(
+		//
+		//
 		reports.SplitterBlockReport(),
 		reports.ActSystemDomainScoresReport(),
 		reports.QldStudentScoreReport(),
 		reports.SystemDomainScoresReport(),
+		//
 		// insert w/e filters here...
 		// filter should come only before writing-extract reports
+		//
 		reports.WritingExtractReport(),
 		reports.WritingExtractQaPSIReport(),
 		reports.SaHomeschooledTestsReport(),
+		reports.CompareItemWritingReport(),
 	)
 
 	//
