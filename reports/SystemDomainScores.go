@@ -35,6 +35,7 @@ func (r *SystemDomainScores) ProcessEventRecords(in chan *records.EventOrientedR
 		defer close(out)
 		// open the csv file writer, and set the header
 		w := csv.NewWriter(r.outF)
+		defer r.outF.Close()
 		w.Write(r.config.header)
 		defer w.Flush()
 

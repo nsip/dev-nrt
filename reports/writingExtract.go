@@ -40,6 +40,7 @@ func (we *WritingExtract) ProcessEventRecords(in chan *records.EventOrientedReco
 		defer close(out)
 		// open the csv file writer, and set the header
 		w := csv.NewWriter(we.outF)
+		defer we.outF.Close()
 		w.Write(we.config.header)
 		defer w.Flush()
 

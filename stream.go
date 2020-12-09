@@ -7,6 +7,7 @@ import (
 
 	"github.com/gosuri/uiprogress"
 	"github.com/gosuri/uiprogress/util/strutil"
+	"github.com/nsip/dev-nrt/codeframe"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/nsip/dev-nrt/reports"
 	repo "github.com/nsip/dev-nrt/repository"
@@ -33,6 +34,7 @@ func StreamResults(stats map[string]int) error {
 		reports.NswItemPrintingReport(),
 	)
 
+	cfh := codeframe.Helper{}
 	epl2 := reports.NewEventPipeline(
 		//
 		//
@@ -48,6 +50,10 @@ func StreamResults(stats map[string]int) error {
 		reports.WritingExtractQaPSIReport(),
 		reports.SaHomeschooledTestsReport(),
 		reports.CompareItemWritingReport(),
+		reports.NswWritingPearsonY3Report(cfh),
+		reports.NswWritingPearsonY5Report(cfh),
+		reports.NswWritingPearsonY7Report(cfh),
+		reports.NswWritingPearsonY9Report(cfh),
 	)
 
 	//

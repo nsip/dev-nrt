@@ -10,9 +10,9 @@ outputFileName = "./out/writing_extract/writing_extract.csv"
 [[fields]]
 "Test Year" = "NAPTest.TestContent.TestYear"
 [[fields]]
-"Test level"="NAPTest.TestContent.TestLevel.Code"
+"Test level" = "NAPTest.TestContent.TestLevel.Code"
 [[fields]]
-"Jurisdiction Id"="StudentPersonal.OtherIdList.OtherId.#[Type==JurisdictionId].value"
+"Jurisdiction Id" = "StudentPersonal.OtherIdList.OtherId.#[Type==JurisdictionId].value"
 [[fields]]
 "ACARA ID" = "SchoolInfo.ACARAId"
 [[fields]]

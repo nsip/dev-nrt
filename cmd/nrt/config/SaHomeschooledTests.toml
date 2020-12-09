@@ -14,7 +14,7 @@ outputFileName = "./out/system_reports/saHomeschooledTests.csv"
 [[fields]]
 "Domain" = "CalculatedFields.Domain"
 #
-# fields ablve are for report splitting 
+# fields above are for report splitting 
 #
 
 [[fields]]

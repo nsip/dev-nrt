@@ -1,0 +1,96 @@
+
+[usage]
+reportName = "Pearson Fixed-width format writing results report, year 9."
+activated = true
+outputFileName = "./out/system_reports/nswWritingPearsonY9.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+# "School" = "CalculatedFields.SchoolId"
+[[fields]]
+# "YrLevel" = "CalculatedFields.YrLevel"
+[[fields]]
+# "Domain" = "CalculatedFields.Domain"
+#
+# fields above are for report splitting, not needed here for  
+# fixed-width format output 
+#
+
+[[fields]]
+"3" = "StudentPersonal.OtherIdList.OtherId.#[Type==JurisdictionId].value"
+[[fields]]
+"4" = "NAPTest.TestContent.TestLevel.Code"
+[[fields]]
+"9" = "SchoolInfo.ACARAId"
+[[fields]]
+"15" = "NAPEventStudentLink.PlatformStudentIdentifier"
+[[fields]]
+"1" = "NAPEventStudentLink.SchoolGeolocation"
+[[fields]]
+"1" = "NAPEventStudentLink.SchoolSector"
+[[fields]]
+# normal dob format replaced with 8 digit
+# "8" = "StudentPersonal.PersonInfo.Demographics.BirthDate"
+"8" = "CalculatedFields.TruncatedDOB"
+[[fields]]
+"1" = "StudentPersonal.PersonInfo.Demographics.Sex"
+[[fields]]
+"1" = "StudentPersonal.PersonInfo.Demographics.IndigenousStatus"
+[[fields]]
+# "1" = "Student.LBOTE" - we don't have this, replaced with blank
+"1" = "CalculatedFields.BlankToken"
+[[fields]]
+"1" = "StudentPersonal.MostRecent.Parent1SchoolEducationLevel"
+[[fields]]
+"1" = "StudentPersonal.MostRecent.Parent1NonSchoolEducation"
+[[fields]]
+"1" = "StudentPersonal.MostRecent.Parent1EmploymentType"
+[[fields]]
+"1" = "StudentPersonal.MostRecent.Parent2SchoolEducationLevel"
+[[fields]]
+"1" = "StudentPersonal.MostRecent.Parent2NonSchoolEducation"
+[[fields]]
+"1" = "StudentPersonal.MostRecent.Parent2EmploymentType"
+[[fields]]
+"1" = "NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"10" = "CalculatedFields.BlankToken"
+[[fields]]
+"1" = "CalculatedFields.WritingSubscore.0.Score"
+# "1" = "CalculatedFields.WritingSubscore.0.Rubric"
+[[fields]]
+"1" = "CalculatedFields.WritingSubscore.1.Score"
+# "1" = "CalculatedFields.WritingSubscore.1.Rubric"
+[[fields]]
+"1" = "CalculatedFields.WritingSubscore.2.Score"
+# "1" = "CalculatedFields.WritingSubscore.2.Rubric"
+[[fields]]
+"1" = "CalculatedFields.WritingSubscore.3.Score"
+# "1" = "CalculatedFields.WritingSubscore.3.Rubric"
+[[fields]]
+"1" = "CalculatedFields.WritingSubscore.4.Score"
+# "1" = "CalculatedFields.WritingSubscore.4.Rubric"
+[[fields]]
+"1" = "CalculatedFields.WritingSubscore.5.Score"
+# "1" = "CalculatedFields.WritingSubscore.5.Rubric"
+[[fields]]
+"1" = "CalculatedFields.WritingSubscore.6.Score"
+# "1" = "CalculatedFields.WritingSubscore.6.Rubric"
+[[fields]]
+"1" = "CalculatedFields.WritingSubscore.7.Score"
+# "1" = "CalculatedFields.WritingSubscore.7.Rubric"
+[[fields]]
+"1" = "CalculatedFields.WritingSubscore.8.Score"
+# "1" = "CalculatedFields.WritingSubscore.8.Rubric"
+[[fields]]
+"1" = "CalculatedFields.WritingSubscore.9.Score"
+# "1" = "CalculatedFields.WritingSubscore.9.Rubric"
+[[fields]]
+"74" = "CalculatedFields.BlankToken"
+[[fields]]
+"60" = "SchoolInfo.SchoolName"
