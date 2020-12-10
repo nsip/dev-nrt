@@ -54,6 +54,7 @@ func StreamResults(stats map[string]int) error {
 		reports.NswWritingPearsonY5Report(cfh),
 		reports.NswWritingPearsonY7Report(cfh),
 		reports.NswWritingPearsonY9Report(cfh),
+		reports.SystemPNPEventsReport(),
 	)
 
 	//
