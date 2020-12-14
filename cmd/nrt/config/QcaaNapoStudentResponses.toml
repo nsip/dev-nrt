@@ -1,0 +1,42 @@
+
+[usage]
+reportName = "TODO"
+activated = true
+outputFileName = "./out/TODO/qcaa_napo_student_responses.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"School" = "CalculatedFields.SchoolId"
+[[fields]]
+"YrLevel" = "CalculatedFields.YrLevel"
+[[fields]]
+"Domain" = "CalculatedFields.Domain"
+#
+# fields above are for report splitting 
+#
+
+[[fields]]
+"REF_ID" = "Response.ResponseID"
+[[fields]]
+"PLATFORM_STUDENT_IDENTIFIER" = "Response.PSI"
+[[fields]]
+"TEST_ID" = "Test.TestID"
+[[fields]]
+"TESTLET_ID" = "Testlet.TestletID"
+[[fields]]
+"ITEM_ID" = "TestItem.ItemID"
+[[fields]]
+"RESPONSE" = "Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.Response"
+[[fields]]
+"RESPONSE_CORRECTNESS" = "Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.ResponseCorrectness"
+[[fields]]
+"SCORE" = "Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.Score"
+[[fields]]
+"SEQUENCE_NUMBER" = "Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SequenceNumber"
+[[fields]]
+"ITEM_WEIGHT" = "Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.ItemWeight"

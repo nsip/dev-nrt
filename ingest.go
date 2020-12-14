@@ -9,23 +9,18 @@ import (
 	"github.com/nsip/dev-nrt/sec"
 )
 
-func IngestResults(folderName string) (map[string]int, error) {
+//
+// Given a foldername ingest looks for all xml/xml.zip files and
+// processes them into the supplied repository.
+//
+func IngestResults(folderName string, r *repo.BadgerRepo) error {
 
 	defer timeTrack(time.Now(), "IngestResults()")
 
 	//
-	// create a repo for the data
-	//
-	r, err := repo.NewBadgerRepo("./kv/")
-	if err != nil {
-		return nil, err
-	}
-	defer r.Close()
-
-	//
 	// capture stats from each file ingested
 	//
-	stats := []map[string]int{}
+	multiStats := []repo.ObjectStats{}
 
 	//
 	// parse all results files in folder
@@ -35,22 +30,32 @@ func IngestResults(folderName string) (map[string]int, error) {
 		fmt.Printf("\nProcessing XML File:\t(%s)\n", file)
 		stat, err := streamToRepo(file, r)
 		if err != nil {
-			return nil, err
+			return err
 		}
-		stats = append(stats, stat)
+		multiStats = append(multiStats, stat)
 	}
-	return cumulativeStats(stats)
+	err := r.SaveStats(cumulativeStats(multiStats))
+	if err != nil {
+		return err
+	}
+
+	//
+	// ensure all changes get written before we move on
+	//
+	r.Commit()
+
+	return nil
 }
 
 //
 // if multiple files were ingested, accumulate the stats about
 // objects stored
 //
-func cumulativeStats(s []map[string]int) (map[string]int, error) {
+func cumulativeStats(s []repo.ObjectStats) repo.ObjectStats {
 
 	// quick optimisation for single-file case
 	if len(s) == 1 {
-		return s[0], nil
+		return s[0]
 	}
 
 	cs := map[string]int{}
@@ -60,7 +65,7 @@ func cumulativeStats(s []map[string]int) (map[string]int, error) {
 		}
 	}
 
-	return cs, nil
+	return cs
 
 }
 
@@ -75,7 +80,7 @@ func cumulativeStats(s []map[string]int) (map[string]int, error) {
 //
 // returns a summary stats map of object-types and their counts
 //
-func streamToRepo(xmlFileName string, db *repo.BadgerRepo) (map[string]int, error) {
+func streamToRepo(xmlFileName string, db *repo.BadgerRepo) (repo.ObjectStats, error) {
 
 	// open the xml file
 	size, xmlStream, err := files.OpenXMLFile(xmlFileName)
@@ -110,7 +115,7 @@ func streamToRepo(xmlFileName string, db *repo.BadgerRepo) (map[string]int, erro
 	}
 	// iterate the xml stream and save each object to db
 	count := 0
-	totals := map[string]int{}
+	totals := repo.ObjectStats{}
 	for result := range sec.Stream() {
 		r := result
 		switch r.Name {

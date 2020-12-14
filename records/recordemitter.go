@@ -24,6 +24,7 @@ var (
 type Emitter struct {
 	eorstream chan *EventOrientedRecord
 	sorstream chan *StudentOrientedRecord
+	cfstream  chan *CodeframeRecord
 	repo      *repo.BadgerRepo
 }
 
@@ -35,6 +36,7 @@ func NewEmitter(opts ...Option) (*Emitter, error) {
 	e := &Emitter{
 		eorstream: make(chan *EventOrientedRecord, 256),
 		sorstream: make(chan *StudentOrientedRecord, 256),
+		cfstream:  make(chan *CodeframeRecord, 256),
 	}
 
 	// appply all options
@@ -182,6 +184,54 @@ func (e *Emitter) emitEventOrientedRecords() {
 
 	if err != nil {
 		log.Println("Error iterating event-links:", err)
+	}
+
+}
+
+//
+// provides channel iterator for event-oriented records
+//
+func (e *Emitter) CodeframeStream() chan *CodeframeRecord {
+
+	go e.emitCodeframeRecords()
+
+	return e.cfstream
+
+}
+
+//
+// iterates and exports the naplan types that make up the
+// codeframe - Test, Testlets and Items
+//
+func (e *Emitter) emitCodeframeRecords() {
+
+	defer close(e.cfstream)
+
+	cfObjects := []string{"NAPTest", "NAPTestlet", "NAPTestItem", "NAPCodeFrame"}
+
+	var it *badger.Iterator
+	var txnErr error
+	var jsonBytes []byte
+
+	err := e.repo.DB().View(func(txn *badger.Txn) error {
+		it = txn.NewIterator(badger.DefaultIteratorOptions)
+		defer it.Close()
+		for _, objType := range cfObjects {
+			prefix := []byte(objType + ":")
+			for it.Seek(prefix); it.ValidForPrefix(prefix); it.Next() {
+				jsonBytes, txnErr = it.Item().ValueCopy(nil)
+				if txnErr != nil {
+					return txnErr
+				}
+				cfr := CodeframeRecord{RecordType: objType, Json: jsonBytes}
+				e.cfstream <- &cfr
+			}
+		}
+		return nil
+	})
+
+	if err != nil {
+		log.Println("error iterating codeframe objects:", err)
 	}
 
 }

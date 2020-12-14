@@ -80,6 +80,9 @@ func getItemResponses(eor *records.EventOrientedRecord) [][]byte {
 		return responses
 	}
 
+	// need to add testlet ids as top-level elements...
+	// iterate with sjson block to add to responses
+
 	tl := gjson.GetBytes(eor.NAPStudentResponseSet, "NAPStudentResponseSet.TestletList.Testlet.#.ItemResponseList.ItemResponse")
 	tl.ForEach(func(key, value gjson.Result) bool {
 		value.ForEach(func(key, value gjson.Result) bool {
@@ -99,5 +102,5 @@ func getItemResponses(eor *records.EventOrientedRecord) [][]byte {
 //
 func (r *ItemExtractor) calculateFields(eor *records.EventOrientedRecord) []byte {
 
-	return []byte{}
+	return eor.CalculatedFields
 }

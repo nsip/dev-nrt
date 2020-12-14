@@ -16,12 +16,15 @@ import (
 //
 // extracts streams of results from the repository
 // and feeds them through pipelines of reports
-// accepts a stas map to calibrate the progress bars
-// (one is produced by IndestResults())
 //
-func StreamResults(stats map[string]int) error {
+func StreamResults(r *repo.BadgerRepo, cfh codeframe.Helper) error {
 
 	defer timeTrack(time.Now(), "StreamResults()")
+
+	//
+	// get cardinality of objects from repo
+	//
+	stats := r.GetStats()
 
 	//
 	// create the reporting pipelines
@@ -34,7 +37,6 @@ func StreamResults(stats map[string]int) error {
 		reports.NswItemPrintingReport(),
 	)
 
-	cfh := codeframe.Helper{}
 	epl2 := reports.NewEventPipeline(
 		//
 		//
@@ -55,16 +57,8 @@ func StreamResults(stats map[string]int) error {
 		reports.NswWritingPearsonY7Report(cfh),
 		reports.NswWritingPearsonY9Report(cfh),
 		reports.SystemPNPEventsReport(),
+		reports.QcaaNapoEventStudentLinkReport(),
 	)
-
-	//
-	// get the results data repository
-	//
-	r, err := repo.OpenExistingBadgerRepo("./kv/")
-	if err != nil {
-		return err
-	}
-	defer r.Close()
 
 	//
 	// create the emitter
@@ -92,10 +86,10 @@ func StreamResults(stats map[string]int) error {
 	studentBar = uip.AddBar(stats["NAPEventStudentLink"])
 	studentBar.AppendCompleted().PrependElapsed()
 	eventBar.PrependFunc(func(b *uiprogress.Bar) string {
-		return strutil.Resize(" Event-based reports:", 25)
+		return strutil.Resize(" Item reports:", 25)
 	})
 	studentBar.PrependFunc(func(b *uiprogress.Bar) string {
-		return strutil.Resize(" Student-based reports:", 25)
+		return strutil.Resize(" Event reports:", 25)
 	})
 
 	//

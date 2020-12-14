@@ -5,40 +5,52 @@ import (
 	"log"
 
 	nrt "github.com/nsip/dev-nrt"
+	"github.com/nsip/dev-nrt/codeframe"
+	repo "github.com/nsip/dev-nrt/repository"
 )
 
 func main() {
 
-	// create the output folder
-
-	resultsFolder := "../../testdata/"
-
-	totals, err := nrt.IngestResults(resultsFolder)
+	// create/open  a repo
+	//
+	// create a repo for the data
+	//
+	r, err := repo.NewBadgerRepo("./kv/")
 	if err != nil {
-		log.Fatal(err)
+		log.Println("cannot create repo", err)
 	}
-	// show the ingest stats
+	defer r.Close()
+
+	// run the ingest process
+	resultsFolder := "../../testdata/"
+	err = nrt.IngestResults(resultsFolder, r)
+	if err != nil {
+		log.Fatalln("ingest error:", err)
+	}
+
+	// show the ingest stats - from repo
 	fmt.Println()
-	for k, v := range totals {
+	objectStats := r.GetStats()
+	for k, v := range objectStats {
 		fmt.Printf("\t%s: %d\n", k, v)
 	}
 	fmt.Println()
 
-	err = nrt.StreamResults(totals)
+	cfh, err := codeframe.NewHelper(r)
+	if err != nil {
+		log.Fatalln("cf helper error:", err)
+	}
+
+	// fmt.Printf("\n%v\n", cfh.WritingRubricTypes())
+
+	//
+	// run the reports, pass repo
+	//
+	err = nrt.StreamResults(r, cfh)
+	// err = nrt.StreamResults(r)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	//
-	// stream results
-	// multi-call vs. multi goroutines speed check
-	//
-	// then 2 streams; event-based, student-based
-	//
-
-	//
-	// attach reports
-	//
 
 	//
 	// split

@@ -5,22 +5,22 @@ import (
 	"fmt"
 
 	"github.com/nsip/dev-nrt/records"
-	"github.com/tidwall/gjson"
 )
 
-type SystemPNPEvents struct {
+type QcaaNapoStudentResponses struct {
 	baseReport // embed common setup capability
 }
 
 //
-// For each test event for students, lists the PNP codes that
-// were recorded as in play for that student-event.
-// Only outputs records where Adjustments are present.
+// Details of every item response for each item seen by each student
+// as part of the test
+// NOTE: this report must be added to the item-reports pipeline
+// or have the itemExtractor added to the pipeline before it.
 //
-func SystemPNPEventsReport() *SystemPNPEvents {
+func QcaaNapoStudentResponsesReport() *QcaaNapoStudentResponses {
 
-	r := SystemPNPEvents{}
-	r.initialise("./config/SystemPNPEvents.toml")
+	r := QcaaNapoStudentResponses{}
+	r.initialise("./config/QcaaNapoStudentResponses.toml")
 	r.printStatus()
 
 	return &r
@@ -31,7 +31,7 @@ func SystemPNPEventsReport() *SystemPNPEvents {
 // implement the EventPipe interface, core work of the
 // report engine.
 //
-func (r *SystemPNPEvents) ProcessEventRecords(in chan *records.EventOrientedRecord) chan *records.EventOrientedRecord {
+func (r *QcaaNapoStudentResponses) ProcessEventRecords(in chan *records.EventOrientedRecord) chan *records.EventOrientedRecord {
 
 	out := make(chan *records.EventOrientedRecord)
 	go func() {
@@ -44,11 +44,6 @@ func (r *SystemPNPEvents) ProcessEventRecords(in chan *records.EventOrientedReco
 
 		for eor := range in {
 			if !r.config.activated { // only process if activated
-				out <- eor
-				continue
-			}
-
-			if !hasAdjustments(eor.NAPEventStudentLink) {
 				out <- eor
 				continue
 			}
@@ -84,17 +79,7 @@ func (r *SystemPNPEvents) ProcessEventRecords(in chan *records.EventOrientedReco
 // record containing values that are not in the original data
 //
 //
-func (r *SystemPNPEvents) calculateFields(eor *records.EventOrientedRecord) []byte {
+func (r *QcaaNapoStudentResponses) calculateFields(eor *records.EventOrientedRecord) []byte {
 
 	return eor.CalculatedFields
-}
-
-//
-// checks the event to see if there are adjustments
-// for the student
-//
-func hasAdjustments(napEvent []byte) bool {
-
-	return gjson.GetBytes(napEvent, "NAPEventStudentLink.Adjustment.PNPCodeList").Exists()
-
 }
