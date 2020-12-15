@@ -80,8 +80,6 @@ func (br *baseReport) initialise(configFilePath string) {
 		return
 	}
 
-	// set splitter block
-
 }
 
 //

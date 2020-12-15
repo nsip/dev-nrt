@@ -11,6 +11,8 @@
 package codeframe
 
 import (
+	"fmt"
+
 	"github.com/nsip/dev-nrt/records"
 	repo "github.com/nsip/dev-nrt/repository"
 	"github.com/tidwall/gjson"
@@ -27,17 +29,21 @@ type Helper struct {
 
 //
 // Builds a new codeframe helper using the data
-// provided from the repository
+// provided from the supplied repository
 //
 func NewHelper(r *repo.BadgerRepo) (Helper, error) {
 
+	// initialise the internal map
 	h := Helper{data: make(map[string]map[string][]byte, 0)}
+
+	// attach an emitter to the repo
 	opts := []records.Option{records.EmitterRepository(r)}
 	em, err := records.NewEmitter(opts...)
 	if err != nil {
 		return h, err
 	}
 
+	// stream the data into the internal data map
 	for cfr := range em.CodeframeStream() {
 		// watch out for null nodes in map
 		if _, ok := h.data[cfr.RecordType]; !ok {
@@ -110,4 +116,17 @@ func (cfh *Helper) WritingRubricTypes() []string {
 func (cfh *Helper) WritingSubscoreTypes() []string {
 
 	return cfh.WritingRubricTypes()
+}
+
+//
+// return the json block for a given testitem
+//
+func (cfh *Helper) GetItem(refid string) []byte {
+
+	item, ok := cfh.data["NAPTestItem"][refid]
+	if !ok {
+		fmt.Println("cfh unable to find TestItem", refid)
+		return []byte{}
+	}
+	return item
 }

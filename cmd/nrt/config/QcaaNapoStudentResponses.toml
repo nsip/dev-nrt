@@ -1,8 +1,8 @@
 
 [usage]
-reportName = "TODO"
+reportName = "Response scores for all items, all students (QLD spec.)"
 activated = true
-outputFileName = "./out/TODO/qcaa_napo_student_responses.csv"
+outputFileName = "./out/item_printing/qcaa_napo_student_responses.csv"
 
 # Order of fields below is left to right order
 # columns will appear in final output, can be changed as needed.
@@ -21,22 +21,24 @@ outputFileName = "./out/TODO/qcaa_napo_student_responses.csv"
 #
 
 [[fields]]
-"REF_ID" = "Response.ResponseID"
+"REF_ID" = "CalculatedFields.NAPStudentResponseSetRefId"
 [[fields]]
-"PLATFORM_STUDENT_IDENTIFIER" = "Response.PSI"
+"PLATFORM_STUDENT_IDENTIFIER" = "NAPEventStudentLink.PlatformStudentIdentifier"
 [[fields]]
-"TEST_ID" = "Test.TestID"
+# "TEST_ID" = "NAPTest.RefId"
+"TEST_ID" = "NAPTest.TestContent.NAPTestLocalId"
 [[fields]]
-"TESTLET_ID" = "Testlet.TestletID"
+# "TESTLET_ID" = "CalculatedFields.NAPTestletRefId"
+"TESTLET_ID" = "CalculatedFields.NAPTestletLocalId"
 [[fields]]
-"ITEM_ID" = "TestItem.ItemID"
+"ITEM_ID" = "CalculatedFields.ItemResponse.NAPTestItemRefId"
 [[fields]]
-"RESPONSE" = "Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.Response"
+"RESPONSE" = "CalculatedFields.ItemResponse.Response"
 [[fields]]
-"RESPONSE_CORRECTNESS" = "Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.ResponseCorrectness"
+"RESPONSE_CORRECTNESS" = "CalculatedFields.ItemResponse.ResponseCorrectness"
 [[fields]]
-"SCORE" = "Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.Score"
+"SCORE" = "CalculatedFields.ItemResponse.Score"
 [[fields]]
-"SEQUENCE_NUMBER" = "Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SequenceNumber"
+"SEQUENCE_NUMBER" = "CalculatedFields.ItemResponse.SequenceNumber"
 [[fields]]
-"ITEM_WEIGHT" = "Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.ItemWeight"
+"ITEM_WEIGHT" = "CalculatedFields.ItemResponse.ItemWeight"

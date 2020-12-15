@@ -27,15 +27,15 @@ outputFileName = "./out/item_printing/itemResults.csv"
 [[fields]]
 "Test Domain" = "NAPTest.TestContent.Domain"
 [[fields]]
-"ItemRefID" = "CalculatedFields.ItemResponse.NAPTestItemRefId"
+"Test Item RefID" = "CalculatedFields.ItemResponse.NAPTestItemRefId"
 [[fields]]
 "Test Item Local Id" = "CalculatedFields.ItemResponse.NAPTestItemLocalId"
 [[fields]]
 "Test Item Name" = "CalculatedFields.ItemResponse.NAPTestItemLocalId"
 [[fields]]
-# "Subdomain" = "TestItem.TestItemContent.Subdomain"
+"Subdomain" = "CalculatedFields.NAPTestItem.TestItemContent.Subdomain"
 [[fields]]
-# "Writing Genre" = "TestItem.TestItemContent.WritingGenre"
+"Writing Genre" = "CalculatedFields.NAPTestItem.TestItemContent.WritingGenre"
 [[fields]]
 "Birth Date" = "StudentPersonal.PersonInfo.Demographics.BirthDate"
 [[fields]]
@@ -43,7 +43,7 @@ outputFileName = "./out/item_printing/itemResults.csv"
 [[fields]]
 "PSI" = "NAPEventStudentLink.PlatformStudentIdentifier"
 [[fields]]
-# this field never existed
+# this field does not exist
 # "Testlet Score" = "Response.TestletList.Testlet.0.TestletScore"
 [[fields]]
 "Item Score" = "CalculatedFields.ItemResponse.Score"
@@ -54,8 +54,11 @@ outputFileName = "./out/item_printing/itemResults.csv"
 [[fields]]
 "Participation Code" = "NAPEventStudentLink.ParticipationCode"
 [[fields]]
-# "NAPTestletLocalId" = "Response.TestletList.Testlet.0.NapTestletLocalId"
+"Testlet LocalId" = "CalculatedFields.NAPTestletLocalId"
 [[fields]]
 "Response Correctness" = "CalculatedFields.ItemResponse.ResponseCorrectness"
 [[fields]]
-# "ItemSubstitutedForList" = "TestItem.TestItemContent.ItemSubstitutedForList"
+"ItemSubstitutedForList" = "CalculatedFields.NAPTestItem.TestItemContent.ItemSubstitutedForList.SubstituteItem.#.SubstituteItemLocalId"
+
+
+

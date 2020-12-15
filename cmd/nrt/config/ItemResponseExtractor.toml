@@ -1,5 +1,5 @@
 [usage]
-reportName = "Item Extractor (supports Item Printing)"
+reportName = "Item Response Extractor (separates item-respoonses)"
 activated = true
 outputFileName = "./out/null/itemextractor.csv"
 

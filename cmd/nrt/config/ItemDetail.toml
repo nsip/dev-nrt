@@ -1,0 +1,9 @@
+[usage]
+reportName = "Item Detail (inserts full item details into calculated-fields)"
+activated = true
+outputFileName = "./out/null/itemdetail.csv"
+
+
+[[fields]]
+"no-op" = "no-op"
+# no fields needed for this report

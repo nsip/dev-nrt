@@ -1,6 +1,6 @@
 
 [usage]
-reportName = "TODO"
+reportName = "PNP Events, all student pnp adjustments"
 activated = true
 outputFileName = "./out/system_reports/systemPNPEvents.csv"
 

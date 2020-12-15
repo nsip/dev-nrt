@@ -32,9 +32,11 @@ func StreamResults(r *repo.BadgerRepo, cfh codeframe.Helper) error {
 	fmt.Printf("\n\n--- Initialising Reports:\n")
 	epl1 := reports.NewEventPipeline(
 		reports.SplitterBlockReport(),
-		reports.ItemExtractorReport(),
+		reports.ItemResponseExtractorReport(),
+		reports.ItemDetailReport(cfh),
 		reports.ItemPrintingReport(),
 		reports.NswItemPrintingReport(),
+		reports.QcaaNapoStudentResponsesReport(),
 	)
 
 	epl2 := reports.NewEventPipeline(
@@ -97,6 +99,7 @@ func StreamResults(r *repo.BadgerRepo, cfh codeframe.Helper) error {
 	//
 	fmt.Printf("\n\n--- Running Reports:\n\n")
 	uip.Start()
+	// uip.Stop() // helps debugging!
 
 	var wg sync.WaitGroup
 	wg.Add(1)

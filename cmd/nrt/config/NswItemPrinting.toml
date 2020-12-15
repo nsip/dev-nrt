@@ -31,6 +31,6 @@ outputFileName = "./out/item_printing/nswItemPrinting.csv"
 [[fields]]
 "Item Score" = "CalculatedFields.ItemResponse.Score"
 [[fields]]
-# "Item Descriptor" = "TestItem.TestItemContent.ItemDescriptor"
+"Item Descriptor" = "CalculatedFields.NAPTestItem.TestItemContent.ItemDescriptor"
 [[fields]]
-# "Item Difficulty" = "TestItem.TestItemContent.ItemDifficulty"
+"Item Difficulty" = "CalculatedFields.NAPTestItem.TestItemContent.ItemDifficulty"

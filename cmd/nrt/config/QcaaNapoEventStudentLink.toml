@@ -1,6 +1,6 @@
 
 [usage]
-reportName = "TODO"
+reportName = "Details of every test Event (QLD spec.)"
 activated = true
 outputFileName = "./out/system_reports/qcaa_napo_event_student_link.csv"
 
