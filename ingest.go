@@ -15,7 +15,7 @@ import (
 //
 func IngestResults(folderName string, r *repo.BadgerRepo) error {
 
-	defer timeTrack(time.Now(), "IngestResults()")
+	defer TimeTrack(time.Now(), "IngestResults()")
 
 	//
 	// capture stats from each file ingested

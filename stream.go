@@ -19,7 +19,7 @@ import (
 //
 func StreamResults(r *repo.BadgerRepo, cfh codeframe.Helper) error {
 
-	defer timeTrack(time.Now(), "StreamResults()")
+	defer TimeTrack(time.Now(), "StreamResults()")
 
 	//
 	// get cardinality of objects from repo
@@ -31,12 +31,14 @@ func StreamResults(r *repo.BadgerRepo, cfh codeframe.Helper) error {
 	//
 	fmt.Printf("\n\n--- Initialising Reports:\n")
 	epl1 := reports.NewEventPipeline(
+		// processors to set up reports
 		reports.SplitterBlockReport(),
 		reports.ItemResponseExtractorReport(),
 		reports.ItemDetailReport(cfh),
-		reports.ItemPrintingReport(),
+		// actual reports
 		reports.NswItemPrintingReport(),
 		reports.QcaaNapoStudentResponsesReport(),
+		reports.ItemPrintingReport(),
 	)
 
 	epl2 := reports.NewEventPipeline(
@@ -60,6 +62,7 @@ func StreamResults(r *repo.BadgerRepo, cfh codeframe.Helper) error {
 		reports.NswWritingPearsonY9Report(cfh),
 		reports.SystemPNPEventsReport(),
 		reports.QcaaNapoEventStudentLinkReport(),
+		reports.QcaaNapoStudentResponseSetReport(),
 	)
 
 	//
@@ -82,7 +85,7 @@ func StreamResults(r *repo.BadgerRepo, cfh codeframe.Helper) error {
 	var uip *uiprogress.Progress
 	var eventBar, studentBar *uiprogress.Bar
 	uip = uiprogress.New()
-	eventBar = uip.AddBar(stats["NAPEventStudentLink"]) // Add a new bar
+	eventBar = uip.AddBar(stats["NAPEventStudentLink"] * 25) // Add a new bar
 	eventBar.AppendCompleted().PrependElapsed()
 	// studentBar = uip.AddBar(stats["StudentPersonal"])
 	studentBar = uip.AddBar(stats["NAPEventStudentLink"])

@@ -70,7 +70,5 @@ func (r *ItemDetail) calculateFields(eor *records.EventOrientedRecord) []byte {
 	itemDetail := gjson.GetBytes(itemBytes, "NAPTestItem")
 	json, _ := sjson.SetRawBytes(eor.CalculatedFields, "CalculatedFields.NAPTestItem", []byte(itemDetail.String()))
 
-	// fmt.Printf("\n%s\n", json)
-
 	return json
 }

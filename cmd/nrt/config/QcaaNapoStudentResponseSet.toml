@@ -1,0 +1,48 @@
+
+[usage]
+reportName = "Details of Student Test Responses (QLD spec.)"
+activated = true
+outputFileName = "./out/system_reports/qcaa_napo_student_response_set.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"School" = "CalculatedFields.SchoolId"
+[[fields]]
+"YrLevel" = "CalculatedFields.YrLevel"
+[[fields]]
+"Domain" = "CalculatedFields.Domain"
+#
+# fields above are for report splitting 
+#
+
+[[fields]]
+"REF_ID" = "NAPStudentResponseSet.RefId"
+[[fields]]
+"PLATFORM_STUDENT_IDENTIFIER" = "NAPStudentResponseSet.PlatformStudentIdentifier"
+[[fields]]
+"TEST_ID" = "NAPStudentResponseSet.NAPTestRefId"
+[[fields]]
+"PATH_TAKEN_FOR_DOMAIN" = "NAPStudentResponseSet.PathTakenForDomain"
+[[fields]]
+"PARALLEL_TEST" = "NAPStudentResponseSet.ParallelTest"
+[[fields]]
+"RAW_SCORE" = "NAPStudentResponseSet.DomainScore.RawScore"
+[[fields]]
+"SCALED_SCORE_VALUE" = "NAPStudentResponseSet.DomainScore.ScaledScoreValue"
+[[fields]]
+"SCALED_SCORE_LOGIT_VALUE" = "NAPStudentResponseSet.DomainScore.ScaledScoreLogitValue"
+[[fields]]
+"SCALED_SCORE_SE" = "NAPStudentResponseSet.DomainScore.ScaledScoreStandardError"
+[[fields]]
+"SCALED_SCORE_LOGIT_SE" = "NAPStudentResponseSet.DomainScore.ScaledScoreLogitStandardError"
+[[fields]]
+"STUDENT_DOMAIN_BAND" = "NAPStudentResponseSet.DomainScore.StudentDomainBand"
+[[fields]]
+"STUDENT_PROFICIENCY" = "NAPStudentResponseSet.DomainScore.StudentProficiency"
+[[fields]]
+"PLAUSIBLE_SCALED_VALUE" = "NAPStudentResponseSet.DomainScore.PlausibleScaledValueList.PlausibleScaledValue.#.PlausibleScaledValue"
