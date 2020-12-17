@@ -1,0 +1,55 @@
+
+[usage]
+reportName = "Test Item details (QLD spec.)"
+activated = true
+outputFileName = "./out/system_reports/qcaa_napo_items.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"REF_ID" = "NAPTestItem.RefId"
+[[fields]]
+# "TEST_ID" = "Test.TestID"
+[[fields]]
+"ITEM_ID" = "NAPTestItem.TestItemContent.NAPTestItemLocalId"
+[[fields]]
+"NAME" = "NAPTestItem.TestItemContent.ItemName"
+[[fields]]
+"ITEM_TYPE" = "NAPTestItem.TestItemContent.ItemType"
+[[fields]]
+"SUBDOMAIN" = "NAPTestItem.TestItemContent.Subdomain"
+[[fields]]
+"DESCRIPTOR" = "NAPTestItem.TestItemContent.ItemDescriptor"
+[[fields]]
+"MC_OPTIONS" = "NAPTestItem.TestItemContent.MultipleChoiceOptionCount"
+[[fields]]
+"CORRECT_ANSWER" = "NAPTestItem.TestItemContent.CorrectAnswer"
+[[fields]]
+"MAXIMUM_SCORE" = "NAPTestItem.TestItemContent.MaximumScore"
+[[fields]]
+"ITEM_DIFFICULTY" = "NAPTestItem.TestItemContent.ItemDifficulty"
+[[fields]]
+"ITEM_DIFFICULTYLOGIT5" = "NAPTestItem.TestItemContent.ItemDifficultyLogit5"
+[[fields]]
+"ITEM_DIFFICULTYLOGIT62" = "NAPTestItem.TestItemContent.ItemDifficultyLogit62"
+[[fields]]
+"ITEM_DIFFICULTYLOGIT5SE" = "NAPTestItem.TestItemContent.ItemDifficultyLogit5SE"
+[[fields]]
+"ITEM_DIFFICULTYLOGIT62SE" = "NAPTestItem.TestItemContent.ItemDifficultyLogit62SE"
+[[fields]]
+"ITEM_PROFICIENCY_BAND" = "NAPTestItem.TestItemContent.ItemProficiencyBand"
+[[fields]]
+"ITEM_PROFICIENCY_LEVEL" = "NAPTestItem.TestItemContent.ItemProficiencyLevel"
+[[fields]]
+"CONTENT_DESCRIPTION" = "NAPTestItem.TestItemContent.ContentDescriptionList.ContentDescription.#.ContentDescription"
+[[fields]]
+"SUBSTITUTE_ITEM_REFIDS" = "NAPTestItem.TestItemContent.ItemSubstitutedForList.SubstituteItem.#.SubstituteItemRefId"
+[[fields]]
+"SUBSTITUTE_ITEM_LOCALIDS" = "NAPTestItem.TestItemContent.ItemSubstitutedForList.SubstituteItem.#.SubstituteItemLocalId"
+[[fields]]
+"SUBSTITUTE_ITEM_PNP_CODES" = "NAPTestItem.TestItemContent.ItemSubstitutedForList.SubstituteItem.#.PNPCodeList.PNPCode.#.PNPCode"
+

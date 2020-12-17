@@ -4,9 +4,8 @@ go 1.14
 
 require (
 	github.com/PuerkitoBio/goquery v1.6.0
-	github.com/VividCortex/ewma v1.1.1 // indirect
+	github.com/antchfx/xpath v1.1.11 // indirect
 	github.com/clipperhouse/jargon v1.0.7
-	github.com/dgraph-io/badger v1.6.2
 	github.com/dgraph-io/badger/v2 v2.2007.2
 	github.com/gosuri/uilive v0.0.4 // indirect
 	github.com/gosuri/uiprogress v0.0.1
@@ -18,6 +17,5 @@ require (
 	github.com/tamerh/xpath v1.0.0 // indirect
 	github.com/tidwall/gjson v1.6.1
 	github.com/tidwall/sjson v1.1.2
-	github.com/vbauerster/mpb/v5 v5.3.0
 	golang.org/x/sys v0.0.0-20201101102859-da207088b7d1 // indirect
 )

@@ -1,0 +1,26 @@
+
+[usage]
+reportName = "Detailed breakdown of Testlets (QLD Spec.)"
+activated = true
+outputFileName = "./out/TODO/qcaa_napo_testlets.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"REF_ID" = "NAPTestlet.RefId"
+[[fields]]
+"TESTLET_ID" = "NAPTestlet.TestletContent.NAPTestletLocalId"
+[[fields]]
+"TEST_ID" = "NAPTestlet.NAPTestLocalId"
+[[fields]]
+"NAME" = "NAPTestlet.TestletContent.TestletName"
+[[fields]]
+"NODE" = "NAPTestlet.TestletContent.Node"
+[[fields]]
+"LOCATION_IN_STAGE" = "NAPTestlet.TestletContent.LocationInStage"
+[[fields]]
+"MAXIMUM_SCORE" = "NAPTestlet.TestletContent.TestletMaximumScore"

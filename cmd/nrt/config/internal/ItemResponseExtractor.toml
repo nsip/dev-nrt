@@ -1,0 +1,9 @@
+[usage]
+reportName = "Item Response Extractor (creates new record for each item-level response)"
+activated = true
+outputFileName = "./out/null/itemextractor.csv"
+
+
+[[fields]]
+"no-op" = "no-op"
+# no fields needed for this report

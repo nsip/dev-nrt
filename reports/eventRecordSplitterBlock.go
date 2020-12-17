@@ -6,7 +6,7 @@ import (
 	"github.com/tidwall/sjson"
 )
 
-type SplitterBlock struct {
+type EventRecordSplitterBlock struct {
 	baseReport // embed common setup capability
 }
 
@@ -18,10 +18,10 @@ type SplitterBlock struct {
 // create hiearchies of sub-reports split by
 // these attributes.
 //
-func SplitterBlockReport() *SplitterBlock {
+func EventRecordSplitterBlockReport() *EventRecordSplitterBlock {
 
-	r := SplitterBlock{}
-	r.initialise("./config/SplitterBlock.toml")
+	r := EventRecordSplitterBlock{}
+	r.initialise("./config/internal/EventRecordSplitterBlock.toml")
 	r.printStatus()
 
 	return &r
@@ -32,7 +32,7 @@ func SplitterBlockReport() *SplitterBlock {
 // implement the EventPipe interface, core work of the
 // report engine.
 //
-func (r *SplitterBlock) ProcessEventRecords(in chan *records.EventOrientedRecord) chan *records.EventOrientedRecord {
+func (r *EventRecordSplitterBlock) ProcessEventRecords(in chan *records.EventOrientedRecord) chan *records.EventOrientedRecord {
 
 	out := make(chan *records.EventOrientedRecord)
 	go func() {
@@ -54,7 +54,7 @@ func (r *SplitterBlock) ProcessEventRecords(in chan *records.EventOrientedRecord
 // record containing values that are not in the original data
 //
 //
-func (r *SplitterBlock) calculateFields(eor *records.EventOrientedRecord) []byte {
+func (r *EventRecordSplitterBlock) calculateFields(eor *records.EventOrientedRecord) []byte {
 
 	schoolid := gjson.GetBytes(eor.SchoolInfo, "SchoolInfo.ACARAId")
 	yrlvl := gjson.GetBytes(eor.NAPTest, "NAPTest.TestContent.TestLevel.Code")

@@ -17,9 +17,59 @@ import (
 // extracts streams of results from the repository
 // and feeds them through pipelines of reports
 //
-func StreamResults(r *repo.BadgerRepo, cfh codeframe.Helper) error {
+func StreamResults(r *repo.BadgerRepo) error {
 
 	defer TimeTrack(time.Now(), "StreamResults()")
+
+	//
+	// create the emitters
+	//
+	opts := []records.Option{records.EmitterRepository(r)}
+	em, err := records.NewEmitter(opts...)
+	if err != nil {
+		return err
+	}
+
+	em2, err := records.NewEmitter(opts...)
+	if err != nil {
+		return err
+	}
+
+	cfh := codeframe.NewHelper()
+
+	// 
+	// codeframe report pipeline
+	// 
+	cfpl := reports.NewCodeframePipeline(
+		cfh,
+		reports.QcaaNapoItemsReport(),
+		reports.QcaaNapoTestletsReport(),
+	)
+
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer TimeTrack(time.Now(), "codeframeReports()")
+		//
+		// register an output handler for pipeline, used for progress-bar
+		// but could also be audit sink, backup of processed records etc.
+		//
+		// NOTE: must be handler here even with empty body
+		// otherwise exit channel blocks for pipeline
+		//
+		go cfpl.Dequeue(func(cfr *records.CodeframeRecord) {
+			// easy win no-op, also reclaims memory
+			cfr = nil
+			// eventBar.Incr()
+		})
+		defer cfpl.Close()
+		defer wg.Done()
+		for cfr := range em.CodeframeStream() {
+			cfpl.Enqueue(cfr)
+		}
+	}()
+
+	wg.Wait()
 
 	//
 	// get cardinality of objects from repo
@@ -32,7 +82,7 @@ func StreamResults(r *repo.BadgerRepo, cfh codeframe.Helper) error {
 	fmt.Printf("\n\n--- Initialising Reports:\n")
 	epl1 := reports.NewEventPipeline(
 		// processors to set up reports
-		reports.SplitterBlockReport(),
+		reports.EventRecordSplitterBlockReport(),
 		reports.ItemResponseExtractorReport(),
 		reports.ItemDetailReport(cfh),
 		// actual reports
@@ -44,7 +94,7 @@ func StreamResults(r *repo.BadgerRepo, cfh codeframe.Helper) error {
 	epl2 := reports.NewEventPipeline(
 		//
 		//
-		reports.SplitterBlockReport(),
+		reports.EventRecordSplitterBlockReport(),
 		reports.ActSystemDomainScoresReport(),
 		reports.QldStudentScoreReport(),
 		reports.SystemDomainScoresReport(),
@@ -64,20 +114,6 @@ func StreamResults(r *repo.BadgerRepo, cfh codeframe.Helper) error {
 		reports.QcaaNapoEventStudentLinkReport(),
 		reports.QcaaNapoStudentResponseSetReport(),
 	)
-
-	//
-	// create the emitter
-	//
-	opts := []records.Option{records.EmitterRepository(r)}
-	em, err := records.NewEmitter(opts...)
-	if err != nil {
-		return err
-	}
-
-	em2, err := records.NewEmitter(opts...)
-	if err != nil {
-		return err
-	}
 
 	//
 	// set up the progress bars
@@ -104,7 +140,6 @@ func StreamResults(r *repo.BadgerRepo, cfh codeframe.Helper) error {
 	uip.Start()
 	// uip.Stop() // helps debugging!
 
-	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
 		//

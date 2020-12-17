@@ -21,7 +21,7 @@ type ItemResponseExtractor struct {
 func ItemResponseExtractorReport() *ItemResponseExtractor {
 
 	r := ItemResponseExtractor{}
-	r.initialise("./config/ItemResponseExtractor.toml")
+	r.initialise("./config/internal/ItemResponseExtractor.toml")
 	r.printStatus()
 
 	return &r

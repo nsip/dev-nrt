@@ -21,7 +21,7 @@ type ItemDetail struct {
 func ItemDetailReport(cfh codeframe.Helper) *ItemDetail {
 
 	r := ItemDetail{cfh: cfh}
-	r.initialise("./config/ItemDetail.toml")
+	r.initialise("./config/internal/ItemDetail.toml")
 	r.printStatus()
 
 	return &r

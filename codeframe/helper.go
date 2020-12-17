@@ -14,7 +14,6 @@ import (
 	"fmt"
 
 	"github.com/nsip/dev-nrt/records"
-	repo "github.com/nsip/dev-nrt/repository"
 	"github.com/tidwall/gjson"
 )
 
@@ -27,34 +26,38 @@ type Helper struct {
 	rubrics []string
 }
 
-//
-// Builds a new codeframe helper using the data
-// provided from the supplied repository
-//
-func NewHelper(r *repo.BadgerRepo) (Helper, error) {
+func NewHelper() Helper {
 
 	// initialise the internal map
-	h := Helper{data: make(map[string]map[string][]byte, 0)}
+	return Helper{data: make(map[string]map[string][]byte, 0)}
 
-	// attach an emitter to the repo
-	opts := []records.Option{records.EmitterRepository(r)}
-	em, err := records.NewEmitter(opts...)
-	if err != nil {
-		return h, err
-	}
+}
 
-	// stream the data into the internal data map
-	for cfr := range em.CodeframeStream() {
-		// watch out for null nodes in map
-		if _, ok := h.data[cfr.RecordType]; !ok {
-			h.data[cfr.RecordType] = make(map[string][]byte, 0)
+//
+// implement the codeframe pipe interface, so this can be attached to a
+// codeframe emitter.
+//
+func (cfh Helper) ProcessCodeframeRecords(in chan *records.CodeframeRecord) chan *records.CodeframeRecord {
+	out := make(chan *records.CodeframeRecord)
+	go func() {
+		defer close(out)
+
+		// collect all codeframe data
+		for cfr := range in {
+			// watch out for null nodes in map
+			if _, ok := cfh.data[cfr.RecordType]; !ok {
+				cfh.data[cfr.RecordType] = make(map[string][]byte, 0)
+			}
+			cfh.data[cfr.RecordType][cfr.RefID()] = cfr.Json
+
+			out <- cfr
 		}
-		h.data[cfr.RecordType][cfr.RefID()] = cfr.Json
-	}
 
-	h.extractRubrics()
+		// do any further pre-processing after all data received
+		cfh.extractRubrics()
 
-	return h, nil
+	}()
+	return out
 
 }
 
@@ -62,7 +65,7 @@ func NewHelper(r *repo.BadgerRepo) (Helper, error) {
 // internal function to create list of writing rubric types
 // / subscores from actual test data
 //
-func (cfh *Helper) extractRubrics() {
+func (cfh Helper) extractRubrics() {
 
 	cfh.rubrics = []string{}
 
@@ -104,7 +107,7 @@ func (cfh *Helper) extractRubrics() {
 //
 // returns ordered list of writing rubrics
 //
-func (cfh *Helper) WritingRubricTypes() []string {
+func (cfh Helper) WritingRubricTypes() []string {
 
 	return cfh.rubrics
 
@@ -113,7 +116,7 @@ func (cfh *Helper) WritingRubricTypes() []string {
 //
 // alias for writing rubrics, known as subscores in reslts
 //
-func (cfh *Helper) WritingSubscoreTypes() []string {
+func (cfh Helper) WritingSubscoreTypes() []string {
 
 	return cfh.WritingRubricTypes()
 }
@@ -121,7 +124,7 @@ func (cfh *Helper) WritingSubscoreTypes() []string {
 //
 // return the json block for a given testitem
 //
-func (cfh *Helper) GetItem(refid string) []byte {
+func (cfh Helper) GetItem(refid string) []byte {
 
 	item, ok := cfh.data["NAPTestItem"][refid]
 	if !ok {

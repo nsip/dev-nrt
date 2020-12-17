@@ -15,3 +15,13 @@ type CodeframeRecord struct {
 func (cfr *CodeframeRecord) RefID() string {
 	return gjson.GetBytes(cfr.Json, "*.RefId").String()
 }
+
+
+//
+// pass a json path to retrieve the value at that location as a
+// string
+//
+func (cfr *CodeframeRecord) GetValueString(queryPath string) string {
+
+	return gjson.GetBytes(cfr.Json, queryPath).String()
+}

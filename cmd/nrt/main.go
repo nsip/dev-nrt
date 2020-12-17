@@ -5,7 +5,6 @@ import (
 	"log"
 
 	nrt "github.com/nsip/dev-nrt"
-	"github.com/nsip/dev-nrt/codeframe"
 	repo "github.com/nsip/dev-nrt/repository"
 )
 
@@ -36,17 +35,12 @@ func main() {
 	}
 	fmt.Println()
 
-	cfh, err := codeframe.NewHelper(r)
-	if err != nil {
-		log.Fatalln("cf helper error:", err)
-	}
-
 	// fmt.Printf("\n%v\n", cfh.WritingRubricTypes())
 
 	//
 	// run the reports, pass repo
 	//
-	err = nrt.StreamResults(r, cfh)
+	err = nrt.StreamResults(r)
 	// err = nrt.StreamResults(r)
 	if err != nil {
 		log.Fatal(err)
