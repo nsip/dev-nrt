@@ -17,5 +17,7 @@ require (
 	github.com/tamerh/xpath v1.0.0 // indirect
 	github.com/tidwall/gjson v1.6.1
 	github.com/tidwall/sjson v1.1.2
+	golang.org/x/sync v0.0.0-20201207232520-09787c993a3a
 	golang.org/x/sys v0.0.0-20201101102859-da207088b7d1 // indirect
+	
 )

@@ -35,8 +35,6 @@ func main() {
 	}
 	fmt.Println()
 
-	// fmt.Printf("\n%v\n", cfh.WritingRubricTypes())
-
 	//
 	// run the reports, pass repo
 	//

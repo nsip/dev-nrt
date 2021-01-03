@@ -8,6 +8,11 @@ import (
 	toml "github.com/pelletier/go-toml"
 )
 
+// 
+// toggle to avoid noise when running
+// 
+var suppressStatus bool = true
+
 //
 // options common to all reports
 //
@@ -87,6 +92,9 @@ func (br *baseReport) initialise(configFilePath string) {
 // wordy
 //
 func (br *baseReport) printStatus() {
+	if suppressStatus {
+		return
+	}
 	fmt.Println("--------", br.config.name, "report status:")
 	fmt.Printf("Config:\n-activated:\t%t\n-output-file:\t%s\n-config-file:\t%s\n",
 		br.config.activated, br.config.outputFileName, br.configFileName)

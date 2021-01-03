@@ -1,16 +1,21 @@
 package nrt
 
 import (
+	"context"
 	"fmt"
-	"sync"
+
 	"time"
+
+	"golang.org/x/sync/errgroup"
 
 	"github.com/gosuri/uiprogress"
 	"github.com/gosuri/uiprogress/util/strutil"
 	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/pipelines"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/nsip/dev-nrt/reports"
 	repo "github.com/nsip/dev-nrt/repository"
+	"github.com/nsip/dev-nrt/utils"
 )
 
 //
@@ -19,37 +24,61 @@ import (
 //
 func StreamResults(r *repo.BadgerRepo) error {
 
-	defer TimeTrack(time.Now(), "StreamResults()")
+	defer utils.TimeTrack(time.Now(), "StreamResults()")
 
 	//
-	// create the emitters
+	// get cardinality of data objects from repo
 	//
-	opts := []records.Option{records.EmitterRepository(r)}
-	em, err := records.NewEmitter(opts...)
+	stats := r.GetStats()
+
+
+	// 
+	// set up the progress bar display manager
+	//
+	var uip *uiprogress.Progress
+	uip = uiprogress.New()
+	defer uip.Stop()
+	fmt.Printf("\n\n--- Running Reports:\n\n")
+	uip.Start()
+
+
+	// 
+	// create the codeframe helper tool
+	// 
+	cfh, err := codeframe.NewHelper(r)
 	if err != nil {
 		return err
 	}
 
-	em2, err := records.NewEmitter(opts...)
-	if err != nil {
-		return err
-	}
+	// 
+	// start the different processing pipelines concurrently
+	// under control of a group
+	// 
+	g, _ := errgroup.WithContext(context.Background())
 
-	cfh := codeframe.NewHelper()
 
 	// 
-	// codeframe report pipeline
+	// CodeFrame reports processor
 	// 
-	cfpl := reports.NewCodeframePipeline(
-		cfh,
-		reports.QcaaNapoItemsReport(),
-		reports.QcaaNapoTestletsReport(),
-	)
+	g.Go(func() error {
+		// create a record emitter
+		em, err := records.NewEmitter(records.EmitterRepository(r))
+		if err != nil {
+			return err
+		}
+		// create the codeframe report pipeline
+		cfpl := pipelines.NewCodeframePipeline(
+			reports.QcaaNapoItemsReport(),
+			reports.QcaaNapoTestletsReport(),
+		)
+		// create a progress bar
+		cfObjectsCount := stats["NAPCodeFrame"] + stats["NAPTest"] + stats["NAPTestlet"] + stats["NAPTestItem"]
+		codeframeBar := uip.AddBar(cfObjectsCount)
+		codeframeBar.AppendCompleted().PrependElapsed()
+		codeframeBar.PrependFunc(func(b *uiprogress.Bar) string {
+			return strutil.Resize(" Codeframe reports:", 25)
+		})
 
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		defer TimeTrack(time.Now(), "codeframeReports()")
 		//
 		// register an output handler for pipeline, used for progress-bar
 		// but could also be audit sink, backup of processed records etc.
@@ -60,88 +89,47 @@ func StreamResults(r *repo.BadgerRepo) error {
 		go cfpl.Dequeue(func(cfr *records.CodeframeRecord) {
 			// easy win no-op, also reclaims memory
 			cfr = nil
-			// eventBar.Incr()
+			codeframeBar.Incr()
 		})
 		defer cfpl.Close()
-		defer wg.Done()
+		// 
+		// now iterate the codeframe records, passing them through
+		// the processing pipeline
+		// 
 		for cfr := range em.CodeframeStream() {
 			cfpl.Enqueue(cfr)
 		}
-	}()
 
-	wg.Wait()
-
-	//
-	// get cardinality of objects from repo
-	//
-	stats := r.GetStats()
-
-	//
-	// create the reporting pipelines
-	//
-	fmt.Printf("\n\n--- Initialising Reports:\n")
-	epl1 := reports.NewEventPipeline(
-		// processors to set up reports
-		reports.EventRecordSplitterBlockReport(),
-		reports.ItemResponseExtractorReport(),
-		reports.ItemDetailReport(cfh),
-		// actual reports
-		reports.NswItemPrintingReport(),
-		reports.QcaaNapoStudentResponsesReport(),
-		reports.ItemPrintingReport(),
-	)
-
-	epl2 := reports.NewEventPipeline(
-		//
-		//
-		reports.EventRecordSplitterBlockReport(),
-		reports.ActSystemDomainScoresReport(),
-		reports.QldStudentScoreReport(),
-		reports.SystemDomainScoresReport(),
-		//
-		// insert w/e filters here...
-		// filter should come only before writing-extract reports
-		//
-		reports.WritingExtractReport(),
-		reports.WritingExtractQaPSIReport(),
-		reports.SaHomeschooledTestsReport(),
-		reports.CompareItemWritingReport(),
-		reports.NswWritingPearsonY3Report(cfh),
-		reports.NswWritingPearsonY5Report(cfh),
-		reports.NswWritingPearsonY7Report(cfh),
-		reports.NswWritingPearsonY9Report(cfh),
-		reports.SystemPNPEventsReport(),
-		reports.QcaaNapoEventStudentLinkReport(),
-		reports.QcaaNapoStudentResponseSetReport(),
-	)
-
-	//
-	// set up the progress bars
-	//
-	var uip *uiprogress.Progress
-	var eventBar, studentBar *uiprogress.Bar
-	uip = uiprogress.New()
-	eventBar = uip.AddBar(stats["NAPEventStudentLink"] * 25) // Add a new bar
-	eventBar.AppendCompleted().PrependElapsed()
-	// studentBar = uip.AddBar(stats["StudentPersonal"])
-	studentBar = uip.AddBar(stats["NAPEventStudentLink"])
-	studentBar.AppendCompleted().PrependElapsed()
-	eventBar.PrependFunc(func(b *uiprogress.Bar) string {
-		return strutil.Resize(" Item reports:", 25)
-	})
-	studentBar.PrependFunc(func(b *uiprogress.Bar) string {
-		return strutil.Resize(" Event reports:", 25)
+		return nil
 	})
 
-	//
-	// launch pipelines & emit events into them
-	//
-	fmt.Printf("\n\n--- Running Reports:\n\n")
-	uip.Start()
-	// uip.Stop() // helps debugging!
 
-	wg.Add(1)
-	go func() {
+	// 
+	// Item reports processor
+	// 
+	g.Go(func() error {
+		// create a record emitter
+		em, err := records.NewEmitter(records.EmitterRepository(r))
+		if err != nil {
+			return err
+		}
+		// create the item reporting pipeline
+		pl := pipelines.NewEventPipeline(
+			// processors to set up reports
+			reports.EventRecordSplitterBlockReport(),
+			reports.ItemResponseExtractorReport(),
+			reports.ItemDetailReport(cfh),
+			// actual reports
+			reports.NswItemPrintingReport(),
+			reports.QcaaNapoStudentResponsesReport(),
+			reports.ItemPrintingReport(),
+		)
+		// create a progress bar
+		itemBar := uip.AddBar(stats["NAPEventStudentLink"] * 25) // Add a new bar
+		itemBar.AppendCompleted().PrependElapsed()
+		itemBar.PrependFunc(func(b *uiprogress.Bar) string {
+			return strutil.Resize(" Item reports:", 25)
+		})
 		//
 		// register an output handler for pipeline, used for progress-bar
 		// but could also be audit sink, backup of processed records etc.
@@ -149,20 +137,62 @@ func StreamResults(r *repo.BadgerRepo) error {
 		// NOTE: must be handler here even with empty body
 		// otherwise exit channel blocks for pipeline
 		//
-		go epl1.Dequeue(func(eor *records.EventOrientedRecord) {
+		go pl.Dequeue(func(eor *records.EventOrientedRecord) {
 			// easy win no-op, also reclaims memory
 			eor = nil
-			eventBar.Incr()
+			itemBar.Incr() // update the progress bar
 		})
-		defer epl1.Close()
-		defer wg.Done()
+		defer pl.Close()
+		// 
+		// now iterate the codeframe records, passing them through
+		// the processing pipeline
+		// 
 		for eor := range em.EventBasedStream() {
-			epl1.Enqueue(eor)
+			pl.Enqueue(eor)
 		}
-	}()
 
-	wg.Add(1)
-	go func() {
+		return nil
+	})
+
+	// 
+	// Event-based report processor
+	// 
+	g.Go(func() error {
+		// create a record emitter
+		em, err := records.NewEmitter(records.EmitterRepository(r))
+		if err != nil {
+			return err
+		}
+		// create the item reporting pipeline
+		pl := pipelines.NewEventPipeline(
+			//
+			//
+			reports.EventRecordSplitterBlockReport(),
+			reports.ActSystemDomainScoresReport(),
+			reports.QldStudentScoreReport(),
+			reports.SystemDomainScoresReport(),
+			//
+			// insert w/e filters here...
+			// filter should come only before writing-extract reports
+			//
+			reports.WritingExtractReport(),
+			reports.WritingExtractQaPSIReport(),
+			reports.SaHomeschooledTestsReport(),
+			reports.CompareItemWritingReport(),
+			reports.NswWritingPearsonY3Report(cfh),
+			reports.NswWritingPearsonY5Report(cfh),
+			reports.NswWritingPearsonY7Report(cfh),
+			reports.NswWritingPearsonY9Report(cfh),
+			reports.SystemPNPEventsReport(),
+			reports.QcaaNapoEventStudentLinkReport(),
+			reports.QcaaNapoStudentResponseSetReport(),
+		)
+		// create a progress bar
+		eventBar := uip.AddBar(stats["NAPEventStudentLink"]) // Add a new bar
+		eventBar.AppendCompleted().PrependElapsed()
+		eventBar.PrependFunc(func(b *uiprogress.Bar) string {
+			return strutil.Resize(" Event-based reports:", 25)
+		})
 		//
 		// register an output handler for pipeline, used for progress-bar
 		// but could also be audit sink, backup of processed records etc.
@@ -170,24 +200,28 @@ func StreamResults(r *repo.BadgerRepo) error {
 		// NOTE: must be handler here even with empty body
 		// otherwise exit channel blocks for pipeline
 		//
-		go epl2.Dequeue(func(eor *records.EventOrientedRecord) {
+		go pl.Dequeue(func(eor *records.EventOrientedRecord) {
 			// easy win no-op, also reclaims memory
 			eor = nil
-			studentBar.Incr()
+			eventBar.Incr() // update the progress bar
 		})
-		defer epl2.Close()
-		defer wg.Done()
-		for eor := range em2.EventBasedStream() {
-			epl2.Enqueue(eor)
+		defer pl.Close()
+		// 
+		// now iterate the codeframe records, passing them through
+		// the processing pipeline
+		// 
+		for eor := range em.EventBasedStream() {
+			pl.Enqueue(eor)
 		}
-	}()
 
-	wg.Wait()
-	uip.Stop()
+		return nil
+	})
 
-	fmt.Printf("\n All report streams completed.\n\n")
 
-	return nil
+	// 
+	// group waits for all goroutines to complete & returns any error encountered
+	// 
+	return g.Wait()
 
 }
 

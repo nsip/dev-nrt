@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nsip/dev-nrt/files"
+	"github.com/nsip/dev-nrt/utils"
 	repo "github.com/nsip/dev-nrt/repository"
 	"github.com/nsip/dev-nrt/sec"
 )
@@ -15,7 +16,7 @@ import (
 //
 func IngestResults(folderName string, r *repo.BadgerRepo) error {
 
-	defer TimeTrack(time.Now(), "IngestResults()")
+	defer utils.TimeTrack(time.Now(), "IngestResults()")
 
 	//
 	// capture stats from each file ingested

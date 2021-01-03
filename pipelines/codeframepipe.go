@@ -1,4 +1,4 @@
-package reports
+package pipelines
 
 import "github.com/nsip/dev-nrt/records"
 
