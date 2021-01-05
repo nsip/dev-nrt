@@ -69,9 +69,12 @@ func NewHelper(r *repository.BadgerRepo) (Helper, error) {
 	//
 	h.extractRubrics()
 	//
-	// extract item sequence ordering from codeframe
+	// create reverse lookup itesm -> tests/testlets 
 	//
 	h.buildLookup()
+	// 
+	// build lookup for sequencing info of testlets/items
+	// 
 
 	return h, nil
 
@@ -133,17 +136,6 @@ func (cfh Helper) buildLookup() {
 				return true // keep iterating
 			})
 	}
-
-	// //
-	// // check by printing
-	// //
-	// for key, val := range cfh.reverseLookup {
-	// 	fmt.Println("Item:", key)
-	// 	for tl, tst := range val {
-	// 		fmt.Println("\tTestlet:", tl)
-	// 		fmt.Println("\t\tTest:", tst)
-	// 	}
-	// }
 
 }
 

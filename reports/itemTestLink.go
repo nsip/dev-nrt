@@ -1,8 +1,6 @@
 package reports
 
 import (
-	"fmt"
-
 	"github.com/nsip/dev-nrt/codeframe"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/sjson"
@@ -50,25 +48,18 @@ func (r *ItemTestLink) ProcessCodeframeRecords(in chan *records.CodeframeRecord)
 			}
 
 			//
-			// check if substitute
-			//
-
-			//
 			// get all tests associated with this item
 			//
 			for _, testid := range r.cfh.GetTestsForItem(cfr.RefId()) {
-				fmt.Println("\tTest-id:", testid)
+				// create a copy for each test, and assign the test id to calculated fields
 				calcf, _ := sjson.SetBytes([]byte{}, "CalculatedFields.NAPTestRefId", testid)
 				newcfr := records.CodeframeRecord{
 					RecordType:       cfr.RecordType,
 					Json:             cfr.Json,
 					CalculatedFields: calcf,
 				}
-				fmt.Printf("\n%s\n", string(newcfr.CalculatedFields))
 				out <- &newcfr
 			}
-
-			// out <- cfr
 		}
 	}()
 	return out

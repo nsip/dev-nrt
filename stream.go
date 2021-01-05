@@ -31,9 +31,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 	//
 	stats := r.GetStats()
 
-
-
-	// 
+	//
 	// set up the progress bar display manager
 	//
 	var uip *uiprogress.Progress
@@ -42,25 +40,23 @@ func StreamResults(r *repo.BadgerRepo) error {
 	fmt.Printf("\n\n--- Running Reports:\n\n")
 	uip.Start()
 
-
-	// 
+	//
 	// create the codeframe helper tool
-	// 
+	//
 	cfh, err := codeframe.NewHelper(r)
 	if err != nil {
 		return err
 	}
 
-	// 
+	//
 	// start the different processing pipelines concurrently
 	// under control of a group
-	// 
+	//
 	g, _ := errgroup.WithContext(context.Background())
 
-
-	// 
+	//
 	// CodeFrame reports processor
-	// 
+	//
 	g.Go(func() error {
 		// create a record emitter
 		em, err := records.NewEmitter(records.EmitterRepository(r))
@@ -73,7 +69,6 @@ func StreamResults(r *repo.BadgerRepo) error {
 			// mulitplexer must come before items report
 			reports.ItemTestLinkReport(cfh),
 			reports.QcaaNapoItemsReport(),
-			
 		)
 		// create a progress bar
 		cfObjectsCount := stats["NAPCodeFrame"] + stats["NAPTest"] + stats["NAPTestlet"] + stats["NAPTestItem"]
@@ -96,10 +91,10 @@ func StreamResults(r *repo.BadgerRepo) error {
 			codeframeBar.Incr()
 		})
 		defer cfpl.Close()
-		// 
+		//
 		// now iterate the codeframe records, passing them through
 		// the processing pipeline
-		// 
+		//
 		for cfr := range em.CodeframeStream() {
 			cfpl.Enqueue(cfr)
 		}
@@ -107,10 +102,9 @@ func StreamResults(r *repo.BadgerRepo) error {
 		return nil
 	})
 
-
-	// 
+	//
 	// Item reports processor
-	// 
+	//
 	g.Go(func() error {
 		// create a record emitter
 		em, err := records.NewEmitter(records.EmitterRepository(r))
@@ -129,7 +123,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.ItemPrintingReport(),
 		)
 		// create a progress bar
-		itemBar := uip.AddBar(stats["NAPEventStudentLink"] * 25) // Add a new bar
+		itemBar := uip.AddBar(stats["NAPEventStudentLink"] * 25) // 25 is expansion factor of events to items
 		itemBar.AppendCompleted().PrependElapsed()
 		itemBar.PrependFunc(func(b *uiprogress.Bar) string {
 			return strutil.Resize(" Item-level reports:", 25)
@@ -147,10 +141,10 @@ func StreamResults(r *repo.BadgerRepo) error {
 			itemBar.Incr() // update the progress bar
 		})
 		defer pl.Close()
-		// 
+		//
 		// now iterate the codeframe records, passing them through
 		// the processing pipeline
-		// 
+		//
 		for eor := range em.EventBasedStream() {
 			pl.Enqueue(eor)
 		}
@@ -158,9 +152,9 @@ func StreamResults(r *repo.BadgerRepo) error {
 		return nil
 	})
 
-	// 
+	//
 	// Event-based report processor
-	// 
+	//
 	g.Go(func() error {
 		// create a record emitter
 		em, err := records.NewEmitter(records.EmitterRepository(r))
@@ -210,10 +204,10 @@ func StreamResults(r *repo.BadgerRepo) error {
 			eventBar.Incr() // update the progress bar
 		})
 		defer pl.Close()
-		// 
+		//
 		// now iterate the codeframe records, passing them through
 		// the processing pipeline
-		// 
+		//
 		for eor := range em.EventBasedStream() {
 			pl.Enqueue(eor)
 		}
@@ -221,10 +215,9 @@ func StreamResults(r *repo.BadgerRepo) error {
 		return nil
 	})
 
-
-	// 
+	//
 	// group waits for all goroutines to complete & returns any error encountered
-	// 
+	//
 	return g.Wait()
 
 }
