@@ -1,4 +1,3 @@
-
 package reports
 
 import (
@@ -14,7 +13,7 @@ type QcaaNapoItems struct {
 
 //
 // Detailed breakdown of each TestITem
-// 
+//
 func QcaaNapoItemsReport() *QcaaNapoItems {
 
 	r := QcaaNapoItems{}
@@ -66,11 +65,8 @@ func (r *QcaaNapoItems) ProcessCodeframeRecords(in chan *records.CodeframeRecord
 				fmt.Println("Warning: error writing record to csv:", r.config.name, err)
 			}
 
-
 			out <- cfr
 		}
 	}()
 	return out
 }
-
-

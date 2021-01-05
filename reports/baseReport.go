@@ -8,9 +8,9 @@ import (
 	toml "github.com/pelletier/go-toml"
 )
 
-// 
+//
 // toggle to avoid noise when running
-// 
+//
 var suppressStatus bool = true
 
 //

@@ -1,7 +1,6 @@
 package reports
 
 import (
-	
 	"github.com/nsip/dev-nrt/codeframe"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/gjson"
@@ -67,7 +66,7 @@ func (r *ItemDetail) ProcessEventRecords(in chan *records.EventOrientedRecord) c
 func (r *ItemDetail) calculateFields(eor *records.EventOrientedRecord) []byte {
 
 	itemRefId := eor.GetValueString("CalculatedFields.ItemResponse.NAPTestItemRefId")
-	itemBytes := r.cfh.GetItem(itemRefId)
+	_, itemBytes := r.cfh.GetItem(itemRefId)
 	itemDetail := gjson.GetBytes(itemBytes, "NAPTestItem")
 	json, _ := sjson.SetRawBytes(eor.CalculatedFields, "CalculatedFields.NAPTestItem", []byte(itemDetail.String()))
 

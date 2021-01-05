@@ -1,6 +1,10 @@
 package records
 
-import "github.com/tidwall/gjson"
+import (
+	"strings"
+
+	"github.com/tidwall/gjson"
+)
 
 //
 // simple wrapper for objects associated with the
@@ -8,14 +12,14 @@ import "github.com/tidwall/gjson"
 //
 //
 type CodeframeRecord struct {
-	RecordType string
-	Json       []byte
+	RecordType       string
+	Json             []byte
+	CalculatedFields []byte
 }
 
-func (cfr *CodeframeRecord) RefID() string {
+func (cfr *CodeframeRecord) RefId() string {
 	return gjson.GetBytes(cfr.Json, "*.RefId").String()
 }
-
 
 //
 // pass a json path to retrieve the value at that location as a
@@ -23,5 +27,17 @@ func (cfr *CodeframeRecord) RefID() string {
 //
 func (cfr *CodeframeRecord) GetValueString(queryPath string) string {
 
-	return gjson.GetBytes(cfr.Json, queryPath).String()
+	//
+	// get the root object
+	//
+	objName := strings.Split(queryPath, ".")[0]
+	var data []byte
+	switch objName {
+	case "CalculatedFields":
+		data = cfr.CalculatedFields
+	default:
+		data = cfr.Json
+	}
+
+	return gjson.GetBytes(data, queryPath).String()
 }

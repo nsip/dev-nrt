@@ -1,4 +1,3 @@
-
 package reports
 
 import (
@@ -14,7 +13,7 @@ type QcaaNapoTestlets struct {
 
 //
 // Detailed Breakdown of Testlets
-// 
+//
 func QcaaNapoTestletsReport() *QcaaNapoTestlets {
 
 	r := QcaaNapoTestlets{}
@@ -49,7 +48,7 @@ func (r *QcaaNapoTestlets) ProcessCodeframeRecords(in chan *records.CodeframeRec
 			if cfr.RecordType != "NAPTestlet" {
 				out <- cfr
 				continue
-			}			
+			}
 
 			//
 			// now loop through the ouput definitions to create a
@@ -66,11 +65,8 @@ func (r *QcaaNapoTestlets) ProcessCodeframeRecords(in chan *records.CodeframeRec
 				fmt.Println("Warning: error writing record to csv:", r.config.name, err)
 			}
 
-
 			out <- cfr
 		}
 	}()
 	return out
 }
-
-

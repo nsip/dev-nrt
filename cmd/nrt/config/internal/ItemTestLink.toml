@@ -1,0 +1,9 @@
+[usage]
+reportName = "Item Test Link - reverse lookup from item to tests that use it"
+activated = true
+outputFileName = "./out/null/itemtestlink.csv"
+
+
+[[fields]]
+"no-op" = "no-op"
+# no fields needed for this report

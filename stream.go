@@ -32,6 +32,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 	stats := r.GetStats()
 
 
+
 	// 
 	// set up the progress bar display manager
 	//
@@ -68,8 +69,11 @@ func StreamResults(r *repo.BadgerRepo) error {
 		}
 		// create the codeframe report pipeline
 		cfpl := pipelines.NewCodeframePipeline(
-			reports.QcaaNapoItemsReport(),
 			reports.QcaaNapoTestletsReport(),
+			// mulitplexer must come before items report
+			reports.ItemTestLinkReport(cfh),
+			reports.QcaaNapoItemsReport(),
+			
 		)
 		// create a progress bar
 		cfObjectsCount := stats["NAPCodeFrame"] + stats["NAPTest"] + stats["NAPTestlet"] + stats["NAPTestItem"]
@@ -128,7 +132,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 		itemBar := uip.AddBar(stats["NAPEventStudentLink"] * 25) // Add a new bar
 		itemBar.AppendCompleted().PrependElapsed()
 		itemBar.PrependFunc(func(b *uiprogress.Bar) string {
-			return strutil.Resize(" Item reports:", 25)
+			return strutil.Resize(" Item-level reports:", 25)
 		})
 		//
 		// register an output handler for pipeline, used for progress-bar
