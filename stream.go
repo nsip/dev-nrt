@@ -65,7 +65,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 		}
 		// create the codeframe report pipeline
 		cfpl := pipelines.NewCodeframePipeline(
-			reports.QcaaNapoTestletsReport(),
+			reports.QcaaNapoTestletsReport(cfh),
 			// mulitplexer must come before items report
 			reports.ItemTestLinkReport(cfh),
 			reports.QcaaNapoItemsReport(),

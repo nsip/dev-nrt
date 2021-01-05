@@ -2,7 +2,7 @@
 [usage]
 reportName = "Detailed breakdown of Testlets (QLD Spec.)"
 activated = true
-outputFileName = "./out/TODO/qcaa_napo_testlets.csv"
+outputFileName = "./out/system_reports/qcaa_napo_testlets.csv"
 
 # Order of fields below is left to right order
 # columns will appear in final output, can be changed as needed.
@@ -21,6 +21,7 @@ outputFileName = "./out/TODO/qcaa_napo_testlets.csv"
 [[fields]]
 "NODE" = "NAPTestlet.TestletContent.Node"
 [[fields]]
-"LOCATION_IN_STAGE" = "NAPTestlet.TestletContent.LocationInStage"
+# only in codeframe
+"LOCATION_IN_STAGE" = "CalculatedFields.LocationInStage"
 [[fields]]
 "MAXIMUM_SCORE" = "NAPTestlet.TestletContent.TestletMaximumScore"

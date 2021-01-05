@@ -26,9 +26,10 @@ import (
 // working with codeframe objects easier
 //
 type Helper struct {
-	data          map[string]map[string][]byte
-	reverseLookup map[string]map[string]string
-	rubrics       []string
+	data            map[string]map[string][]byte
+	reverseLookup   map[string]map[string]string
+	locationInStage map[string]string
+	rubrics         []string
 }
 
 //
@@ -40,8 +41,9 @@ func NewHelper(r *repository.BadgerRepo) (Helper, error) {
 	defer utils.TimeTrack(time.Now(), "codeframe NewHelper()")
 
 	h := Helper{
-		data:          make(map[string]map[string][]byte, 0),
-		reverseLookup: make(map[string]map[string]string, 0),
+		data:            make(map[string]map[string][]byte, 0),
+		reverseLookup:   make(map[string]map[string]string, 0),
+		locationInStage: make(map[string]string, 0),
 	} // initialise the internal maps
 
 	// wrap repo in emitter
@@ -69,12 +71,13 @@ func NewHelper(r *repository.BadgerRepo) (Helper, error) {
 	//
 	h.extractRubrics()
 	//
-	// create reverse lookup itesm -> tests/testlets 
+	// create reverse lookup itesm -> tests/testlets
 	//
-	h.buildLookup()
-	// 
+	h.buildReverseLookup()
+	//
 	// build lookup for sequencing info of testlets/items
-	// 
+	//
+	h.extractLocationInstage()
 
 	return h, nil
 
@@ -106,11 +109,33 @@ func (cfh Helper) ProcessCodeframeRecords(in chan *records.CodeframeRecord) chan
 }
 
 //
+// telstlet location in stage only available in
+// codeframe, so create lookup - testletid -> location
+//
+func (cfh Helper) extractLocationInstage() {
+
+	var testletRefId, lis string
+	for _, cfBytes := range cfh.data["NAPCodeFrame"] {
+		//
+		// iterate the nested json strucure & extract rubric types
+		//
+		gjson.GetBytes(cfBytes, "NAPCodeFrame.TestletList.Testlet").
+			ForEach(func(key, value gjson.Result) bool {
+				testletRefId = value.Get("NAPTestletRefId").String()       // get the testlet refid
+				lis = value.Get("TestletContent.LocationInStage").String() // location in stage
+				cfh.locationInStage[testletRefId] = lis                    // store in lookup
+				return true                                                // keep iterating
+			})
+	}
+
+}
+
+//
 // we need to be able to reverse lookup the codeframe structure
 // e.g. Test from Item - find the test/s an item was assinged to
 // via testlets
 //
-func (cfh Helper) buildLookup() {
+func (cfh Helper) buildReverseLookup() {
 
 	var testRefId, testletRefId, itemRefId string
 	for _, cfBytes := range cfh.data["NAPCodeFrame"] {
@@ -226,4 +251,12 @@ func (cfh Helper) GetTestsForItem(refid string) []string {
 
 	return testids
 
+}
+
+//
+// find location in stage for testlet
+// comes from codeframe not testlet object
+//
+func (cfh Helper) GetTestletLocationInStage(refid string) string {
+	return cfh.locationInStage[refid]
 }

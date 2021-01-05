@@ -4,19 +4,22 @@ import (
 	"encoding/csv"
 	"fmt"
 
+	"github.com/nsip/dev-nrt/codeframe"
 	"github.com/nsip/dev-nrt/records"
+	"github.com/tidwall/sjson"
 )
 
 type QcaaNapoTestlets struct {
 	baseReport // embed common setup capability
+	cfh        codeframe.Helper
 }
 
 //
 // Detailed Breakdown of Testlets
 //
-func QcaaNapoTestletsReport() *QcaaNapoTestlets {
+func QcaaNapoTestletsReport(cfh codeframe.Helper) *QcaaNapoTestlets {
 
-	r := QcaaNapoTestlets{}
+	r := QcaaNapoTestlets{cfh: cfh}
 	r.initialise("./config/QcaaNapoTestlets.toml")
 	r.printStatus()
 
@@ -51,6 +54,11 @@ func (r *QcaaNapoTestlets) ProcessCodeframeRecords(in chan *records.CodeframeRec
 			}
 
 			//
+			// generate any calculated fields required
+			//
+			cfr.CalculatedFields = r.calculateFields(cfr)
+
+			//
 			// now loop through the ouput definitions to create a
 			// row of results
 			//
@@ -69,4 +77,16 @@ func (r *QcaaNapoTestlets) ProcessCodeframeRecords(in chan *records.CodeframeRec
 		}
 	}()
 	return out
+}
+
+//
+// generates a block of json that can be added to the
+// record containing values that are not in the original data
+//
+//
+func (r *QcaaNapoTestlets) calculateFields(cfr *records.CodeframeRecord) []byte {
+
+	json, _ := sjson.SetBytes([]byte{}, "CalculatedFields.LocationInStage", r.cfh.GetTestletLocationInStage(cfr.RefId()))
+
+	return json
 }
