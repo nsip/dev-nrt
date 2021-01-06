@@ -69,6 +69,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			// mulitplexer must come before items report
 			reports.ItemTestLinkReport(cfh),
 			reports.QcaaNapoItemsReport(),
+			reports.QcaaNapoTestsReport(),
 		)
 		// create a progress bar
 		cfObjectsCount := stats["NAPCodeFrame"] + stats["NAPTest"] + stats["NAPTestlet"] + stats["NAPTestItem"]

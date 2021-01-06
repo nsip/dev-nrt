@@ -1,0 +1,26 @@
+
+[usage]
+reportName = "NAP Test Object Summary (QLD spec.)"
+activated = true
+outputFileName = "./out/system_reports/qcaa_napo_tests.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"REF_ID" = "NAPTest.RefId"
+[[fields]]
+"TEST_ID" = "NAPTest.TestContent.NAPTestLocalId"
+[[fields]]
+"YEAR_LEVEL" = "NAPTest.TestContent.TestLevel.Code"
+[[fields]]
+"DOMAIN" = "NAPTest.TestContent.Domain"
+[[fields]]
+"TEST_TYPE" = "NAPTest.TestContent.TestType"
+[[fields]]
+"STAGES_COUNT" = "NAPTest.TestContent.StagesCount"
+[[fields]]
+"TEST_NAME" = "NAPTest.TestContent.TestName"
