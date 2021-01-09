@@ -72,6 +72,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.QcaaNapoTestsReport(),
 			reports.QcaaNapoTestletItemsReport(),
 			reports.SystemCodeframeReport(cfh),
+			reports.QldTestDataReport(cfh),
 		)
 		// create a progress bar
 		cfObjectsCount := stats["NAPCodeFrame"] + stats["NAPTest"] + stats["NAPTestlet"] + stats["NAPTestItem"]
@@ -217,6 +218,8 @@ func StreamResults(r *repo.BadgerRepo) error {
 
 		return nil
 	})
+
+	// n.b. output stats as objectcount report
 
 	//
 	// group waits for all goroutines to complete & returns any error encountered

@@ -1,0 +1,36 @@
+
+[usage]
+reportName = "Test->Item breakdown (QLD Spec.)"
+activated = true
+outputFileName = "./out/system_reports/qldTestData.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"Year" = "CalculatedFields.NAPTest.TestContent.TestYear"
+[[fields]]
+"Year_Level" = "CalculatedFields.NAPTest.TestContent.TestLevel.Code"
+[[fields]]
+"Item_ID" = "NAPTestItem.TestItemContent.NAPTestItemLocalId"
+[[fields]]
+"Strand" = "CalculatedFields.NAPTest.TestContent.Domain"
+[[fields]]
+"LocationInStage" = "CalculatedFields.NAPTestlet.TestletContent.LocationInStage"
+[[fields]]
+"SequenceNumber" = "CalculatedFields.NAPTestItem.SequenceNumber"
+[[fields]]
+"Item_Type" = "NAPTestItem.TestItemContent.ItemType"
+[[fields]]
+"Item" = "NAPTestItem.TestItemContent.ItemName"
+[[fields]]
+"Answer" = "NAPTestItem.TestItemContent.CorrectAnswer"
+[[fields]]
+"StimulusList" = "NAPTestItem.TestItemContent.StimulusList.Stimulus.#.StimulusLocalId"
+[[fields]]
+"Description" = "NAPTestItem.TestItemContent.ItemDescriptor"
+[[fields]]
+"Substrand" = "NAPTestItem.TestItemContent.Subdomain"
