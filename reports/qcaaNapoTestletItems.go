@@ -7,17 +7,18 @@ import (
 	"github.com/nsip/dev-nrt/records"
 )
 
-type QcaaNapoTests struct {
+type QcaaNapoTestletItems struct {
 	baseReport // embed common setup capability
 }
 
 //
-// Straight summary of test object data (QLD spec.)
+// Link an Item to its containing teslet, and exposes the sequence number
+// of the item within that testlet
 //
-func QcaaNapoTestsReport() *QcaaNapoTests {
+func QcaaNapoTestletItemsReport() *QcaaNapoTestletItems {
 
-	r := QcaaNapoTests{}
-	r.initialise("./config/QcaaNapoTests.toml")
+	r := QcaaNapoTestletItems{}
+	r.initialise("./config/QcaaNapoTestletItems.toml")
 	r.printStatus()
 
 	return &r
@@ -28,7 +29,7 @@ func QcaaNapoTestsReport() *QcaaNapoTests {
 // implement the EventPipe interface, core work of the
 // report engine.
 //
-func (r *QcaaNapoTests) ProcessCodeframeRecords(in chan *records.CodeframeRecord) chan *records.CodeframeRecord {
+func (r *QcaaNapoTestletItems) ProcessCodeframeRecords(in chan *records.CodeframeRecord) chan *records.CodeframeRecord {
 
 	out := make(chan *records.CodeframeRecord)
 	go func() {
@@ -45,7 +46,7 @@ func (r *QcaaNapoTests) ProcessCodeframeRecords(in chan *records.CodeframeRecord
 				continue
 			}
 
-			if cfr.RecordType != "NAPTest" { // only test objects
+			if cfr.RecordType != "NAPTestItem" { // only deal with test items
 				out <- cfr
 				continue
 			}
@@ -81,8 +82,7 @@ func (r *QcaaNapoTests) ProcessCodeframeRecords(in chan *records.CodeframeRecord
 // record containing values that are not in the original data
 //
 //
-func (r *QcaaNapoTests) calculateFields(cfr *records.CodeframeRecord) []byte {
+func (r *QcaaNapoTestletItems) calculateFields(cfr *records.CodeframeRecord) []byte {
 
-	// no-op for this report
 	return cfr.CalculatedFields
 }

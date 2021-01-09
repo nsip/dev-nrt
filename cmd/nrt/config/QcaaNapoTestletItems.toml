@@ -1,0 +1,20 @@
+
+[usage]
+reportName = "Test Item to Testlet Relationship map (QLD Spec.)"
+activated = true
+outputFileName = "./out/system_reports/qcaa_napo_testlet_items.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"TESTLET_ID" = "CalculatedFields.NAPTestletLocalId"
+# [[fields]] # uncomment these two lines if you need the test id as well
+# "TEST_ID" = "CalculatedFields.NAPTestLocalId"
+[[fields]]
+"ITEM_ID" = "NAPTestItem.TestItemContent.NAPTestItemLocalId"
+[[fields]]
+"SEQUENCE" = "CalculatedFields.SequenceNumber"

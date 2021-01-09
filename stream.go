@@ -70,6 +70,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.ItemTestLinkReport(cfh),
 			reports.QcaaNapoItemsReport(),
 			reports.QcaaNapoTestsReport(),
+			reports.QcaaNapoTestletItemsReport(),
 		)
 		// create a progress bar
 		cfObjectsCount := stats["NAPCodeFrame"] + stats["NAPTest"] + stats["NAPTestlet"] + stats["NAPTestItem"]

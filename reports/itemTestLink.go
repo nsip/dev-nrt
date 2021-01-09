@@ -12,10 +12,12 @@ type ItemTestLink struct {
 }
 
 //
-// Looks up the tests that use this item,
-// in the case of items being used by multiple tests
-// emits multiple copies of the record, one for each test allocation
-//
+// Establishes all links between a test item and the
+// rest of the test hierachy; item->testlet->test
+// noting that items can be re-used across different testlets 
+// and possibly even different tests
+// 
+// 
 func ItemTestLinkReport(cfh codeframe.Helper) *ItemTestLink {
 
 	r := ItemTestLink{cfh: cfh}
@@ -48,11 +50,19 @@ func (r *ItemTestLink) ProcessCodeframeRecords(in chan *records.CodeframeRecord)
 			}
 
 			//
-			// get all tests associated with this item
+			// get all test containers associated with this item
 			//
-			for _, testid := range r.cfh.GetTestsForItem(cfr.RefId()) {
-				// create a copy for each test, and assign the test id to calculated fields
-				calcf, _ := sjson.SetBytes([]byte{}, "CalculatedFields.NAPTestRefId", testid)
+			for testletRefId, testRefId := range r.cfh.GetContainersForItem(cfr.RefId()) {
+				// fetch localids
+				testLocalId := r.cfh.GetCodeframeObjectValueString(testRefId, "NAPTest.TestContent.NAPTestLocalId")
+				testletLocalId := r.cfh.GetCodeframeObjectValueString(testletRefId, "NAPTestlet.TestletContent.NAPTestletLocalId")
+				itemSeqNo := r.cfh.GetItemTestletSequenceNumber(cfr.RefId(), testletRefId)
+				// create a copy for each test, and assign the container ids to calculated fields
+				calcf, _ := sjson.SetBytes([]byte{}, "CalculatedFields.NAPTestRefId", testRefId)
+				calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestletRefId", testletRefId)
+				calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestLocalId", testLocalId)
+				calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestletLocalId", testletLocalId)
+				calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.SequenceNumber", itemSeqNo)
 				newcfr := records.CodeframeRecord{
 					RecordType:       cfr.RecordType,
 					Json:             cfr.Json,
