@@ -14,10 +14,10 @@ type ItemTestLink struct {
 //
 // Establishes all links between a test item and the
 // rest of the test hierachy; item->testlet->test
-// noting that items can be re-used across different testlets 
+// noting that items can be re-used across different testlets
 // and possibly even different tests
-// 
-// 
+//
+//
 func ItemTestLinkReport(cfh codeframe.Helper) *ItemTestLink {
 
 	r := ItemTestLink{cfh: cfh}
@@ -56,13 +56,16 @@ func (r *ItemTestLink) ProcessCodeframeRecords(in chan *records.CodeframeRecord)
 				// fetch localids
 				testLocalId := r.cfh.GetCodeframeObjectValueString(testRefId, "NAPTest.TestContent.NAPTestLocalId")
 				testletLocalId := r.cfh.GetCodeframeObjectValueString(testletRefId, "NAPTestlet.TestletContent.NAPTestletLocalId")
+				// get sequnce info
+				testletLIS := r.cfh.GetTestletLocationInStage(testletRefId)
 				itemSeqNo := r.cfh.GetItemTestletSequenceNumber(cfr.RefId(), testletRefId)
-				// create a copy for each test, and assign the container ids to calculated fields
+				// create a copy for each test, and assign the container ids etc. to calculated fields
 				calcf, _ := sjson.SetBytes([]byte{}, "CalculatedFields.NAPTestRefId", testRefId)
 				calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestletRefId", testletRefId)
 				calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestLocalId", testLocalId)
 				calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestletLocalId", testletLocalId)
-				calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.SequenceNumber", itemSeqNo)
+				calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestItem.SequenceNumber", itemSeqNo)
+				calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestlet.TestletContent.LocationInStage", testletLIS)
 				newcfr := records.CodeframeRecord{
 					RecordType:       cfr.RecordType,
 					Json:             cfr.Json,

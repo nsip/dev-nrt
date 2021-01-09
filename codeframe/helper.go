@@ -335,8 +335,8 @@ func (cfh Helper) GetContainersForItem(refid string) map[string]string {
 // find location in stage for testlet
 // comes from codeframe not testlet object
 //
-func (cfh Helper) GetTestletLocationInStage(refid string) string {
-	return cfh.locationInStage[refid]
+func (cfh Helper) GetTestletLocationInStage(testletrefid string) string {
+	return cfh.locationInStage[testletrefid]
 }
 
 //

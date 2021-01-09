@@ -1,0 +1,46 @@
+
+[usage]
+reportName = "System Codeframe - breakdown of test->testlet->item details"
+activated = true
+outputFileName = "./out/system_reports/systemCodeframe.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"Test" = "CalculatedFields.NAPTest.TestContent.TestName"
+[[fields]]
+"Level" = "CalculatedFields.NAPTest.TestContent.TestLevel.Code"
+[[fields]]
+"Domain" = "CalculatedFields.NAPTest.TestContent.Domain"
+[[fields]]
+"Type" = "CalculatedFields.NAPTest.TestContent.TestType"
+[[fields]]
+"Testlet Name" = "CalculatedFields.NAPTestlet.TestletContent.TestletName"
+[[fields]]
+"Testlet Location In Stage" = "CalculatedFields.NAPTestlet.TestletContent.LocationInStage"
+[[fields]]
+"Testlet Node" = "CalculatedFields.NAPTestlet.TestletContent.Node"
+[[fields]]
+"Testlet Max. Score" = "CalculatedFields.NAPTestlet.TestletContent.TestletMaximumScore"
+[[fields]]
+" Item Subdomain" = "NAPTestItem.TestItemContent.Subdomain"
+[[fields]]
+"Item Descriptor" = "NAPTestItem.TestItemContent.ItemDescriptor"
+[[fields]]
+"Item Difficulty" = "NAPTestItem.TestItemContent.ItemDifficulty"
+[[fields]]
+"Item Max. Score" = "NAPTestItem.TestItemContent.MaximumScore"
+[[fields]]
+"Correct Answer" = "NAPTestItem.TestItemContent.CorrectAnswer"
+[[fields]]
+"Item Type" = "NAPTestItem.TestItemContent.ItemType"
+[[fields]]
+"Marking Type" = "NAPTestItem.TestItemContent.MarkingType"
+[[fields]]
+"Exemplar URL" = "NAPTestItem.TestItemContent.ExemplarURL"
+[[fields]]
+"Item RefID" = "NAPTestItem.RefId"
