@@ -7,18 +7,17 @@ import (
 	"github.com/nsip/dev-nrt/records"
 )
 
-type SystemSchools struct {
+type SystemScoreSummaries struct {
 	baseReport // embed common setup capability
 }
 
 //
-// Summary of school estbalishment info, from 2020 onwards this is now
-// a very minimal set of data, most fields are withheld by jurisdictions
+// score summaries for each schoool by domain
 //
-func SystemSchoolsReport() *SystemSchools {
+func SystemScoreSummariesReport() *SystemScoreSummaries {
 
-	r := SystemSchools{}
-	r.initialise("./config/SystemSchools.toml")
+	r := SystemScoreSummaries{}
+	r.initialise("./config/SystemScoreSummaries.toml")
 	r.printStatus()
 
 	return &r
@@ -29,7 +28,7 @@ func SystemSchoolsReport() *SystemSchools {
 // implement the ...Pipe interface, core work of the
 // report engine.
 //
-func (r *SystemSchools) ProcessObjectRecords(in chan *records.ObjectRecord) chan *records.ObjectRecord {
+func (r *SystemScoreSummaries) ProcessObjectRecords(in chan *records.ObjectRecord) chan *records.ObjectRecord {
 
 	out := make(chan *records.ObjectRecord)
 	go func() {
@@ -46,7 +45,7 @@ func (r *SystemSchools) ProcessObjectRecords(in chan *records.ObjectRecord) chan
 				continue
 			}
 
-			if or.RecordType != "SchoolInfo" { // only deal with schoolinfos
+			if or.RecordType != "NAPTestScoreSummary" { // only deal with score summaries
 				out <- or
 				continue
 			}
@@ -82,7 +81,7 @@ func (r *SystemSchools) ProcessObjectRecords(in chan *records.ObjectRecord) chan
 // record containing values that are not in the original data
 //
 //
-func (r *SystemSchools) calculateFields(or *records.ObjectRecord) []byte {
+func (r *SystemScoreSummaries) calculateFields(or *records.ObjectRecord) []byte {
 
 	return or.CalculatedFields
 }
