@@ -1,0 +1,24 @@
+
+[usage]
+reportName = "Details of writing rubrics (QLD Spec.)"
+activated = true
+outputFileName = "./out/system_reports/qcaa_napo_writing_rubric.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"REF_ID" = "CalculatedFields.NAPTestRefId"
+[[fields]]
+"TEST_ID" = "CalculatedFields.NAPTestLocalId"
+[[fields]]
+"ITEM_ID" = "NAPTestItem.RefId"
+[[fields]]
+"RUBRIC" = "CalculatedFields.NAPWritingRubric.RubricType"
+[[fields]]
+"DESCRIPTOR" = "CalculatedFields.NAPWritingRubric.Descriptor"
+[[fields]]
+"MAX_SCORE" = "CalculatedFields.NAPWritingRubric.MaxScoreValue"

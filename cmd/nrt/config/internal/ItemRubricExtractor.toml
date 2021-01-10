@@ -1,0 +1,9 @@
+[usage]
+reportName = "Item Rubric Extractor - multiplexes items one per writing rubric"
+activated = true
+outputFileName = "./out/null/itemrubricextractor.csv"
+
+
+[[fields]]
+"no-op" = "no-op"
+# no fields needed for this report
