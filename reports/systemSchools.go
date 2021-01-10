@@ -7,17 +7,17 @@ import (
 	"github.com/nsip/dev-nrt/records"
 )
 
-type QcaaNapoStudents struct {
+type SystemSchools struct {
 	baseReport // embed common setup capability
 }
 
 //
-// Summary of student info, QLD spec.
+// DESCRIPTION HERE
 //
-func QcaaNapoStudentsReport() *QcaaNapoStudents {
+func SystemSchoolsReport() *SystemSchools {
 
-	r := QcaaNapoStudents{}
-	r.initialise("./config/QcaaNapoStudents.toml")
+	r := SystemSchools{}
+	r.initialise("./config/SystemSchools.toml")
 	r.printStatus()
 
 	return &r
@@ -28,7 +28,7 @@ func QcaaNapoStudentsReport() *QcaaNapoStudents {
 // implement the ...Pipe interface, core work of the
 // report engine.
 //
-func (r *QcaaNapoStudents) ProcessObjectRecords(in chan *records.ObjectRecord) chan *records.ObjectRecord {
+func (r *SystemSchools) ProcessObjectRecords(in chan *records.ObjectRecord) chan *records.ObjectRecord {
 
 	out := make(chan *records.ObjectRecord)
 	go func() {
@@ -45,7 +45,7 @@ func (r *QcaaNapoStudents) ProcessObjectRecords(in chan *records.ObjectRecord) c
 				continue
 			}
 
-			if or.RecordType != "StudentPersonal" { // only deal with studentpersonals
+			if or.RecordType != "SchoolInfo" { // only deal with schoolinfos
 				out <- or
 				continue
 			}
@@ -81,7 +81,7 @@ func (r *QcaaNapoStudents) ProcessObjectRecords(in chan *records.ObjectRecord) c
 // record containing values that are not in the original data
 //
 //
-func (r *QcaaNapoStudents) calculateFields(or *records.ObjectRecord) []byte {
+func (r *SystemSchools) calculateFields(or *records.ObjectRecord) []byte {
 
 	return or.CalculatedFields
 }

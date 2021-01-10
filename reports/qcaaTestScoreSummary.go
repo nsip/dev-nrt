@@ -1,4 +1,3 @@
-
 package reports
 
 import (
@@ -14,7 +13,7 @@ type QcaaTestScoreSummary struct {
 
 //
 // Simple object report, translates object to csv table
-// 
+//
 func QcaaTestScoreSummaryReport() *QcaaTestScoreSummary {
 
 	r := QcaaTestScoreSummary{}
@@ -71,7 +70,6 @@ func (r *QcaaTestScoreSummary) ProcessObjectRecords(in chan *records.ObjectRecor
 				fmt.Println("Warning: error writing record to csv:", r.config.name, err)
 			}
 
-
 			out <- or
 		}
 	}()
@@ -87,4 +85,3 @@ func (r *QcaaTestScoreSummary) calculateFields(or *records.ObjectRecord) []byte 
 
 	return or.CalculatedFields
 }
-

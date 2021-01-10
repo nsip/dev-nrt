@@ -1,0 +1,58 @@
+
+[usage]
+reportName = "School establishment info"
+activated = true
+outputFileName = "./out/system_reports/systemSchools.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"School Name" = "SchoolInfo.SchoolName"
+[[fields]]
+"School ACARA Id" = "SchoolInfo.ACARAId"
+[[fields]]
+"Local School ID" = "SchoolInfo.LocalId"
+[[fields]]
+"State/Province ID" = "SchoolInfo.StateProvinceId"
+[[fields]]
+"School District" = "SchoolInfo.SchoolDistrict"
+[[fields]]
+"School LGA" = "SchoolInfo.LocalGovernmentArea"
+[[fields]]
+# "School Type" = "SchoolInfo.SchoolSector"
+[[fields]]
+"Student Count" = "SchoolInfo.TotalEnrolments"
+[[fields]]
+# "Independent School" = "SchoolInfo.IndependentSchool"
+[[fields]]
+"School Sector" = "SchoolInfo.SchoolSector"
+[[fields]]
+# "System Indicator" = "System"
+[[fields]]
+# "Non-Gov Systemic Status" = "NonGovSystemicStatus"
+[[fields]]
+# "Operational Status" = "OperationalStatus"
+[[fields]]
+# "Co-Ed Status" = "SchoolCoEdStatus"
+[[fields]]
+# "Federal Electorate" = "FederalElectorate"
+[[fields]]
+"Jurisdiction Lower House" = "JurisdictionLowerHouse"
+[[fields]]
+# "School Session Type" = "SessionType"
+[[fields]]
+# "Principal Name" = "PrincipalInfo.ContactName.FullName"
+[[fields]]
+# "Religious Affiliation" = "ReligiousAffiliation"
+[[fields]]
+# "SLA" = "SchoolInfo.SchoolDistrict"
+[[fields]]
+# "ARIA Code" = "ARIA"
+[[fields]]
+"School Geographic Indicator" = "SchoolInfo.SchoolGeographicLocation"
+[[fields]]
+# "School URL" = "SchoolURL"
