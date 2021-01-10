@@ -69,6 +69,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 		objpl := pipelines.NewObjectPipeline(
 			reports.QcaaNapoSchoolsReport(),
 			reports.QcaaNapoStudentsReport(),
+			reports.QcaaTestScoreSummaryReport(),
 		)
 		// create a progress bar
 		objObjectsCount := stats["SchoolInfo"] + stats["StudentPersonal"] + stats["NAPTestScoreSummary"]

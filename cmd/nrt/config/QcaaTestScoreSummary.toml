@@ -1,0 +1,28 @@
+
+[usage]
+reportName = "School-level score summaries by domain (QLD Spec.)"
+activated = true
+outputFileName = "./out/system_reports/qcaa_test_score_summary.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"REF_ID" = "NAPTestScoreSummary.RefId"
+[[fields]]
+"SCHOOL_ACARA_ID" = "NAPTestScoreSummary.SchoolACARAId"
+[[fields]]
+"TEST_ID" = "NAPTestScoreSummary.NAPTestLocalId"
+[[fields]]
+"DOMAIN_NATIONAL_AVERAGE" = "NAPTestScoreSummary.DomainNationalAverage"
+[[fields]]
+"DOMAIN_SCHOOL_AVERAGE" = "NAPTestScoreSummary.DomainSchoolAverage"
+[[fields]]
+"DOMAIN_JURISDICTION_AVERAGE" = "NAPTestScoreSummary.DomainJurisdictionAverage"
+[[fields]]
+"DOMAIN_TOP_NATIONAL_60PCT" = "NAPTestScoreSummary.DomainTopNational60Percent"
+[[fields]]
+"DOMAIN_BOTTOM_NATIONAL_6OPCT" = "NAPTestScoreSummary.DomainBottomNational60Percent"
