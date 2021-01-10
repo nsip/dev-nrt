@@ -1,0 +1,22 @@
+
+[usage]
+reportName = "Basic School Data (QLD Spec.)"
+activated = true
+outputFileName = "./out/system_reports/qcaa_napo_schools.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"REF_ID" = "SchoolInfo.RefId"
+[[fields]]
+"LOCAL_ID" = "SchoolInfo.LocalId"
+[[fields]]
+"ACARA_ID" = "SchoolInfo.ACARAId"
+[[fields]]
+"NAME" = "SchoolInfo.SchoolName"
+[[fields]]
+"SECTOR" = "SchoolInfo.SchoolSector"

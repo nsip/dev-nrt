@@ -55,6 +55,53 @@ func StreamResults(r *repo.BadgerRepo) error {
 	g, _ := errgroup.WithContext(context.Background())
 
 	//
+	// Simple object reports processor
+	// takes data objects and converts to csv
+	// with no business logic
+	//
+	g.Go(func() error {
+		// create a record emitter
+		em, err := records.NewEmitter(records.EmitterRepository(r))
+		if err != nil {
+			return err
+		}
+		// create the object report pipeline
+		objpl := pipelines.NewObjectPipeline(
+			reports.QcaaNapoSchoolsReport(),
+		)
+		// create a progress bar
+		objObjectsCount := stats["SchoolInfo"] + stats["StudentPersonal"] + stats["NAPTestScoreSummary"]
+		objBar := uip.AddBar(objObjectsCount)
+		objBar.AppendCompleted().PrependElapsed()
+		objBar.PrependFunc(func(b *uiprogress.Bar) string {
+			return strutil.Resize(" Simple reports:", 25)
+		})
+
+		//
+		// register an output handler for pipeline, used for progress-bar
+		// but could also be audit sink, backup of processed records etc.
+		//
+		// NOTE: must be handler here even with empty body
+		// otherwise exit channel blocks for pipeline
+		//
+		go objpl.Dequeue(func(cfr *records.ObjectRecord) {
+			// easy win no-op, also reclaims memory
+			cfr = nil
+			objBar.Incr()
+		})
+		defer objpl.Close()
+		//
+		// now iterate the object records, passing them through
+		// the processing pipeline
+		//
+		for or := range em.ObjectStream() {
+			objpl.Enqueue(or)
+		}
+
+		return nil
+	})
+
+	//
 	// CodeFrame reports processor
 	//
 	g.Go(func() error {

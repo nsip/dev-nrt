@@ -25,6 +25,7 @@ type Emitter struct {
 	eorstream chan *EventOrientedRecord
 	sorstream chan *StudentOrientedRecord
 	cfstream  chan *CodeframeRecord
+	objstream chan *ObjectRecord
 	repo      *repo.BadgerRepo
 }
 
@@ -37,6 +38,7 @@ func NewEmitter(opts ...Option) (*Emitter, error) {
 		eorstream: make(chan *EventOrientedRecord, 256),
 		sorstream: make(chan *StudentOrientedRecord, 256),
 		cfstream:  make(chan *CodeframeRecord, 256),
+		objstream: make(chan *ObjectRecord, 256),
 	}
 
 	// appply all options
@@ -232,6 +234,56 @@ func (e *Emitter) emitCodeframeRecords() {
 
 	if err != nil {
 		log.Println("error iterating codeframe objects:", err)
+	}
+
+}
+
+//
+// provides channel iterator for simple object records
+//
+func (e *Emitter) ObjectStream() chan *ObjectRecord {
+
+	go e.emitObjectRecords()
+
+	return e.objstream
+
+}
+
+//
+// iterates and exports simple types
+// objects that are just directly transformed into csv with no
+// interpretation, business logic or record joins
+//
+func (e *Emitter) emitObjectRecords() {
+
+	defer close(e.objstream)
+
+	// list determiined by needs of current reports, can be extended to any data objects
+	orObjects := []string{"SchoolInfo", "StudentPersonal", "NAPTestScoreSummary"}
+
+	var it *badger.Iterator
+	var txnErr error
+	var jsonBytes []byte
+
+	err := e.repo.DB().View(func(txn *badger.Txn) error {
+		it = txn.NewIterator(badger.DefaultIteratorOptions)
+		defer it.Close()
+		for _, objType := range orObjects {
+			prefix := []byte(objType + ":")
+			for it.Seek(prefix); it.ValidForPrefix(prefix); it.Next() {
+				jsonBytes, txnErr = it.Item().ValueCopy(nil)
+				if txnErr != nil {
+					return txnErr
+				}
+				or := ObjectRecord{RecordType: objType, Json: jsonBytes}
+				e.objstream <- &or
+			}
+		}
+		return nil
+	})
+
+	if err != nil {
+		log.Println("error iterating data objects:", err)
 	}
 
 }
