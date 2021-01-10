@@ -1,0 +1,58 @@
+
+[usage]
+reportName = "Student info summary (QLD Spec.)"
+activated = true
+outputFileName = "./out/system_reports/qcaa_napo_students.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"REF_ID" = "StudentPersonal.RefId"
+[[fields]]
+"ID" = "StudentPersonal.OtherIdList.OtherId.#[Type==TAAStudentId].value"
+[[fields]]
+"STUDENT_ID" = "StudentPersonal.OtherIdList.OtherId.#[Type==SectorStudentId].value"
+[[fields]]
+"CLASS" = "StudentPersonal.MostRecent.ClassCode"
+[[fields]]
+"YEAR_LEVEL" = "StudentPersonal.MostRecent.YearLevel.Code"
+[[fields]]
+"FIRST_NAME" = "StudentPersonal.PersonInfo.Name.GivenName"
+[[fields]]
+"LAST_NAME" = "StudentPersonal.PersonInfo.Name.FamilyName"
+[[fields]]
+"DATE_OF_BIRTH" = "StudentPersonal.PersonInfo.Demographics.BirthDate"
+[[fields]]
+"INDIGENOUS_STATUS" = "StudentPersonal.PersonInfo.Demographics.IndigenousStatus"
+[[fields]]
+"OTHER_LANGUAGE" = "StudentPersonal.PersonInfo.Demographics.LanguageList.Language.0.Code"
+[[fields]]
+"SEX" = "StudentPersonal.PersonInfo.Demographics.Sex"
+[[fields]]
+"ASL_ID" = "StudentPersonal.MostRecent.SchoolACARAId"
+[[fields]]
+"M_OCCUPATION" = "StudentPersonal.MostRecent.Parent1EmploymentType"
+[[fields]]
+"M_NON_SCHOOL_EDU" = "StudentPersonal.MostRecent.Parent1NonSchoolEducation"
+[[fields]]
+"M_SCHOOL_EDU" = "StudentPersonal.MostRecent.Parent1SchoolEducationLevel"
+[[fields]]
+"F_OCCUPATION" = "StudentPersonal.MostRecent.Parent2EmploymentType"
+[[fields]]
+"F_NON_SCHOOL_EDU" = "StudentPersonal.MostRecent.Parent2NonSchoolEducation"
+[[fields]]
+"F_SCHOOL_EDU" = "StudentPersonal.MostRecent.Parent2SchoolEducationLevel"
+[[fields]]
+"VISA" = "StudentPersonal.PersonInfo.Demographics.VisaSubClass"
+[[fields]]
+"PLATFORM_STUDENT_IDENTIFIER" = "StudentPersonal.OtherIdList.OtherId.#[Type==NAPPlatformStudentId].value"
+[[fields]]
+"M_LANGUAGE" = "StudentPersonal.MostRecent.Parent1Language"
+[[fields]]
+"F_LANGUAGE" = "StudentPersonal.MostRecent.Parent2Language"
+[[fields]]
+"FFPOS" = "StudentPersonal.MostRecent.FFPOS"
