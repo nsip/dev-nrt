@@ -72,6 +72,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.QcaaTestScoreSummaryReport(),
 			reports.SystemSchoolsReport(),
 			reports.SystemScoreSummariesReport(),
+			reports.QldStudentReport(),
 		)
 		// create a progress bar
 		objObjectsCount := stats["SchoolInfo"] + stats["StudentPersonal"] + stats["NAPTestScoreSummary"]

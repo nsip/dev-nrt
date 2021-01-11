@@ -1,0 +1,38 @@
+
+[usage]
+reportName = "Summary of Student Info (QLD Spec.)"
+activated = true
+outputFileName = "./out/system_reports/qldStudent.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"StudentID" = "StudentPersonal.OtherIdList.OtherId.#[Type==TAAStudentId].value"
+[[fields]]
+"YearLevel" = "StudentPersonal.MostRecent.YearLevel.Code"
+[[fields]]
+"School" = "StudentPersonal.MostRecent.SchoolACARAId"
+[[fields]]
+"EQID" = "StudentPersonal.OtherIdList.OtherId.#[Type==SectorStudentId].value"
+[[fields]]
+"FirstName" = "StudentPersonal.PersonInfo.Name.GivenName"
+[[fields]]
+"LastName" = "StudentPersonal.PersonInfo.Name.FamilyName"
+[[fields]]
+"DateOfBirth" = "StudentPersonal.PersonInfo.Demographics.BirthDate"
+[[fields]]
+"DateOfBirthRaw" = "StudentPersonal.PersonInfo.Demographics.BirthDate"
+[[fields]]
+"IndigenousStatus" = "StudentPersonal.PersonInfo.Demographics.IndigenousStatus"
+[[fields]]
+"OtherLanguage" = "StudentPersonal.PersonInfo.Demographics.LanguageList.Language.0.Code"
+[[fields]]
+"Sex" = "StudentPersonal.PersonInfo.Demographics.Sex"
+[[fields]]
+"Class" = "StudentPersonal.MostRecent.ClassCode"
+[[fields]]
+"PSI" = "StudentPersonal.OtherIdList.OtherId.#[Type==NAPPlatformStudentId].value"
