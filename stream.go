@@ -227,8 +227,9 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.ActSystemDomainScoresReport(),
 			reports.QldStudentScoreReport(),
 			reports.SystemDomainScoresReport(),
+			reports.CompareRRDtestsReport(),
 			//
-			// insert w/e filters here...
+			// TODO: insert w/e greelist/redlist filters here...
 			// filter should come only before writing-extract reports
 			//
 			reports.WritingExtractReport(),
