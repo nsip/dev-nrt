@@ -10,10 +10,13 @@ import (
 )
 
 var (
+	// event errors
 	ErrMissingStudent  = errors.New("No student found for event")
 	ErrMissingSchool   = errors.New("No school found for event")
 	ErrMissingTest     = errors.New("No test found for event")
 	ErrMissingResponse = errors.New("No student response found for event")
+	// student errors
+	ErrMissingEvent = errors.New("No events found for student")
 )
 
 //
@@ -56,7 +59,154 @@ func NewEmitter(opts ...Option) (*Emitter, error) {
 }
 
 //
+// provides channel iterator for student-oriented records,
+// each record has; student, school, all tests seen by student, all responses
+// and all events in one record.
+//
+func (e *Emitter) StudentBasedStream() chan *StudentOrientedRecord {
+
+	go e.emitStudentOrientedRecords()
+
+	return e.sorstream
+}
+
+//
+// iterates the db and constructs the student-oriented records
+//
+func (e *Emitter) emitStudentOrientedRecords() {
+
+	defer close(e.sorstream)
+
+	var event, student, school, test, response *badger.Item
+	var nesl, sp, si, nt, nsrs []byte
+	var txnErr error
+	var schoolkey, testkey, responsekey string
+
+	//
+	// logically need to go, student, events, school, responses, tests
+	//
+
+	//
+	// db transaction to iterate events and collect
+	// associated result data
+	//
+	err := e.repo.DB().View(func(txn *badger.Txn) error {
+		//
+		// outer iteration is by the student records
+		//
+		itStudents := txn.NewIterator(badger.DefaultIteratorOptions)
+		defer itStudents.Close()
+		//
+		// inner iterator to find all events associated with student
+		//
+		itEvents := txn.NewIterator(badger.DefaultIteratorOptions)
+		defer itEvents.Close()
+
+		prefix := []byte("StudentPersonal")
+		for itStudents.Seek(prefix); itStudents.ValidForPrefix(prefix); itStudents.Next() {
+			sor := NewStudentOrientedRecord()
+			//
+			// get the student
+			//
+			student = itStudents.Item()
+			sp, txnErr = student.ValueCopy(nil)
+			if txnErr != nil {
+				return txnErr
+			}
+			sor.StudentPersonal = sp
+			sor.HasStudentPersonal = true
+			//
+			// get the events
+			//
+			evtPrefix := []byte(fmt.Sprintf("NAPEventStudentLink:%s", sor.StudentPersonalRefId()))
+			for itEvents.Seek(evtPrefix); itEvents.ValidForPrefix(evtPrefix); itEvents.Next() {
+				event = itEvents.Item()
+				nesl, txnErr = event.ValueCopy(nil)
+				if txnErr != nil {
+					sor.Err = ErrMissingEvent
+					e.sorstream <- sor
+					continue
+				}
+				sor.AddEvent(nesl)
+			}
+			//
+			// get the school
+			//
+			schoolkey = fmt.Sprintf("SchoolInfo:%s", sor.SchoolInfoRefId())
+			school, txnErr = txn.Get([]byte(schoolkey))
+			if txnErr != nil {
+				if txnErr == badger.ErrKeyNotFound {
+					sor.Err = ErrMissingSchool
+					e.sorstream <- sor
+					continue
+				} else {
+					return txnErr
+				}
+			}
+			si, txnErr = school.ValueCopy(nil)
+			if txnErr != nil {
+				return txnErr
+			}
+			sor.SchoolInfo = si
+			sor.HasSchoolInfo = true
+			//
+			// get the tests
+			//
+			for testid := range sor.GetNAPTestRefIds() {
+				testkey = fmt.Sprintf("NAPTest:%s", testid)
+				test, txnErr = txn.Get([]byte(testkey))
+				if txnErr != nil {
+					if txnErr == badger.ErrKeyNotFound {
+						sor.Err = ErrMissingTest
+						e.sorstream <- sor
+						continue
+					} else {
+						return txnErr
+					}
+				}
+				nt, txnErr = test.ValueCopy(nil)
+				if txnErr != nil {
+					return txnErr
+				}
+				sor.AddTest(nt)
+			}
+			//
+			// get the responses
+			//
+			for testid := range sor.GetNAPTestRefIds() {
+				responsekey = fmt.Sprintf("NAPStudentResponseSet:%s:%s", sor.StudentPersonalRefId(), testid)
+				response, txnErr = txn.Get([]byte(responsekey))
+				if txnErr != nil {
+					if txnErr == badger.ErrKeyNotFound {
+						sor.Err = ErrMissingResponse
+						e.sorstream <- sor
+						continue
+					} else {
+						return txnErr
+					}
+				}
+				nsrs, txnErr = response.ValueCopy(nil)
+				if txnErr != nil {
+					return txnErr
+				}
+				sor.AddResponse(nsrs)
+			}
+
+			e.sorstream <- sor
+		}
+		return nil
+	})
+
+	if err != nil {
+		log.Println("Error iterating student records:", err)
+	}
+
+}
+
+//
 // provides channel iterator for event-oriented records
+// each record contains; student, school, test, event and response
+// information
 //
 func (e *Emitter) EventBasedStream() chan *EventOrientedRecord {
 
@@ -66,6 +216,9 @@ func (e *Emitter) EventBasedStream() chan *EventOrientedRecord {
 
 }
 
+//
+// iterates the db and constructs the event-oriented records
+//
 func (e *Emitter) emitEventOrientedRecords() {
 
 	defer close(e.eorstream)
@@ -87,7 +240,7 @@ func (e *Emitter) emitEventOrientedRecords() {
 		defer it.Close()
 		prefix := []byte("NAPEventStudentLink")
 		for it.Seek(prefix); it.ValidForPrefix(prefix); it.Next() {
-			eor := &EventOrientedRecord{CalculatedFields: []byte{}}
+			eor := NewEventOrientedRecord()
 			//
 			// get the event
 			//
@@ -286,16 +439,6 @@ func (e *Emitter) emitObjectRecords() {
 		log.Println("error iterating data objects:", err)
 	}
 
-}
-
-//
-// provides channel iterator for student-oriented records
-//
-func (e *Emitter) StudentBasedStream() chan *StudentOrientedRecord {
-
-	// go do streambuilding here
-
-	return e.sorstream
 }
 
 type Option func(*Emitter) error

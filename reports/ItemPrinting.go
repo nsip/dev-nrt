@@ -12,7 +12,7 @@ type ItemPrinting struct {
 }
 
 //
-// DESCRIPTION HERE
+// Detailed scores for every item seen by every student
 //
 func ItemPrintingReport() *ItemPrinting {
 
@@ -49,7 +49,6 @@ func (r *ItemPrinting) ProcessEventRecords(in chan *records.EventOrientedRecord)
 				var row []string = make([]string, 0, len(r.config.queries))
 				for _, query := range r.config.queries {
 					result = eor.GetValueString(query)
-					// fmt.Printf("\nitem-print-lookup:\n%s\n%s\n", query, result)
 					row = append(row, result)
 				}
 				// write the row to the output file

@@ -122,6 +122,8 @@ func streamToRepo(xmlFileName string, db *repo.BadgerRepo) (repo.ObjectStats, er
 		switch r.Name {
 		case "NAPStudentResponseSet":
 			db.Store(r, repo.IdxByTypeStudentAndTest())
+		case "NAPEventStudentLink":
+			db.Store(r, repo.IdxByTypeStudentAndTest())
 		default:
 			db.Store(r, repo.IdxSifObjectByTypeAndRefId())
 		}

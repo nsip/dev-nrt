@@ -7,8 +7,10 @@ require (
 	github.com/antchfx/xpath v1.1.11 // indirect
 	github.com/clipperhouse/jargon v1.0.7
 	github.com/dgraph-io/badger/v2 v2.2007.2
+	github.com/gogo/protobuf v1.3.2
 	github.com/gosuri/uilive v0.0.4 // indirect
 	github.com/gosuri/uiprogress v0.0.1
+	github.com/iancoleman/strcase v0.1.2
 	github.com/json-iterator/go v1.1.10
 	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/nats-io/nuid v1.0.1
@@ -19,5 +21,5 @@ require (
 	github.com/tidwall/sjson v1.1.2
 	golang.org/x/sync v0.0.0-20201207232520-09787c993a3a
 	golang.org/x/sys v0.0.0-20201101102859-da207088b7d1 // indirect
-	
+
 )

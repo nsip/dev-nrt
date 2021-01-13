@@ -107,7 +107,53 @@ func StreamResults(r *repo.BadgerRepo) error {
 	})
 
 	//
+	// Student-oriented reports processor
+	// each record contains all test responses and events
+	// for a given student
+	//
+	g.Go(func() error {
+		// create a record emitter
+		em, err := records.NewEmitter(records.EmitterRepository(r))
+		if err != nil {
+			return err
+		}
+		// create the object report pipeline
+		pl := pipelines.NewStudentPipeline()
+		// create a progress bar
+		stuBar := uip.AddBar(stats["StudentPersonal"])
+		stuBar.AppendCompleted().PrependElapsed()
+		stuBar.PrependFunc(func(b *uiprogress.Bar) string {
+			return strutil.Resize(" Student-based reports:", 25)
+		})
+
+		//
+		// register an output handler for pipeline, used for progress-bar
+		// but could also be audit sink, backup of processed records etc.
+		//
+		// NOTE: must be handler here even with empty body
+		// otherwise exit channel blocks for pipeline
+		//
+		go pl.Dequeue(func(sor *records.StudentOrientedRecord) {
+			// easy win no-op, also reclaims memory
+			sor = nil
+			stuBar.Incr()
+		})
+		defer pl.Close()
+		//
+		// now iterate the object records, passing them through
+		// the processing pipeline
+		//
+		for sor := range em.StudentBasedStream() {
+			pl.Enqueue(sor)
+		}
+
+		return nil
+	})
+
+	//
 	// CodeFrame reports processor
+	// reports that use just the objects from the codeframe
+	// test, teslet, item etc.
 	//
 	g.Go(func() error {
 		// create a record emitter
@@ -163,6 +209,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 
 	//
 	// Item reports processor
+	// Special case of event-oriented record processor
 	//
 	g.Go(func() error {
 		// create a record emitter
@@ -213,6 +260,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 
 	//
 	// Event-based report processor
+	// each record is the test, school, student, event & response
 	//
 	g.Go(func() error {
 		// create a record emitter

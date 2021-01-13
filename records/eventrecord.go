@@ -7,6 +7,11 @@ import (
 	"github.com/tidwall/gjson"
 )
 
+//
+// For a given nap test event, pulls together all of the
+// relevant data artefacts for processing by the various
+// reports
+//
 type EventOrientedRecord struct {
 	NAPEventStudentLink      []byte
 	StudentPersonal          []byte
@@ -20,6 +25,13 @@ type EventOrientedRecord struct {
 	HasSchoolInfo            bool
 	HasNAPTest               bool
 	HasNAPStudentResponseSet bool
+}
+
+func NewEventOrientedRecord() *EventOrientedRecord {
+	eor := EventOrientedRecord{
+		CalculatedFields: []byte{},
+	}
+	return &eor
 }
 
 func (eor *EventOrientedRecord) StudentPersonalRefId() string {
