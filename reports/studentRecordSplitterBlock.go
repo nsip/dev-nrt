@@ -58,7 +58,7 @@ func (r *StudentRecordSplitterBlock) calculateFields(sor *records.StudentOriente
 
 	schoolid := gjson.GetBytes(sor.SchoolInfo, "SchoolInfo.ACARAId")
 	yrlvl := gjson.GetBytes(sor.StudentPersonal, "StudentPersonal.MostRecent.TestLevel.Code")
-	domain := "All"
+	domain := "AllDomains"
 
 	json := sor.CalculatedFields // keep any exisiting settings
 	json, _ = sjson.SetBytes(json, "CalculatedFields.SchoolId", schoolid.String())

@@ -21,6 +21,7 @@ const (
 	rtEvent RecordType = iota
 	rtResponse
 	rtTest
+	rtScoreSummary
 )
 
 //
@@ -151,6 +152,28 @@ func (sor *StudentOrientedRecord) AddEvent(jsonNAPEventStudentLink []byte) error
 }
 
 //
+// Returns a map of test responses for this student where
+// map key is the CamelCase name of the test doamin
+// map value is the json blob of the response
+//
+func (sor *StudentOrientedRecord) GetResponsesByDomain() map[string][]byte {
+
+	rbd := make(map[string][]byte, 0)
+
+	for _, records := range sor.naplanOutputs {
+		// get the domain from the test record
+		test := records[rtTest]
+		domain := gjson.GetBytes(test, "NAPTest.TestContent.Domain").String()
+		// camel-case the daomin name for use in json 'Grammar and Punctuation' -> 'GrannarAndPunctuation'
+		ccdomain := strcase.ToCamel(domain)
+		// create the domain/response pair
+		rbd[ccdomain] = records[rtResponse]
+	}
+
+	return rbd
+}
+
+//
 // Adds a NAPStudentResponseSet to the record
 //
 func (sor *StudentOrientedRecord) AddResponse(jsonNAPStudentResponseSet []byte) error {
@@ -181,8 +204,49 @@ func (sor *StudentOrientedRecord) AddTest(jsonNAPTest []byte) error {
 	if _, ok := sor.naplanOutputs[testRefId]; !ok { // watch out for empty members
 		sor.naplanOutputs[testRefId] = make(map[RecordType][]byte, 0)
 	}
-	// store the response
+	// store the test
 	sor.naplanOutputs[testRefId][rtTest] = jsonNAPTest
+
+	return nil
+
+}
+
+//
+// Returns a map of test responses for this student where
+// map key is the CamelCase name of the test doamin
+// map value is the json blob of the response
+//
+func (sor *StudentOrientedRecord) GetScoreSummariesByDomain() map[string][]byte {
+
+	ssbd := make(map[string][]byte, 0)
+
+	for _, records := range sor.naplanOutputs {
+		// get the domain from the test record
+		test := records[rtTest]
+		domain := gjson.GetBytes(test, "NAPTest.TestContent.Domain").String()
+		// camel-case the daomin name for use in json 'Grammar and Punctuation' -> 'GrannarAndPunctuation'
+		ccdomain := strcase.ToCamel(domain)
+		// create the domain/response pair
+		ssbd[ccdomain] = records[rtScoreSummary]
+	}
+
+	return ssbd
+}
+
+//
+// Adds a ScoreSummary to the record
+//
+func (sor *StudentOrientedRecord) AddScoreSummary(jsonNAPTestScoreSummary []byte) error {
+
+	testRefId := gjson.GetBytes(jsonNAPTestScoreSummary, "NAPTestScoreSummary.NAPTestRefId").String()
+	if testRefId == "" {
+		return errors.New("no test refid found in score summary")
+	}
+	if _, ok := sor.naplanOutputs[testRefId]; !ok { // watch out for empty members
+		sor.naplanOutputs[testRefId] = make(map[RecordType][]byte, 0)
+	}
+	// store the summary
+	sor.naplanOutputs[testRefId][rtScoreSummary] = jsonNAPTestScoreSummary
 
 	return nil
 

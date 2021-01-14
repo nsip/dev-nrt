@@ -16,7 +16,8 @@ var (
 	ErrMissingTest     = errors.New("No test found for event")
 	ErrMissingResponse = errors.New("No student response found for event")
 	// student errors
-	ErrMissingEvent = errors.New("No events found for student")
+	ErrMissingEvent   = errors.New("No events found for student")
+	ErrMissingSummary = errors.New("No test summary found for student")
 )
 
 //
@@ -77,10 +78,10 @@ func (e *Emitter) emitStudentOrientedRecords() {
 
 	defer close(e.sorstream)
 
-	var event, student, school, test, response *badger.Item
-	var nesl, sp, si, nt, nsrs []byte
+	var event, student, school, test, response, summary *badger.Item
+	var nesl, sp, si, nt, nsrs, ntss []byte
 	var txnErr error
-	var schoolkey, testkey, responsekey string
+	var schoolkey, testkey, responsekey, summarykey string
 
 	//
 	// logically need to go, student, events, school, responses, tests
@@ -187,6 +188,26 @@ func (e *Emitter) emitStudentOrientedRecords() {
 					return txnErr
 				}
 				sor.AddResponse(nsrs)
+			}
+			//
+			// get the score summaries
+			//
+			for _, testid := range sor.GetNAPTestRefIds() {
+				summarykey = fmt.Sprintf("NAPTestScoreSummary:%s:%s", sor.SchoolInfoRefId(), testid)
+				summary, txnErr = txn.Get([]byte(summarykey))
+				if txnErr != nil {
+					if txnErr == badger.ErrKeyNotFound {
+						sor.Err = ErrMissingSummary
+						continue
+					} else {
+						return txnErr
+					}
+				}
+				ntss, txnErr = summary.ValueCopy(nil)
+				if txnErr != nil {
+					return txnErr
+				}
+				sor.AddScoreSummary(ntss)
 			}
 
 			e.sorstream <- sor

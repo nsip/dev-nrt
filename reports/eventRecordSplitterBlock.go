@@ -1,6 +1,7 @@
 package reports
 
 import (
+	"github.com/iancoleman/strcase"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
@@ -59,11 +60,12 @@ func (r *EventRecordSplitterBlock) calculateFields(eor *records.EventOrientedRec
 	schoolid := gjson.GetBytes(eor.SchoolInfo, "SchoolInfo.ACARAId")
 	yrlvl := gjson.GetBytes(eor.NAPTest, "NAPTest.TestContent.TestLevel.Code")
 	domain := gjson.GetBytes(eor.NAPTest, "NAPTest.TestContent.Domain")
+	ccdomain := strcase.ToCamel(domain.String()) // as may be used for directory, convert to camelcase
 
 	json := eor.CalculatedFields // keep any exisiting settings
 	json, _ = sjson.SetBytes(json, "CalculatedFields.SchoolId", schoolid.String())
 	json, _ = sjson.SetBytes(json, "CalculatedFields.YrLevel", yrlvl.String())
-	json, _ = sjson.SetBytes(json, "CalculatedFields.Domain", domain.String())
+	json, _ = sjson.SetBytes(json, "CalculatedFields.Domain", ccdomain)
 
 	return json
 }

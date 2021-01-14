@@ -115,6 +115,7 @@ func streamToRepo(xmlFileName string, db *repo.BadgerRepo) (repo.ObjectStats, er
 		return nil, err
 	}
 	// iterate the xml stream and save each object to db
+	// using specialised indexes where necessary
 	count := 0
 	totals := repo.ObjectStats{}
 	for result := range sec.Stream() {
@@ -124,6 +125,8 @@ func streamToRepo(xmlFileName string, db *repo.BadgerRepo) (repo.ObjectStats, er
 			db.Store(r, repo.IdxByTypeStudentAndTest())
 		case "NAPEventStudentLink":
 			db.Store(r, repo.IdxByTypeStudentAndTest())
+		case "NAPTestScoreSummary":
+			db.Store(r, repo.IdxByTypeSchoolAndTest())
 		default:
 			db.Store(r, repo.IdxSifObjectByTypeAndRefId())
 		}

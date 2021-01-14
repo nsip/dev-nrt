@@ -58,5 +58,27 @@ func IdxByTypeStudentAndTest() IndexFunc {
 }
 
 //
+// index object (e.g. score-summary) by student and test
+// Creates an index key in the form ObjectName:SchoolInfoRefId:NAPTestRefId
+//
+func IdxByTypeSchoolAndTest() IndexFunc {
+
+	return func(r sec.Result) ([]byte, error) {
+		sirefid := gjson.GetBytes(r.Json, "*.SchoolInfoRefId")
+		if !sirefid.Exists() {
+			return nil, errors.New("could not find SchoolInfo RefId")
+		}
+		testrefid := gjson.GetBytes(r.Json, "*.NAPTestRefId")
+		if !testrefid.Exists() {
+			return nil, errors.New("could not find NAPTestRefId")
+		}
+		idxKey := fmt.Sprintf("%s:%s:%s", r.Name, sirefid.String(), testrefid.String())
+
+		return []byte(idxKey), nil
+	}
+
+}
+
+//
 //
 //
