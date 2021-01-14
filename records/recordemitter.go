@@ -124,7 +124,6 @@ func (e *Emitter) emitStudentOrientedRecords() {
 				nesl, txnErr = event.ValueCopy(nil)
 				if txnErr != nil {
 					sor.Err = ErrMissingEvent
-					e.sorstream <- sor
 					continue
 				}
 				sor.AddEvent(nesl)
@@ -152,13 +151,12 @@ func (e *Emitter) emitStudentOrientedRecords() {
 			//
 			// get the tests
 			//
-			for testid := range sor.GetNAPTestRefIds() {
+			for _, testid := range sor.GetNAPTestRefIds() {
 				testkey = fmt.Sprintf("NAPTest:%s", testid)
 				test, txnErr = txn.Get([]byte(testkey))
 				if txnErr != nil {
 					if txnErr == badger.ErrKeyNotFound {
 						sor.Err = ErrMissingTest
-						e.sorstream <- sor
 						continue
 					} else {
 						return txnErr
@@ -173,13 +171,12 @@ func (e *Emitter) emitStudentOrientedRecords() {
 			//
 			// get the responses
 			//
-			for testid := range sor.GetNAPTestRefIds() {
+			for _, testid := range sor.GetNAPTestRefIds() {
 				responsekey = fmt.Sprintf("NAPStudentResponseSet:%s:%s", sor.StudentPersonalRefId(), testid)
 				response, txnErr = txn.Get([]byte(responsekey))
 				if txnErr != nil {
 					if txnErr == badger.ErrKeyNotFound {
 						sor.Err = ErrMissingResponse
-						e.sorstream <- sor
 						continue
 					} else {
 						return txnErr

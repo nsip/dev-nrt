@@ -15,3 +15,5 @@
 # vendor/
 
 cmd/nrt/nrt
+
+testdata/

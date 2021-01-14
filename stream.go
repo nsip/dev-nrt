@@ -118,7 +118,10 @@ func StreamResults(r *repo.BadgerRepo) error {
 			return err
 		}
 		// create the object report pipeline
-		pl := pipelines.NewStudentPipeline()
+		pl := pipelines.NewStudentPipeline(
+			reports.StudentRecordSplitterBlockReport(),
+			reports.SystemParticipationReport(),
+		)
 		// create a progress bar
 		stuBar := uip.AddBar(stats["StudentPersonal"])
 		stuBar.AppendCompleted().PrependElapsed()

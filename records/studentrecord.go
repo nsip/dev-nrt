@@ -2,6 +2,7 @@ package records
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/iancoleman/strcase"
 	"github.com/tidwall/gjson"
@@ -75,6 +76,36 @@ func (sor *StudentOrientedRecord) SchoolInfoRefId() string {
 
 	// if no events found, return empty string as we have no way
 	// of knowing which school the student was tested at
+	return ""
+}
+
+//
+// pass a json path to retrieve the value at that location as a
+// string
+//
+func (sor *StudentOrientedRecord) GetValueString(queryPath string) string {
+
+	//
+	// get the root query object
+	//
+	objName := strings.Split(queryPath, ".")[0]
+	var data []byte
+	switch objName {
+	case "StudentPersonal":
+		data = sor.StudentPersonal
+	case "SchoolInfo":
+		data = sor.SchoolInfo
+	case "CalculatedFields":
+		data = sor.CalculatedFields
+	default:
+		// if not an object, then assume extended codeframe refrence
+		return sor.codeframeValueString(queryPath)
+	}
+
+	return gjson.GetBytes(data, queryPath).String()
+}
+
+func (sor *StudentOrientedRecord) codeframeValueString(queryPath string) string {
 	return ""
 }
 

@@ -1,0 +1,40 @@
+
+[usage]
+reportName = "Student participation codes for all test domains"
+activated = true
+outputFileName = "./out/system_reports/systemParticipation.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"School" = "CalculatedFields.SchoolId"
+[[fields]]
+"YrLevel" = "CalculatedFields.YrLevel"
+[[fields]]
+"Domain" = "CalculatedFields.Domain"
+#
+# fields above are for report splitting 
+#
+
+[[fields]]
+"Student Yr Level" = "CalculatedFields.YrLevel"
+[[fields]]
+"Student PSI" = "StudentPersonal.OtherIdList.OtherId.#[Type==NAPPlatformStudentId].value"
+[[fields]]
+"Student TAA ID" = "StudentPersonal.OtherIdList.OtherId.#[Type==TAAStudentId].value"
+[[fields]]
+"School Name" = "SchoolInfo.SchoolName"
+[[fields]]
+"Writing" = "CalculatedFields.Writing.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"Spelling" = "CalculatedFields.Spelling.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"Numeracy" = "CalculatedFields.Numeracy.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"Reading" = "CalculatedFields.Reading.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"Grammar & Punctuation" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.ParticipationCode"

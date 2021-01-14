@@ -7,7 +7,7 @@ import "github.com/nsip/dev-nrt/records"
 // working with stream of Object records
 //
 type StudentPipe interface {
-	ProcessStudentOrientedRecords(in chan *records.StudentOrientedRecord) chan *records.StudentOrientedRecord
+	ProcessStudentRecords(in chan *records.StudentOrientedRecord) chan *records.StudentOrientedRecord
 }
 
 //
@@ -28,9 +28,9 @@ func NewStudentPipeline(pipes ...StudentPipe) StudentPipeline {
 	var next_chan chan *records.StudentOrientedRecord
 	for _, pipe := range pipes {
 		if next_chan == nil {
-			next_chan = pipe.ProcessStudentOrientedRecords(head)
+			next_chan = pipe.ProcessStudentRecords(head)
 		} else {
-			next_chan = pipe.ProcessStudentOrientedRecords(next_chan)
+			next_chan = pipe.ProcessStudentRecords(next_chan)
 		}
 	}
 	return StudentPipeline{head: head, tail: next_chan}
