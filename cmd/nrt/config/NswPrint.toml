@@ -2,7 +2,7 @@
 [usage]
 reportName = "Detailed breakdown of studnt scores for all domains"
 activated = true
-outputFileName = "./out/TODO/nswPrint.csv"
+outputFileName = "./out/system_reports/nswPrint.csv"
 
 # Order of fields below is left to right order
 # columns will appear in final output, can be changed as needed.
@@ -79,240 +79,330 @@ outputFileName = "./out/TODO/nswPrint.csv"
 [[fields]]
 "Reading Participation Code" = "CalculatedFields.Reading.NAPEventStudentLink.ParticipationCode"
 [[fields]]
-# "Reading ResponseID" = "EventResponseSummaryPerDomain.#[Domain==Reading].Response.ResponseID"
-# [[fields]]
-# "Reading PNP:AAM" = "EventResponseSummaryPerDomain.#[Domain==Reading].PNPCodeListMap.AAM"
-# [[fields]]
-# "Reading PNP:AIA" = "EventResponseSummaryPerDomain.#[Domain==Reading].PNPCodeListMap.AIA"
-# [[fields]]
-# "Reading PNPAIM" = "EventResponseSummaryPerDomain.#[Domain==Reading].PNPCodeListMap.AIM"
-# [[fields]]
-# "Reading PNP:AIV" = "EventResponseSummaryPerDomain.#[Domain==Reading].PNPCodeListMap.AIV"
-# [[fields]]
-# "Reading PNP:ALL" = "EventResponseSummaryPerDomain.#[Domain==Reading].PNPCodeListMap.ALL"
-# [[fields]]
-# "Reading PNP:AST" = "EventResponseSummaryPerDomain.#[Domain==Reading].PNPCodeListMap.AST"
-# [[fields]]
-# "Reading PNP:AVM" = "EventResponseSummaryPerDomain.#[Domain==Reading].PNPCodeListMap.AVM"
-# [[fields]]
-# "Reading PNP:BRA" = "EventResponseSummaryPerDomain.#[Domain==Reading].PNPCodeListMap.BRA"
-# [[fields]]
-# "Reading PNP:COL" = "EventResponseSummaryPerDomain.#[Domain==Reading].PNPCodeListMap.COL"
-# [[fields]]
-# "Reading PNP:ETA" = "EventResponseSummaryPerDomain.#[Domain==Reading].PNPCodeListMap.ETA"
-# [[fields]]
-# "Reading PNP:ETB" = "EventResponseSummaryPerDomain.#[Domain==Reading].PNPCodeListMap.ETB"
-# [[fields]]
-# "Reading PNP:ETC" = "EventResponseSummaryPerDomain.#[Domain==Reading].PNPCodeListMap.ETC"
-# [[fields]]
-# "Reading PNP:OSS" = "EventResponseSummaryPerDomain.#[Domain==Reading].PNPCodeListMap.OSS"
-# [[fields]]
-# "Reading PNP:RBK" = "EventResponseSummaryPerDomain.#[Domain==Reading].PNPCodeListMap.RBK"
-# [[fields]]
-# "Reading PNP:SCR" = "EventResponseSummaryPerDomain.#[Domain==Reading].PNPCodeListMap.SCR"
-# [[fields]]
-# "Reading PNP:SUP" = "EventResponseSummaryPerDomain.#[Domain==Reading].PNPCodeListMap.SUP"
+"Reading ResponseID" = "CalculatedFields.Reading.NAPStudentResponseSet.RefId"
+[[fields]]
+"Reading PNP:AIA" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.AIA"
+[[fields]]
+"Reading PNP:AIV" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.AIV"
+[[fields]]
+"Reading PNP:AST" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.AST"
+[[fields]]
+"Reading PNP:BNB" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.BNB"
+[[fields]]
+"Reading PNP:BNG" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.BNG"
+[[fields]]
+"Reading PNP:BNL" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.BNL"
+[[fields]]
+"Reading PNP:BNW" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.BNW"
+[[fields]]
+"Reading PNP:BNY" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.BNY"
+[[fields]]
+"Reading PNP:COL" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.COL"
+[[fields]]
+"Reading PNP:ETA" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.ETA"
+[[fields]]
+"Reading PNP:ETB" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.ETB"
+[[fields]]
+"Reading PNP:ETC" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.ETC"
+[[fields]]
+"Reading PNP:ETD" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.ETD"
+[[fields]]
+"Reading PNP:OFF" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.OFF"
+[[fields]]
+"Reading PNP:OSS" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.OSS"
+[[fields]]
+"Reading PNP:RBK" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.RBK"
+[[fields]]
+"Reading PNP:SCR" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.SCR"
+[[fields]]
+"Reading PNP:SUP" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.SUP"
+[[fields]]
+"Reading PNP:CAL" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.CAL"
+[[fields]]
+"Reading PNP:ENZ" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.ENZ"
+[[fields]]
+"Reading PNP:EST" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.EST"
+[[fields]]
+"Reading PNP:LFS" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.LFS"
+[[fields]]
+"Reading PNP:RZL" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.RZL"
+[[fields]]
+"Reading PNP:ZOF" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.ZOF"
+[[fields]]
+"Reading PNP:ZTFAO" = "CalculatedFields.Reading.NAPEventStudentLink.Adjustment.PNPCode.ZTFAO"
 [[fields]]
 "Reading Domain Band" = "CalculatedFields.Reading.NAPStudentResponseSet.DomainScore.StudentDomainBand"
-# [[fields]]
-# "Reading Raw Score" = "EventResponseSummaryPerDomain.#[Domain==Reading].Response.DomainScore.RawScore"
+[[fields]]
+"Reading Raw Score" = "CalculatedFields.Reading.NAPStudentResponseSet.DomainScore.RawScore"
 [[fields]]
 "Reading Scaled Score Value" = "CalculatedFields.Reading.NAPStudentResponseSet.DomainScore.ScaledScoreValue"
-# [[fields]]
-# "Reading School Average" = "EventResponseSummaryPerDomain.#[Domain==Reading].Summary.DomainSchoolAverage"
+[[fields]]
+"Reading National Average" = "CalculatedFields.Reading.NAPTestScoreSummary.DomainNationalAverage"
 [[fields]]
 "Reading Path Taken For Domain" = "CalculatedFields.Reading.NAPStudentResponseSet.PathTakenForDomain"
-# [[fields]]
-# "Reading Parallel Test" = "EventResponseSummaryPerDomain.#[Domain==Reading].Response.ParallelTest"
+[[fields]]
+"Reading Parallel Test" = "CalculatedFields.Reading.NAPStudentResponseSet.ParallelTest"
 [[fields]]
 "Numeracy Participation Code" = "CalculatedFields.Numeracy.NAPEventStudentLink.ParticipationCode"
-# [[fields]]
-# "Numeracy ResponseID" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].Response.ResponseID"
-# [[fields]]
-# "Numeracy PNP:AAM" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].PNPCodeListMap.AAM"
-# [[fields]]
-# "Numeracy PNP:AIA" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].PNPCodeListMap.AIA"
-# [[fields]]
-# "Numeracy PNPAIM" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].PNPCodeListMap.AIM"
-# [[fields]]
-# "Numeracy PNP:AIV" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].PNPCodeListMap.AIV"
-# [[fields]]
-# "Numeracy PNP:ALL" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].PNPCodeListMap.ALL"
-# [[fields]]
-# "Numeracy PNP:AST" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].PNPCodeListMap.AST"
-# [[fields]]
-# "Numeracy PNP:AVM" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].PNPCodeListMap.AVM"
-# [[fields]]
-# "Numeracy PNP:BRA" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].PNPCodeListMap.BRA"
-# [[fields]]
-# "Numeracy PNP:COL" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].PNPCodeListMap.COL"
-# [[fields]]
-# "Numeracy PNP:ETA" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].PNPCodeListMap.ETA"
-# [[fields]]
-# "Numeracy PNP:ETB" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].PNPCodeListMap.ETB"
-# [[fields]]
-# "Numeracy PNP:ETC" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].PNPCodeListMap.ETC"
-# [[fields]]
-# "Numeracy PNP:OSS" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].PNPCodeListMap.OSS"
-# [[fields]]
-# "Numeracy PNP:RBK" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].PNPCodeListMap.RBK"
-# [[fields]]
-# "Numeracy PNP:SCR" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].PNPCodeListMap.SCR"
-# [[fields]]
-# "Numeracy PNP:SUP" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].PNPCodeListMap.SUP"
+[[fields]]
+"Numeracy ResponseID" = "CalculatedFields.Numeracy.NAPStudentResponseSet.RefId"
+[[fields]]
+"Numeracy PNP:AIA" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.AIA"
+[[fields]]
+"Numeracy PNP:AIV" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.AIV"
+[[fields]]
+"Numeracy PNP:AST" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.AST"
+[[fields]]
+"Numeracy PNP:BNB" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.BNB"
+[[fields]]
+"Numeracy PNP:BNG" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.BNG"
+[[fields]]
+"Numeracy PNP:BNL" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.BNL"
+[[fields]]
+"Numeracy PNP:BNW" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.BNW"
+[[fields]]
+"Numeracy PNP:BNY" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.BNY"
+[[fields]]
+"Numeracy PNP:COL" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.COL"
+[[fields]]
+"Numeracy PNP:ETA" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.ETA"
+[[fields]]
+"Numeracy PNP:ETB" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.ETB"
+[[fields]]
+"Numeracy PNP:ETC" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.ETC"
+[[fields]]
+"Numeracy PNP:ETD" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.ETD"
+[[fields]]
+"Numeracy PNP:OFF" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.OFF"
+[[fields]]
+"Numeracy PNP:OSS" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.OSS"
+[[fields]]
+"Numeracy PNP:RBK" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.RBK"
+[[fields]]
+"Numeracy PNP:SCR" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.SCR"
+[[fields]]
+"Numeracy PNP:SUP" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.SUP"
+[[fields]]
+"Numeracy PNP:CAL" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.CAL"
+[[fields]]
+"Numeracy PNP:ENZ" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.ENZ"
+[[fields]]
+"Numeracy PNP:EST" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.EST"
+[[fields]]
+"Numeracy PNP:LFS" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.LFS"
+[[fields]]
+"Numeracy PNP:RZL" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.RZL"
+[[fields]]
+"Numeracy PNP:ZOF" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.ZOF"
+[[fields]]
+"Numeracy PNP:ZTFAO" = "CalculatedFields.Numeracy.NAPEventStudentLink.Adjustment.PNPCode.ZTFAO"
 [[fields]]
 "Numeracy Domain Band" = "CalculatedFields.Numeracy.NAPStudentResponseSet.DomainScore.StudentDomainBand"
-# [[fields]]
-# "Numeracy Raw Score" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].Response.DomainScore.RawScore"
+[[fields]]
+"Numeracy Raw Score" = "CalculatedFields.Numeracy.NAPStudentResponseSet.DomainScore.RawScore"
 [[fields]]
 "Numeracy Scaled Score Value" = "CalculatedFields.Numeracy.NAPStudentResponseSet.DomainScore.ScaledScoreValue"
-# [[fields]]
-# "Numeracy School Average" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].Summary.DomainSchoolAverage"
+[[fields]]
+"Numeracy National Average" = "CalculatedFields.Numeracy.NAPTestScoreSummary.DomainNationalAverage"
 [[fields]]
 "Numeracy Path Taken For Domain" = "CalculatedFields.Numeracy.NAPStudentResponseSet.PathTakenForDomain"
-# [[fields]]
-# "Numeracy Parallel Test" = "EventResponseSummaryPerDomain.#[Domain==Numeracy].Response.ParallelTest"
+[[fields]]
+"Numeracy Parallel Test" = "CalculatedFields.Numeracy.NAPStudentResponseSet.ParallelTest"
 [[fields]]
 "Writing Participation Code" = "CalculatedFields.Writing.NAPEventStudentLink.ParticipationCode"
-# [[fields]]
-# "Writing ResponseID" = "EventResponseSummaryPerDomain.#[Domain==Writing].Response.ResponseID"
-# [[fields]]
-# "Writing PNP:AAM" = "EventResponseSummaryPerDomain.#[Domain==Writing].PNPCodeListMap.AAM"
-# [[fields]]
-# "Writing PNP:AIA" = "EventResponseSummaryPerDomain.#[Domain==Writing].PNPCodeListMap.AIA"
-# [[fields]]
-# "Writing PNPAIM" = "EventResponseSummaryPerDomain.#[Domain==Writing].PNPCodeListMap.AIM"
-# [[fields]]
-# "Writing PNP:AIV" = "EventResponseSummaryPerDomain.#[Domain==Writing].PNPCodeListMap.AIV"
-# [[fields]]
-# "Writing PNP:ALL" = "EventResponseSummaryPerDomain.#[Domain==Writing].PNPCodeListMap.ALL"
-# [[fields]]
-# "Writing PNP:AST" = "EventResponseSummaryPerDomain.#[Domain==Writing].PNPCodeListMap.AST"
-# [[fields]]
-# "Writing PNP:AVM" = "EventResponseSummaryPerDomain.#[Domain==Writing].PNPCodeListMap.AVM"
-# [[fields]]
-# "Writing PNP:BRA" = "EventResponseSummaryPerDomain.#[Domain==Writing].PNPCodeListMap.BRA"
-# [[fields]]
-# "Writing PNP:COL" = "EventResponseSummaryPerDomain.#[Domain==Writing].PNPCodeListMap.COL"
-# [[fields]]
-# "Writing PNP:ETA" = "EventResponseSummaryPerDomain.#[Domain==Writing].PNPCodeListMap.ETA"
-# [[fields]]
-# "Writing PNP:ETB" = "EventResponseSummaryPerDomain.#[Domain==Writing].PNPCodeListMap.ETB"
-# [[fields]]
-# "Writing PNP:ETC" = "EventResponseSummaryPerDomain.#[Domain==Writing].PNPCodeListMap.ETC"
-# [[fields]]
-# "Writing PNP:OSS" = "EventResponseSummaryPerDomain.#[Domain==Writing].PNPCodeListMap.OSS"
-# [[fields]]
-# "Writing PNP:RBK" = "EventResponseSummaryPerDomain.#[Domain==Writing].PNPCodeListMap.RBK"
-# [[fields]]
-# "Writing PNP:SCR" = "EventResponseSummaryPerDomain.#[Domain==Writing].PNPCodeListMap.SCR"
-# [[fields]]
-# "Writing PNP:SUP" = "EventResponseSummaryPerDomain.#[Domain==Writing].PNPCodeListMap.SUP"
+[[fields]]
+"Writing ResponseID" = "CalculatedFields.Writing.NAPStudentResponseSet.RefId"
+[[fields]]
+"Writing PNP:AIA" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.AIA"
+[[fields]]
+"Writing PNP:AIV" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.AIV"
+[[fields]]
+"Writing PNP:AST" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.AST"
+[[fields]]
+"Writing PNP:BNB" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.BNB"
+[[fields]]
+"Writing PNP:BNG" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.BNG"
+[[fields]]
+"Writing PNP:BNL" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.BNL"
+[[fields]]
+"Writing PNP:BNW" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.BNW"
+[[fields]]
+"Writing PNP:BNY" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.BNY"
+[[fields]]
+"Writing PNP:COL" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.COL"
+[[fields]]
+"Writing PNP:ETA" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.ETA"
+[[fields]]
+"Writing PNP:ETB" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.ETB"
+[[fields]]
+"Writing PNP:ETC" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.ETC"
+[[fields]]
+"Writing PNP:ETD" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.ETD"
+[[fields]]
+"Writing PNP:OFF" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.OFF"
+[[fields]]
+"Writing PNP:OSS" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.OSS"
+[[fields]]
+"Writing PNP:RBK" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.RBK"
+[[fields]]
+"Writing PNP:SCR" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.SCR"
+[[fields]]
+"Writing PNP:SUP" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.SUP"
+[[fields]]
+"Writing PNP:CAL" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.CAL"
+[[fields]]
+"Writing PNP:ENZ" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.ENZ"
+[[fields]]
+"Writing PNP:EST" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.EST"
+[[fields]]
+"Writing PNP:LFS" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.LFS"
+[[fields]]
+"Writing PNP:RZL" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.RZL"
+[[fields]]
+"Writing PNP:ZOF" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.ZOF"
+[[fields]]
+"Writing PNP:ZTFAO" = "CalculatedFields.Writing.NAPEventStudentLink.Adjustment.PNPCode.ZTFAO"
 [[fields]]
 "Writing Domain Band" = "CalculatedFields.Writing.NAPStudentResponseSet.DomainScore.StudentDomainBand"
-# [[fields]]
-# "Writing Raw Score" = "EventResponseSummaryPerDomain.#[Domain==Writing].Response.DomainScore.RawScore"
+[[fields]]
+"Writing Raw Score" = "CalculatedFields.Writing.NAPStudentResponseSet.DomainScore.RawScore"
 [[fields]]
 "Writing Scaled Score Value" = "CalculatedFields.Writing.NAPStudentResponseSet.DomainScore.ScaledScoreValue"
-# [[fields]]
-# "Writing School Average" = "EventResponseSummaryPerDomain.#[Domain==Writing].Summary.DomainSchoolAverage"
+[[fields]]
+"Writing National Average" = "CalculatedFields.Writing.NAPTestScoreSummary.DomainNationalAverage"
 [[fields]]
 "Writing Path Taken For Domain" = "CalculatedFields.Writing.NAPStudentResponseSet.PathTakenForDomain"
-# [[fields]]
-# "Writing Parallel Test" = "EventResponseSummaryPerDomain.#[Domain==Writing].Response.ParallelTest"
+[[fields]]
+"Writing Parallel Test" = "CalculatedFields.Writing.NAPStudentResponseSet.ParallelTest"
 [[fields]]
 "Grammar and Punctuation Participation Code" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.ParticipationCode"
-# [[fields]]
-# "Grammar and Punctuation ResponseID" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].Response.ResponseID"
-# [[fields]]
-# "Grammar and Punctuation PNP:AAM" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].PNPCodeListMap.AAM"
-# [[fields]]
-# "Grammar and Punctuation PNP:AIA" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].PNPCodeListMap.AIA"
-# [[fields]]
-# "Grammar and Punctuation PNPAIM" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].PNPCodeListMap.AIM"
-# [[fields]]
-# "Grammar and Punctuation PNP:AIV" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].PNPCodeListMap.AIV"
-# [[fields]]
-# "Grammar and Punctuation PNP:ALL" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].PNPCodeListMap.ALL"
-# [[fields]]
-# "Grammar and Punctuation PNP:AST" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].PNPCodeListMap.AST"
-# [[fields]]
-# "Grammar and Punctuation PNP:AVM" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].PNPCodeListMap.AVM"
-# [[fields]]
-# "Grammar and Punctuation PNP:BRA" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].PNPCodeListMap.BRA"
-# [[fields]]
-# "Grammar and Punctuation PNP:COL" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].PNPCodeListMap.COL"
-# [[fields]]
-# "Grammar and Punctuation PNP:ETA" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].PNPCodeListMap.ETA"
-# [[fields]]
-# "Grammar and Punctuation PNP:ETB" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].PNPCodeListMap.ETB"
-# [[fields]]
-# "Grammar and Punctuation PNP:ETC" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].PNPCodeListMap.ETC"
-# [[fields]]
-# "Grammar and Punctuation PNP:OSS" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].PNPCodeListMap.OSS"
-# [[fields]]
-# "Grammar and Punctuation PNP:RBK" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].PNPCodeListMap.RBK"
-# [[fields]]
-# "Grammar and Punctuation PNP:SCR" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].PNPCodeListMap.SCR"
-# [[fields]]
-# "Grammar and Punctuation PNP:SUP" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].PNPCodeListMap.SUP"
+[[fields]]
+"Grammar and Punctuation ResponseID" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.RefId"
+[[fields]]
+"GrammarAndPunctuation PNP:AIA" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.AIA"
+[[fields]]
+"GrammarAndPunctuation PNP:AIV" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.AIV"
+[[fields]]
+"GrammarAndPunctuation PNP:AST" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.AST"
+[[fields]]
+"GrammarAndPunctuation PNP:BNB" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.BNB"
+[[fields]]
+"GrammarAndPunctuation PNP:BNG" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.BNG"
+[[fields]]
+"GrammarAndPunctuation PNP:BNL" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.BNL"
+[[fields]]
+"GrammarAndPunctuation PNP:BNW" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.BNW"
+[[fields]]
+"GrammarAndPunctuation PNP:BNY" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.BNY"
+[[fields]]
+"GrammarAndPunctuation PNP:COL" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.COL"
+[[fields]]
+"GrammarAndPunctuation PNP:ETA" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.ETA"
+[[fields]]
+"GrammarAndPunctuation PNP:ETB" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.ETB"
+[[fields]]
+"GrammarAndPunctuation PNP:ETC" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.ETC"
+[[fields]]
+"GrammarAndPunctuation PNP:ETD" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.ETD"
+[[fields]]
+"GrammarAndPunctuation PNP:OFF" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.OFF"
+[[fields]]
+"GrammarAndPunctuation PNP:OSS" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.OSS"
+[[fields]]
+"GrammarAndPunctuation PNP:RBK" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.RBK"
+[[fields]]
+"GrammarAndPunctuation PNP:SCR" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.SCR"
+[[fields]]
+"GrammarAndPunctuation PNP:SUP" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.SUP"
+[[fields]]
+"GrammarAndPunctuation PNP:CAL" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.CAL"
+[[fields]]
+"GrammarAndPunctuation PNP:ENZ" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.ENZ"
+[[fields]]
+"GrammarAndPunctuation PNP:EST" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.EST"
+[[fields]]
+"GrammarAndPunctuation PNP:LFS" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.LFS"
+[[fields]]
+"GrammarAndPunctuation PNP:RZL" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.RZL"
+[[fields]]
+"GrammarAndPunctuation PNP:ZOF" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.ZOF"
+[[fields]]
+"GrammarAndPunctuation PNP:ZTFAO" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.Adjustment.PNPCode.ZTFAO"
 [[fields]]
 "Grammar and Punctuation Domain Band" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.DomainScore.StudentDomainBand"
-# [[fields]]
-# "Grammar and Punctuation Raw Score" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].Response.DomainScore.RawScore"
+[[fields]]
+"Grammar and Punctuation Raw Score" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.DomainScore.RawScore"
 [[fields]]
 "Grammar and Punctuation Scaled Score Value" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.DomainScore.ScaledScoreValue"
-# [[fields]]
-# "Grammar and Punctuation School Average" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].Summary.DomainSchoolAverage"
+[[fields]]
+"Grammar and Punctuation National Average" = "CalculatedFields.GrammarAndPunctuation.NAPTestScoreSummary.DomainNationalAverage"
 [[fields]]
 "Grammar and Punctuation Path Taken For Domain" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.PathTakenForDomain"
-# [[fields]]
-# "Grammar and Punctuation Parallel Test" = "EventResponseSummaryPerDomain.#[Domain==Grammar and Punctuation].Response.ParallelTest"
+[[fields]]
+"Grammar and Punctuation Parallel Test" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.ParallelTest"
 [[fields]]
 "Spelling Participation Code" = "CalculatedFields.Spelling.NAPEventStudentLink.ParticipationCode"
-# [[fields]]
-# "Spelling ResponseID" = "EventResponseSummaryPerDomain.#[Domain==Spelling].Response.ResponseID"
-# [[fields]]
-# "Spelling PNP:AAM" = "EventResponseSummaryPerDomain.#[Domain==Spelling].PNPCodeListMap.AAM"
-# [[fields]]
-# "Spelling PNP:AIA" = "EventResponseSummaryPerDomain.#[Domain==Spelling].PNPCodeListMap.AIA"
-# [[fields]]
-# "Spelling PNPAIM" = "EventResponseSummaryPerDomain.#[Domain==Spelling].PNPCodeListMap.AIM"
-# [[fields]]
-# "Spelling PNP:AIV" = "EventResponseSummaryPerDomain.#[Domain==Spelling].PNPCodeListMap.AIV"
-# [[fields]]
-# "Spelling PNP:ALL" = "EventResponseSummaryPerDomain.#[Domain==Spelling].PNPCodeListMap.ALL"
-# [[fields]]
-# "Spelling PNP:AST" = "EventResponseSummaryPerDomain.#[Domain==Spelling].PNPCodeListMap.AST"
-# [[fields]]
-# "Spelling PNP:AVM" = "EventResponseSummaryPerDomain.#[Domain==Spelling].PNPCodeListMap.AVM"
-# [[fields]]
-# "Spelling PNP:BRA" = "EventResponseSummaryPerDomain.#[Domain==Spelling].PNPCodeListMap.BRA"
-# [[fields]]
-# "Spelling PNP:COL" = "EventResponseSummaryPerDomain.#[Domain==Spelling].PNPCodeListMap.COL"
-# [[fields]]
-# "Spelling PNP:ETA" = "EventResponseSummaryPerDomain.#[Domain==Spelling].PNPCodeListMap.ETA"
-# [[fields]]
-# "Spelling PNP:ETB" = "EventResponseSummaryPerDomain.#[Domain==Spelling].PNPCodeListMap.ETB"
-# [[fields]]
-# "Spelling PNP:ETC" = "EventResponseSummaryPerDomain.#[Domain==Spelling].PNPCodeListMap.ETC"
-# [[fields]]
-# "Spelling PNP:OSS" = "EventResponseSummaryPerDomain.#[Domain==Spelling].PNPCodeListMap.OSS"
-# [[fields]]
-# "Spelling PNP:RBK" = "EventResponseSummaryPerDomain.#[Domain==Spelling].PNPCodeListMap.RBK"
-# [[fields]]
-# "Spelling PNP:SCR" = "EventResponseSummaryPerDomain.#[Domain==Spelling].PNPCodeListMap.SCR"
-# [[fields]]
-# "Spelling PNP:SUP" = "EventResponseSummaryPerDomain.#[Domain==Spelling].PNPCodeListMap.SUP"
+[[fields]]
+"Spelling ResponseID" = "CalculatedFields.Spelling.NAPStudentResponseSet.RefId"
+[[fields]]
+"Spelling PNP:AIA" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.AIA"
+[[fields]]
+"Spelling PNP:AIV" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.AIV"
+[[fields]]
+"Spelling PNP:AST" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.AST"
+[[fields]]
+"Spelling PNP:BNB" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.BNB"
+[[fields]]
+"Spelling PNP:BNG" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.BNG"
+[[fields]]
+"Spelling PNP:BNL" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.BNL"
+[[fields]]
+"Spelling PNP:BNW" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.BNW"
+[[fields]]
+"Spelling PNP:BNY" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.BNY"
+[[fields]]
+"Spelling PNP:COL" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.COL"
+[[fields]]
+"Spelling PNP:ETA" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.ETA"
+[[fields]]
+"Spelling PNP:ETB" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.ETB"
+[[fields]]
+"Spelling PNP:ETC" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.ETC"
+[[fields]]
+"Spelling PNP:ETD" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.ETD"
+[[fields]]
+"Spelling PNP:OFF" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.OFF"
+[[fields]]
+"Spelling PNP:OSS" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.OSS"
+[[fields]]
+"Spelling PNP:RBK" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.RBK"
+[[fields]]
+"Spelling PNP:SCR" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.SCR"
+[[fields]]
+"Spelling PNP:SUP" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.SUP"
+[[fields]]
+"Spelling PNP:CAL" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.CAL"
+[[fields]]
+"Spelling PNP:ENZ" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.ENZ"
+[[fields]]
+"Spelling PNP:EST" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.EST"
+[[fields]]
+"Spelling PNP:LFS" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.LFS"
+[[fields]]
+"Spelling PNP:RZL" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.RZL"
+[[fields]]
+"Spelling PNP:ZOF" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.ZOF"
+[[fields]]
+"Spelling PNP:ZTFAO" = "CalculatedFields.Spelling.NAPEventStudentLink.Adjustment.PNPCode.ZTFAO"
 [[fields]]
 "Spelling Domain Band" = "CalculatedFields.Spelling.NAPStudentResponseSet.DomainScore.StudentDomainBand"
-# [[fields]]
-# "Spelling Raw Score" = "EventResponseSummaryPerDomain.#[Domain==Spelling].Response.DomainScore.RawScore"
+[[fields]]
+"Spelling Raw Score" = "CalculatedFields.Spelling.NAPStudentResponseSet.DomainScore.RawScore"
 [[fields]]
 "Spelling Scaled Score Value" = "CalculatedFields.Spelling.NAPStudentResponseSet.DomainScore.ScaledScoreValue"
-# [[fields]]
-# "Spelling School Average" = "EventResponseSummaryPerDomain.#[Domain==Spelling].Summary.DomainSchoolAverage"
+[[fields]]
+"Spelling National Average" = "CalculatedFields.Spelling.NAPTestScoreSummary.DomainNationalAverage"
 [[fields]]
 "Spelling Path Taken For Domain" = "CalculatedFields.Spelling.NAPStudentResponseSet.PathTakenForDomain"
-# [[fields]]
-# "Spelling Parallel Test" = "EventResponseSummaryPerDomain.#[Domain==Spelling].Response.ParallelTest"
+[[fields]]
+"Spelling Parallel Test" = "CalculatedFields.Spelling.NAPStudentResponseSet.ParallelTest"

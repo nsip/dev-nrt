@@ -1,0 +1,9 @@
+[usage]
+reportName = "Provides the matrix of DAC codes for a domain response; codes are true if active for student"
+activated = true
+outputFileName = "./out/null/domaindac.csv"
+
+
+[[fields]]
+"no-op" = "no-op"
+# no fields needed for this report

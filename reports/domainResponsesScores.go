@@ -59,20 +59,31 @@ func (r *DomainResponsesScores) calculateFields(sor *records.StudentOrientedReco
 
 	// iterate the responses of this student, are keyed by camel-case rendering of test domain
 	for domain, event := range sor.GetResponsesByDomain() {
+		//
 		// get the scaled score
+		//
 		score := gjson.GetBytes(event, "NAPStudentResponseSet.DomainScore.ScaledScoreValue").String()
-		// we need to separate the results by domain so create domain-based lookup path
 		path := fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.DomainScore.ScaledScoreValue", domain)
-		// finally assign the event code back into the domain-specific lookup in calc fields
 		json, _ = sjson.SetBytes(json, path, score)
+		//
+		// get the raw score
+		//
+		rawscore := gjson.GetBytes(event, "NAPStudentResponseSet.DomainScore.RawScore").String()
+		path = fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.DomainScore.RawScore", domain)
+		json, _ = sjson.SetBytes(json, path, rawscore)
 		//
 		// get the test path taken
 		//
 		ptfd := gjson.GetBytes(event, "NAPStudentResponseSet.PathTakenForDomain").String()
-		// we need to separate the results by domain so create domain-based lookup path
 		path = fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.PathTakenForDomain", domain)
-		// finally assign the test-path code back into the domain-specific lookup in calc fields
 		json, _ = sjson.SetBytes(json, path, ptfd)
+		//
+		// get the parallel test path
+		//
+		prrl := gjson.GetBytes(event, "NAPStudentResponseSet.ParallelTest").String()
+		path = fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.ParallelTest", domain)
+		json, _ = sjson.SetBytes(json, path, prrl)
+
 		//
 		// get the stnd-deviation for the domain score
 		//
@@ -85,16 +96,22 @@ func (r *DomainResponsesScores) calculateFields(sor *records.StudentOrientedReco
 		domb := gjson.GetBytes(event, "NAPStudentResponseSet.DomainScore.StudentDomainBand").String()
 		path = fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.DomainScore.StudentDomainBand", domain)
 		json, _ = sjson.SetBytes(json, path, domb)
+		//
+		// get the refid
+		//
+		refid := gjson.GetBytes(event, "NAPStudentResponseSet.RefId").String()
+		path = fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.RefId", domain)
+		json, _ = sjson.SetBytes(json, path, refid)
 
 	}
 
 	// iterate the school score summaries of this student, are keyed by camel-case rendering of test domain
 	for domain, summ := range sor.GetScoreSummariesByDomain() {
-		// get the scaled score
+		//
+		// get the domain average
+		//
 		avg := gjson.GetBytes(summ, "NAPTestScoreSummary.DomainNationalAverage").String()
-		// we need to separate the results by domain so create domain-based lookup path
 		path := fmt.Sprintf("CalculatedFields.%s.NAPTestScoreSummary.DomainNationalAverage", domain)
-		// finally assign the event code back into the domain-specific lookup in calc fields
 		json, _ = sjson.SetBytes(json, path, avg)
 	}
 

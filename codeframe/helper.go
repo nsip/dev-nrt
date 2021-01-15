@@ -35,7 +35,6 @@ type Helper struct {
 	locationInStage map[string]string
 	rubrics         []string
 	substitutes     map[string]string
-	dacs            []string
 }
 
 //
@@ -52,7 +51,6 @@ func NewHelper(r *repository.BadgerRepo) (Helper, error) {
 		itemSequence:    make(map[string]map[string]string, 0),
 		locationInStage: make(map[string]string, 0),
 		substitutes:     make(map[string]string, 0),
-		dacs:            make([]string, 0),
 	} // initialise the internal maps
 
 	// wrap repo in emitter
@@ -95,10 +93,6 @@ func NewHelper(r *repository.BadgerRepo) (Helper, error) {
 	// extract item sequencing within testlets
 	//
 	h.extractItemSequence()
-	//
-	// build DAC code map
-	//
-	h.initilaiseDACs()
 
 	return h, nil
 
@@ -308,14 +302,10 @@ func (cfh Helper) WritingSubscoreTypes() []string {
 }
 
 //
-// create definitive list table of DACs
+// get the list of Disability Adjustment Codes supported for this naplan cycle
 //
-func (cfh Helper) initilaiseDACs() {
-
-	// array for consistency of ordering when used in reports
-	// order is abitrary but follows that set out in v3.0 of the
-	// data specification 2020
-	cfh.dacs = []string{
+func (cfh Helper) GetDACs() []string {
+	return []string{
 		// school-level
 		"AIA", //"Alternative items - audio",
 		"AIV", //"Alternative items - visual",
@@ -344,13 +334,6 @@ func (cfh Helper) initilaiseDACs() {
 		"ZOF",   //  "Zoomed Optimised Features",
 		"ZTFAO", //"Zoom to Always On",
 	}
-}
-
-//
-// get the list of Disability Adjustment Codes supported for this naplan cycle
-//
-func (cfh Helper) GetDACs() []string {
-	return cfh.dacs
 }
 
 //

@@ -39,6 +39,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 	defer uip.Stop()
 	fmt.Printf("\n\n--- Running Reports:\n\n")
 	uip.Start()
+	// uip.Stop()
 
 	//
 	// create the codeframe helper tool
@@ -123,6 +124,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.StudentRecordSplitterBlockReport(),
 			reports.DomainParticipationReport(),
 			reports.DomainResponsesScoresReport(),
+			reports.DomainDACReport(cfh),
 			//
 			//
 			reports.SystemParticipationReport(),
