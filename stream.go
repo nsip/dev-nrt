@@ -119,15 +119,16 @@ func StreamResults(r *repo.BadgerRepo) error {
 		}
 		// create the object report pipeline
 		pl := pipelines.NewStudentPipeline(
+			// need these pre-processors prior to actual reports
 			reports.StudentRecordSplitterBlockReport(),
+			reports.DomainParticipationReport(),
+			reports.DomainResponsesScoresReport(),
 			//
-			// note, for performance these 3 reports are
-			// ordered deliberately, as data is re-used
-			// cumulatively.
 			//
 			reports.SystemParticipationReport(),
 			reports.IsrPrintingReport(),
 			reports.IsrPrintingExpandedReport(),
+			reports.NswPrintReport(),
 		)
 		// create a progress bar
 		stuBar := uip.AddBar(stats["StudentPersonal"])
@@ -174,7 +175,8 @@ func StreamResults(r *repo.BadgerRepo) error {
 		// create the codeframe report pipeline
 		cfpl := pipelines.NewCodeframePipeline(
 			reports.QcaaNapoTestletsReport(cfh),
-			// mulitplexer must come before items report
+			// remaining codeframe reports need item-test-link multiplexer to
+			// come first in the pipeline sequence
 			reports.ItemTestLinkReport(cfh),
 			reports.QcaaNapoItemsReport(),
 			reports.QcaaNapoTestsReport(),
@@ -182,6 +184,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.SystemCodeframeReport(cfh),
 			reports.QldTestDataReport(cfh),
 			reports.QcaaNapoWritingRubricReport(),
+			// keep this pair at end of pipeline to minimize data expansion
 			reports.ItemRubricExtractorReport(),
 			reports.QcaaNapoWritingRubricReport(),
 		)
@@ -229,7 +232,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 		}
 		// create the item reporting pipeline
 		pl := pipelines.NewEventPipeline(
-			// processors to set up reports
+			// processors to set up reports, need to be kept in this order
 			reports.EventRecordSplitterBlockReport(),
 			reports.ItemResponseExtractorReport(),
 			reports.ItemDetailReport(cfh),

@@ -1,7 +1,7 @@
 [usage]
 reportName = "Item Response Extractor (creates new record for each item-level response)"
 activated = true
-outputFileName = "./out/null/itemextractor.csv"
+outputFileName = "./out/null/itemresponseextractor.csv"
 
 
 [[fields]]

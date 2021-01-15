@@ -5,21 +5,19 @@ import (
 	"fmt"
 
 	"github.com/nsip/dev-nrt/records"
-	"github.com/tidwall/sjson"
 )
 
-type IsrPrinting struct {
+type NswPrint struct {
 	baseReport // embed common setup capability
 }
 
 //
-// Individual Student Report (ISR) score summaries used by jurisdicitons to
-// produce printed reports - very simple summary
+// Detailed breakdown of student results for all domains
 //
-func IsrPrintingReport() *IsrPrinting {
+func NswPrintReport() *NswPrint {
 
-	r := IsrPrinting{}
-	r.initialise("./config/IsrPrinting.toml")
+	r := NswPrint{}
+	r.initialise("./config/NswPrint.toml")
 	r.printStatus()
 
 	return &r
@@ -30,7 +28,7 @@ func IsrPrintingReport() *IsrPrinting {
 // implement the ...Pipe interface, core work of the
 // report engine.
 //
-func (r *IsrPrinting) ProcessStudentRecords(in chan *records.StudentOrientedRecord) chan *records.StudentOrientedRecord {
+func (r *NswPrint) ProcessStudentRecords(in chan *records.StudentOrientedRecord) chan *records.StudentOrientedRecord {
 
 	out := make(chan *records.StudentOrientedRecord)
 	go func() {
@@ -78,17 +76,7 @@ func (r *IsrPrinting) ProcessStudentRecords(in chan *records.StudentOrientedReco
 // record containing values that are not in the original data
 //
 //
-func (r *IsrPrinting) calculateFields(sor *records.StudentOrientedRecord) []byte {
+func (r *NswPrint) calculateFields(sor *records.StudentOrientedRecord) []byte {
 
-	json := sor.CalculatedFields // maintain exsting calc fields
-
-	//
-	// the ISR has slots for a comment, but these are not supplied by the RRD
-	// so we add a generic placeholder, the columns can't be removed as they are input to
-	// downstream printing systems
-	//
-	json, _ = sjson.SetBytes(json, "CalculatedFields.ISRCommmentPlaceholder", "")
-
-	return json
-
+	return sor.CalculatedFields
 }

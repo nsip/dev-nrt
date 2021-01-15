@@ -5,8 +5,6 @@ import (
 	"fmt"
 
 	"github.com/nsip/dev-nrt/records"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 type SystemParticipation struct {
@@ -80,17 +78,5 @@ func (r *SystemParticipation) ProcessStudentRecords(in chan *records.StudentOrie
 //
 func (r *SystemParticipation) calculateFields(sor *records.StudentOrientedRecord) []byte {
 
-	json := sor.CalculatedFields // maintain exsting calc fields
-
-	// iterate the events of this student, are keyed by camel-case rendering of test domain
-	for domain, event := range sor.GetEventsByDomain() {
-		// get the particpation code
-		code := gjson.GetBytes(event, "NAPEventStudentLink.ParticipationCode").String()
-		// we need to separate the results by domain so create domain-based lookup path
-		path := fmt.Sprintf("CalculatedFields.%s.NAPEventStudentLink.ParticipationCode", domain)
-		// finally assign the event code back into the domain-specific lookup in calc fields
-		json, _ = sjson.SetBytes(json, path, code)
-	}
-
-	return json
+	return sor.CalculatedFields
 }

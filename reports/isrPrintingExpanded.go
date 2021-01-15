@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/nsip/dev-nrt/records"
-	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
 
@@ -81,30 +80,6 @@ func (r *IsrPrintingExpanded) ProcessStudentRecords(in chan *records.StudentOrie
 func (r *IsrPrintingExpanded) calculateFields(sor *records.StudentOrientedRecord) []byte {
 
 	json := sor.CalculatedFields // maintain exsting calc fields
-
-	// iterate the responses of this student, are keyed by camel-case rendering of test domain
-	for domain, event := range sor.GetResponsesByDomain() {
-		//
-		// get the test path taken
-		//
-		ptfd := gjson.GetBytes(event, "NAPStudentResponseSet.PathTakenForDomain").String()
-		// we need to separate the results by domain so create domain-based lookup path
-		path := fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.PathTakenForDomain", domain)
-		// finally assign the test-path code back into the domain-specific lookup in calc fields
-		json, _ = sjson.SetBytes(json, path, ptfd)
-		//
-		// get the stnd-deviation for the domain score
-		//
-		ssse := gjson.GetBytes(event, "NAPStudentResponseSet.DomainScore.ScaledScoreStandardError").String()
-		path = fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.DomainScore.ScaledScoreStandardError", domain)
-		json, _ = sjson.SetBytes(json, path, ssse)
-		//
-		// get the domain band
-		//
-		domb := gjson.GetBytes(event, "NAPStudentResponseSet.DomainScore.StudentDomainBand").String()
-		path = fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.DomainScore.StudentDomainBand", domain)
-		json, _ = sjson.SetBytes(json, path, domb)
-	}
 
 	//
 	// the expanded ISR has slots for student address info, but these are not supplied by the RRD

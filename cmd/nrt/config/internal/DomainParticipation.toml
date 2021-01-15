@@ -1,0 +1,9 @@
+[usage]
+reportName = "Extracts participation by domain to calc-fields of a student-oriented record"
+activated = true
+outputFileName = "./out/null/domainparticipation.csv"
+
+
+[[fields]]
+"no-op" = "no-op"
+# no fields needed for this report

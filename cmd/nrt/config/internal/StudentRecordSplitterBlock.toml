@@ -1,7 +1,7 @@
 [usage]
 reportName = "Splitter Block for Student Oriented reports (supports splitting reports by school & yr level)"
 activated = true
-outputFileName = "./out/null/blocksplitter.csv"
+outputFileName = "./out/null/studentrecordsplitterblock.csv"
 
 
 [[fields]]
