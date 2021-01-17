@@ -92,7 +92,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 		//
 		go objpl.Dequeue(func(cfr *records.ObjectRecord) {
 			// easy win no-op, also reclaims memory
-			cfr = nil
+			// cfr = nil
 			objBar.Incr()
 		})
 		defer objpl.Close()
@@ -120,17 +120,33 @@ func StreamResults(r *repo.BadgerRepo) error {
 		}
 		// create the object report pipeline
 		pl := pipelines.NewStudentPipeline(
-			// need these pre-processors prior to actual reports
+			// pre-processors
+			//
 			reports.StudentRecordSplitterBlockReport(),
 			reports.DomainParticipationReport(),
 			reports.DomainResponsesScoresReport(),
-			reports.DomainDACReport(cfh),
-			//
+			// reports
 			//
 			reports.SystemParticipationReport(),
 			reports.IsrPrintingReport(),
+			//
+			// pre-proc
+			//
+			reports.DomainDACReport(cfh),
+			// reports
+			//
 			reports.IsrPrintingExpandedReport(),
 			reports.NswPrintReport(),
+			//
+			// pre- procs
+			//
+			reports.DomainItemResponsesReport("Reading"),
+			reports.DomainItemResponsesReport("Spelling"),
+			reports.DomainItemResponsesReport("GrammarAndPunctuation"),
+			reports.DomainItemResponsesReport("Numeracy"),
+			reports.DomainItemResponsesReport("Writing"),
+			// report
+			reports.NswPrintAllReport(),
 		)
 		// create a progress bar
 		stuBar := uip.AddBar(stats["StudentPersonal"])
@@ -148,7 +164,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 		//
 		go pl.Dequeue(func(sor *records.StudentOrientedRecord) {
 			// easy win no-op, also reclaims memory
-			sor = nil
+			// sor = nil
 			stuBar.Incr()
 		})
 		defer pl.Close()
@@ -207,7 +223,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 		//
 		go cfpl.Dequeue(func(cfr *records.CodeframeRecord) {
 			// easy win no-op, also reclaims memory
-			cfr = nil
+			// cfr = nil
 			codeframeBar.Incr()
 		})
 		defer cfpl.Close()
@@ -258,7 +274,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 		//
 		go pl.Dequeue(func(eor *records.EventOrientedRecord) {
 			// easy win no-op, also reclaims memory
-			eor = nil
+			// eor = nil
 			itemBar.Incr() // update the progress bar
 		})
 		defer pl.Close()
@@ -323,7 +339,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 		//
 		go pl.Dequeue(func(eor *records.EventOrientedRecord) {
 			// easy win no-op, also reclaims memory
-			eor = nil
+			// eor = nil
 			eventBar.Incr() // update the progress bar
 		})
 		defer pl.Close()
@@ -338,12 +354,19 @@ func StreamResults(r *repo.BadgerRepo) error {
 		return nil
 	})
 
-	// n.b. output stats as objectcount report
+	// wait for report streams to end
+	if g.Wait() != nil {
+		return g.Wait()
+	}
 
 	//
-	// group waits for all goroutines to complete & returns any error encountered
+	// allow time for flush of large csv files to complete
 	//
-	return g.Wait()
+	time.Sleep(time.Millisecond * 1000)
+
+	// n.b. output stats as objectcount report
+
+	return nil
 
 }
 

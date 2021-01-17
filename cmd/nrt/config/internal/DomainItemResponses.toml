@@ -1,0 +1,9 @@
+[usage]
+reportName = "Detailed breakdown of every item in every domain seen by the student"
+activated = true
+outputFileName = "./out/null/domainitemresponses.csv"
+
+
+[[fields]]
+"no-op" = "no-op"
+# no fields needed for this report

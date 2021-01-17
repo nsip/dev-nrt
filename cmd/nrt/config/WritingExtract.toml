@@ -23,11 +23,15 @@ outputFileName = "./out/writing_extract/writing_extract.csv"
 "TAA student ID" = "StudentPersonal.OtherIdList.OtherId.#[Type==TAAStudentId].value"
 [[fields]]
 "Participation Code" = "NAPEventStudentLink.ParticipationCode"
+# 
 # raw response from original xml
+# 
+# this was the original lookup for raw input:
 # "Item Response" = "NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.Response"
-# we actually ouptut this one (below), which has been escaped by the report engine
+# but we actually ouptut this one (below), which has been escaped by the report engine
 [[fields]]
 "Item Response" = "CalculatedFields.EscapedResponse"
+# 
 [[fields]]
 "Anonymised Id" = "CalculatedFields.AnonId"
 [[fields]]

@@ -3,12 +3,15 @@ package main
 import (
 	"fmt"
 	"log"
+	"runtime"
 
 	nrt "github.com/nsip/dev-nrt"
 	repo "github.com/nsip/dev-nrt/repository"
 )
 
 func main() {
+
+	runtime.GOMAXPROCS(128)
 
 	// create/open  a repo
 	//
