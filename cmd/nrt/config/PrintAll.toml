@@ -2,7 +2,7 @@
 [usage]
 reportName = "Row-per-student report; every item response & score for all domains, very large > 1k columns (NSW Spec.)"
 activated = true
-outputFileName = "./out/TODO/nswPrintAll.csv"
+outputFileName = "./out/item_printing/printAll.csv"
 
 # Order of fields below is left to right order
 # columns will appear in final output, can be changed as needed.
@@ -41,6 +41,14 @@ outputFileName = "./out/TODO/nswPrintAll.csv"
 [[fields]]
 "Platform Student ID" = "StudentPersonal.OtherIdList.OtherId.#[Type==NAPPlatformStudentId].value"
 [[fields]]
+"Diocesan Student ID" = "StudentPersonal.OtherIdList.OtherId.#[Type==DiocesanStudentId].value"
+[[fields]]
+"TAA Student ID" = "StudentPersonal.OtherIdList.OtherId.#[Type==TAAStudentId].value"
+[[fields]]
+"Jurisdiction StudentID" = "StudentPersonal.StateProvinceId"
+[[fields]]
+"ClassGroup" = "StudentPersonal.MostRecent.ClassCode"
+[[fields]]
 "Family Name" = "StudentPersonal.PersonInfo.Name.FamilyName"
 [[fields]]
 "Middle Name" = "StudentPersonal.PersonInfo.Name.MiddleName"
@@ -48,6 +56,8 @@ outputFileName = "./out/TODO/nswPrintAll.csv"
 "Given Name" = "StudentPersonal.PersonInfo.Name.GivenName"
 [[fields]]
 "Geolocation" = "SchoolInfo.SchoolGeographicLocation"
+[[fields]]
+"Year Level" = "StudentPersonal.MostRecent.TestLevel.Code"
 [[fields]]
 "Test Level" = "StudentPersonal.MostRecent.TestLevel.Code"
 [[fields]]
@@ -2797,30 +2807,30 @@ outputFileName = "./out/TODO/nswPrintAll.csv"
 # Writing Items, subscores....
 # 
 [[fields]]
-"Writing Testlet 1 Item 1 ID" = "EventResponseSummaryPerDomain.#[Domain==Writing].Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.ItemRefId"
-# [[fields]]
-# "Writing Testlet 1 Item 1 Score" = "EventResponseSummaryPerDomain.#[Domain==Writing].Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.Score"
-# [[fields]]
-# "Writing Testlet 1 Item 1 Correctness" = "EventResponseSummaryPerDomain.#[Domain==Writing].Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.ResponseCorrectness"
-# [[fields]]
-# "Writing Testlet 1 Item 1 Spelling" = "EventResponseSummaryPerDomain.#[Domain==Writing].Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.#[SubscoreType==Spelling].SubscoreValue"
-# [[fields]]
-# "Writing Testlet 1 Item 1 Audience" = "EventResponseSummaryPerDomain.#[Domain==Writing].Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.#[SubscoreType==Audience].SubscoreValue"
-# [[fields]]
-# "Writing Testlet 1 Item 1 TextStructure" = "EventResponseSummaryPerDomain.#[Domain==Writing].Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.#[SubscoreType==Text Structure].SubscoreValue"
-# [[fields]]
-# "Writing Testlet 1 Item 1 Paragraphs" = "EventResponseSummaryPerDomain.#[Domain==Writing].Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.#[SubscoreType==Paragraphs].SubscoreValue"
-# [[fields]]
-# "Writing Testlet 1 Item 1 SentenceStructure" = "EventResponseSummaryPerDomain.#[Domain==Writing].Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.#[SubscoreType==Sentence structure].SubscoreValue"
-# [[fields]]
-# "Writing Testlet 1 Item 1 Punctuation" = "EventResponseSummaryPerDomain.#[Domain==Writing].Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.#[SubscoreType==Punctuation].SubscoreValue"
-# [[fields]]
-# "Writing Testlet 1 Item 1 Ideas" = "EventResponseSummaryPerDomain.#[Domain==Writing].Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.#[SubscoreType==Ideas].SubscoreValue"
-# [[fields]]
-# "Writing Testlet 1 Item 1 Character and setting" = "EventResponseSummaryPerDomain.#[Domain==Writing].Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.#[SubscoreType==Character and setting].SubscoreValue"
-# [[fields]]
-# "Writing Testlet 1 Item 1 Vocabulary" = "EventResponseSummaryPerDomain.#[Domain==Writing].Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.#[SubscoreType==Vocabulary].SubscoreValue"
-# [[fields]]
-# "Writing Testlet 1 Item 1 Cohesion" = "EventResponseSummaryPerDomain.#[Domain==Writing].Response.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.#[SubscoreType==Cohesion].SubscoreValue"
+"Writing Testlet 1 Item 1 ID" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.ItemRefId"
+[[fields]]
+"Writing Testlet 1 Item 1 Score" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.Score"
+[[fields]]
+"Writing Testlet 1 Item 1 Correctness" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.ResponseCorrectness"
+[[fields]]
+"Writing Testlet 1 Item 1 Spelling" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Spelling.SubscoreValue"
+[[fields]]
+"Writing Testlet 1 Item 1 Audience" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Audience.SubscoreValue"
+[[fields]]
+"Writing Testlet 1 Item 1 TextStructure" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.TextStructure.SubscoreValue"
+[[fields]]
+"Writing Testlet 1 Item 1 Paragraphs" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Paragraphing.SubscoreValue"
+[[fields]]
+"Writing Testlet 1 Item 1 SentenceStructure" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.SentenceStructure.SubscoreValue"
+[[fields]]
+"Writing Testlet 1 Item 1 Punctuation" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Punctuation.SubscoreValue"
+[[fields]]
+"Writing Testlet 1 Item 1 Ideas" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Ideas.SubscoreValue"
+[[fields]]
+"Writing Testlet 1 Item 1 Character and setting" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.PersuasiveDevices.SubscoreValue"
+[[fields]]
+"Writing Testlet 1 Item 1 Vocabulary" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Vocabulary.SubscoreValue"
+[[fields]]
+"Writing Testlet 1 Item 1 Cohesion" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Cohesion.SubscoreValue"
 
 

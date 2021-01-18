@@ -106,6 +106,12 @@ func (sor *StudentOrientedRecord) GetValueString(queryPath string) string {
 	return gjson.GetBytes(data, queryPath).String()
 }
 
+//
+// not used in 2020, but forward idea is to have codeframe helper
+// generate a full codeframe lookup using refids for all item-
+// testlet-test combos, so everyhting is definitive from refids not based on
+// naming lookups
+//
 func (sor *StudentOrientedRecord) codeframeValueString(queryPath string) string {
 	return ""
 }

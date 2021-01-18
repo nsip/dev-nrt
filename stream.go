@@ -32,6 +32,14 @@ func StreamResults(r *repo.BadgerRepo) error {
 	stats := r.GetStats()
 
 	//
+	// create the codeframe helper tool
+	//
+	cfh, err := codeframe.NewHelper(r)
+	if err != nil {
+		return err
+	}
+
+	//
 	// set up the progress bar display manager
 	//
 	var uip *uiprogress.Progress
@@ -40,14 +48,6 @@ func StreamResults(r *repo.BadgerRepo) error {
 	fmt.Printf("\n\n--- Running Reports:\n\n")
 	uip.Start()
 	// uip.Stop()
-
-	//
-	// create the codeframe helper tool
-	//
-	cfh, err := codeframe.NewHelper(r)
-	if err != nil {
-		return err
-	}
 
 	//
 	// start the different processing pipelines concurrently
@@ -130,7 +130,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.SystemParticipationReport(),
 			reports.IsrPrintingReport(),
 			//
-			// pre-proc
+			// pre-processors
 			//
 			reports.DomainDACReport(cfh),
 			// reports
@@ -138,15 +138,16 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.IsrPrintingExpandedReport(),
 			reports.NswPrintReport(),
 			//
-			// pre- procs
+			// pre- processors
 			//
 			reports.DomainItemResponsesReport("Reading"),
 			reports.DomainItemResponsesReport("Spelling"),
 			reports.DomainItemResponsesReport("GrammarAndPunctuation"),
 			reports.DomainItemResponsesReport("Numeracy"),
-			reports.DomainItemResponsesReport("Writing"),
+			reports.DomainItemResponsesWritingRubricsReport(), // gives further breakdown by subscore
+			// reports.DomainItemResponsesReport("Writing"), // just breakdown at item-level as with other domains
 			// report
-			reports.NswPrintAllReport(),
+			reports.PrintAllReport(),
 		)
 		// create a progress bar
 		stuBar := uip.AddBar(stats["StudentPersonal"])

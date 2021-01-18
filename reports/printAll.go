@@ -7,19 +7,19 @@ import (
 	"github.com/nsip/dev-nrt/records"
 )
 
-type NswPrintAll struct {
+type PrintAll struct {
 	baseReport // embed common setup capability
 }
 
 //
 // Exhausitvely detailed report, every result to item-level granularity
 // for every test item seen by the student. Can be > 1000 columns in this
-// report
+// report. NSW Spec.
 //
-func NswPrintAllReport() *NswPrintAll {
+func PrintAllReport() *PrintAll {
 
-	r := NswPrintAll{}
-	r.initialise("./config/NswPrintAll.toml")
+	r := PrintAll{}
+	r.initialise("./config/PrintAll.toml")
 	r.printStatus()
 
 	return &r
@@ -30,7 +30,7 @@ func NswPrintAllReport() *NswPrintAll {
 // implement the ...Pipe interface, core work of the
 // report engine.
 //
-func (r *NswPrintAll) ProcessStudentRecords(in chan *records.StudentOrientedRecord) chan *records.StudentOrientedRecord {
+func (r *PrintAll) ProcessStudentRecords(in chan *records.StudentOrientedRecord) chan *records.StudentOrientedRecord {
 
 	out := make(chan *records.StudentOrientedRecord)
 	go func() {
@@ -77,7 +77,7 @@ func (r *NswPrintAll) ProcessStudentRecords(in chan *records.StudentOrientedReco
 // record containing values that are not in the original data
 //
 //
-func (r *NswPrintAll) calculateFields(sor *records.StudentOrientedRecord) []byte {
+func (r *PrintAll) calculateFields(sor *records.StudentOrientedRecord) []byte {
 
 	return sor.CalculatedFields
 }

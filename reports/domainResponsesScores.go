@@ -38,10 +38,12 @@ func (r *DomainResponsesScores) ProcessStudentRecords(in chan *records.StudentOr
 		defer close(out)
 		for sor := range in {
 			if r.config.activated { // only process if active
-
-				sor.CalculatedFields = r.calculateFields(sor)
-
+				out <- sor
+				continue
 			}
+
+			sor.CalculatedFields = r.calculateFields(sor)
+
 			out <- sor
 		}
 	}()

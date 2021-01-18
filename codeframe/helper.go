@@ -33,7 +33,7 @@ type Helper struct {
 	reverseLookup   map[string]map[string]string
 	itemSequence    map[string]map[string]string
 	locationInStage map[string]string
-	rubrics         []string
+	rubrics         map[string][]string
 	substitutes     map[string]string
 }
 
@@ -51,6 +51,7 @@ func NewHelper(r *repository.BadgerRepo) (Helper, error) {
 		itemSequence:    make(map[string]map[string]string, 0),
 		locationInStage: make(map[string]string, 0),
 		substitutes:     make(map[string]string, 0),
+		rubrics:         make(map[string][]string, 0),
 	} // initialise the internal maps
 
 	// wrap repo in emitter
@@ -247,7 +248,7 @@ func (cfh Helper) buildReverseLookup() {
 //
 func (cfh Helper) extractRubrics() {
 
-	cfh.rubrics = []string{}
+	rubrics := []string{}
 
 	for _, cfBytes := range cfh.data["NAPCodeFrame"] {
 
@@ -271,7 +272,7 @@ func (cfh Helper) extractRubrics() {
 							ForEach(func(key, value gjson.Result) bool {
 								value.Get("RubricType").ForEach(func(key, value gjson.Result) bool {
 									// add to the internal lookup array
-									cfh.rubrics = append(cfh.rubrics, value.String())
+									rubrics = append(rubrics, value.String())
 									return true // keep iterating
 								})
 								return true // keep iterating
@@ -282,6 +283,12 @@ func (cfh Helper) extractRubrics() {
 			})
 		break // only need one full set
 	}
+
+	//
+	// stored as lookup to allow for other attributes of rubrics
+	// to be captured in future if necessary
+	//
+	cfh.rubrics["RubricNames"] = rubrics
 }
 
 //
@@ -289,7 +296,7 @@ func (cfh Helper) extractRubrics() {
 //
 func (cfh Helper) WritingRubricTypes() []string {
 
-	return cfh.rubrics
+	return cfh.WritingSubscoreTypes()
 
 }
 
@@ -298,7 +305,7 @@ func (cfh Helper) WritingRubricTypes() []string {
 //
 func (cfh Helper) WritingSubscoreTypes() []string {
 
-	return cfh.WritingRubricTypes()
+	return cfh.rubrics["RubricNames"]
 }
 
 //

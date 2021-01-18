@@ -1,0 +1,9 @@
+[usage]
+reportName = "Detailed breakdown of writing item scores by rubric for each student"
+activated = true
+outputFileName = "./out/null/domainitemresponseswritingrubrics.csv"
+
+
+[[fields]]
+"no-op" = "no-op"
+# no fields needed for this report
