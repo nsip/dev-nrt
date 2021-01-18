@@ -33,7 +33,7 @@ type Helper struct {
 	reverseLookup   map[string]map[string]string
 	itemSequence    map[string]map[string]string
 	locationInStage map[string]string
-	rubrics         map[string][]string
+	rubrics         []string
 	substitutes     map[string]string
 }
 
@@ -51,7 +51,7 @@ func NewHelper(r *repository.BadgerRepo) (Helper, error) {
 		itemSequence:    make(map[string]map[string]string, 0),
 		locationInStage: make(map[string]string, 0),
 		substitutes:     make(map[string]string, 0),
-		rubrics:         make(map[string][]string, 0),
+		rubrics:         []string{},
 	} // initialise the internal maps
 
 	// wrap repo in emitter
@@ -105,7 +105,7 @@ func NewHelper(r *repository.BadgerRepo) (Helper, error) {
 // NOTE: index needs baselining from 1 to align with testlet
 // definitions - codeframe baselines from 0
 //
-func (cfh Helper) extractItemSequence() {
+func (cfh *Helper) extractItemSequence() {
 
 	var testletRefId, itemRefId, sequenceNumber string
 	for _, cfBytes := range cfh.data["NAPCodeFrame"] {
@@ -136,7 +136,7 @@ func (cfh Helper) extractItemSequence() {
 // creates a lookup to resolve substitute items against
 // their alternates
 //
-func (cfh Helper) extractSubstitutes() {
+func (cfh *Helper) extractSubstitutes() {
 	var itemRefId, substituteRefId string
 	for _, cfBytes := range cfh.data["NAPCodeFrame"] {
 		//
@@ -191,7 +191,7 @@ func (cfh Helper) ProcessCodeframeRecords(in chan *records.CodeframeRecord) chan
 // telstlet location in stage only available in
 // codeframe, so create lookup - testletid -> location
 //
-func (cfh Helper) extractLocationInStage() {
+func (cfh *Helper) extractLocationInStage() {
 
 	var testletRefId, lis string
 	for _, cfBytes := range cfh.data["NAPCodeFrame"] {
@@ -214,7 +214,7 @@ func (cfh Helper) extractLocationInStage() {
 // e.g. Test from Item - find the test/s an item was assinged to
 // via testlets
 //
-func (cfh Helper) buildReverseLookup() {
+func (cfh *Helper) buildReverseLookup() {
 
 	var testRefId, testletRefId, itemRefId string
 	for _, cfBytes := range cfh.data["NAPCodeFrame"] {
@@ -246,7 +246,7 @@ func (cfh Helper) buildReverseLookup() {
 // internal function to create list of writing rubric types
 // / subscores from actual test data
 //
-func (cfh Helper) extractRubrics() {
+func (cfh *Helper) extractRubrics() {
 
 	rubrics := []string{}
 
@@ -284,11 +284,7 @@ func (cfh Helper) extractRubrics() {
 		break // only need one full set
 	}
 
-	//
-	// stored as lookup to allow for other attributes of rubrics
-	// to be captured in future if necessary
-	//
-	cfh.rubrics["RubricNames"] = rubrics
+	cfh.rubrics = rubrics
 }
 
 //
@@ -301,11 +297,11 @@ func (cfh Helper) WritingRubricTypes() []string {
 }
 
 //
-// alias for writing rubrics, known as subscores in reslts
+// alias for writing rubrics, known as subscores in results
 //
 func (cfh Helper) WritingSubscoreTypes() []string {
 
-	return cfh.rubrics["RubricNames"]
+	return cfh.rubrics
 }
 
 //
