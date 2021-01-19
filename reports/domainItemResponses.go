@@ -87,11 +87,15 @@ func (r *DomainItemResponses) calculateFields(sor *records.StudentOrientedRecord
 					path = fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.TestletList.Testlet.%d.ItemResponseList.ItemResponse.%d.Score", domain, testletCount, itemResponseCount)
 					json, _ = sjson.SetBytes(json, path, itemscore)
 					//
-					//
+					// get the item correctness
 					//
 					itemcorrectness := value.Get("ResponseCorrectness").String()
 					path = fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.TestletList.Testlet.%d.ItemResponseList.ItemResponse.%d.ResponseCorrectness", domain, testletCount, itemResponseCount)
 					json, _ = sjson.SetBytes(json, path, itemcorrectness)
+					// add the acara/pearson encodings for correctness, with an fwResponseCorrectness (fixed-width) key
+					encodedCorrectness := AcaraEncodeItemCorrectness(itemcorrectness)
+					path = fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.TestletList.Testlet.%d.ItemResponseList.ItemResponse.%d.fwResponseCorrectness", domain, testletCount, itemResponseCount)
+					json, _ = sjson.SetBytes(json, path, encodedCorrectness)
 					//
 					itemResponseCount++
 					return true // keep iterating

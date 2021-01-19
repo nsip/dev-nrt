@@ -1,0 +1,344 @@
+
+[usage]
+reportName = "Fixed-width ACARA/Pearsons encoding of item response correctness for all domains"
+activated = true
+outputFileName = "./out/system_reports/nswAllPearsonY7.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+# 
+# for fixed-width report, key is max width of field, not header
+# all values are padded/truncated to fit
+# 
+[[fields]]
+"3" = "StudentPersonal.OtherIdList.OtherId.#[Type==JurisdictionId].value"
+[[fields]]
+"4" = "StudentPersonal.MostRecent.TestLevel.Code"
+[[fields]]
+"9" = "SchoolInfo.ACARAId"
+[[fields]]
+"15" = "StudentPersonal.OtherIdList.OtherId.#[Type==NAPPlatformStudentId].value"
+[[fields]]
+"1" = "SchoolInfo.SchoolGeographicLocation"
+[[fields]]
+"1" = "SchoolInfo.SchoolSector"
+[[fields]]
+"8" = "StudentPersonal.PersonInfo.Demographics.BirthDate"
+[[fields]]
+"1" = "StudentPersonal.PersonInfo.Demographics.Sex"
+[[fields]]
+"1" = "StudentPersonal.PersonInfo.Demographics.IndigenousStatus"
+[[fields]]
+"1" = "StudentPersonal.PersonInfo.Demographics.LanguageList.Language.0.Code"
+[[fields]]
+"1" = "StudentPersonal.MostRecent.Parent1SchoolEducationLevel"
+[[fields]]
+"1" = "StudentPersonal.MostRecent.Parent1NonSchoolEducation"
+[[fields]]
+"1" = "StudentPersonal.MostRecent.Parent1EmploymentType"
+[[fields]]
+"1" = "StudentPersonal.MostRecent.Parent2SchoolEducationLevel"
+[[fields]]
+"1" = "StudentPersonal.MostRecent.Parent2NonSchoolEducation"
+[[fields]]
+"1" = "StudentPersonal.MostRecent.Parent2EmploymentType"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"1" = "CalculatedFields.Writing.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+# space char removed to allow addition of spelling domain not included in n2 version
+"9" = "Blank"
+# "10" = "Blank"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.1.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.2.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.3.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.4.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.5.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.6.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.7.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.8.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.9.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.10.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.11.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.0.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.1.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.2.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.3.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.4.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.5.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.6.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.7.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.8.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.9.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.10.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.11.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.0.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.1.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.2.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.3.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.4.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.5.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.6.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.7.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.8.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.9.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.10.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.11.fwResponseCorrectness"
+[[fields]]
+"1" = "Blank"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.1.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.2.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.3.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.4.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.5.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.6.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.7.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.8.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.9.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.10.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.11.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.12.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.0.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.1.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.2.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.3.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.4.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.5.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.6.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.7.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.8.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.9.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.10.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.11.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.12.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.0.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.1.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.2.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.3.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.4.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.5.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.6.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.7.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.8.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.9.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.10.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.11.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.12.fwResponseCorrectness"
+[[fields]]
+"1" = "Blank"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.1.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.2.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.3.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.4.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.5.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.0.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.1.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.2.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.3.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.4.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.5.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.6.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.7.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.8.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.0.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.1.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.2.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.3.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.4.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.5.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.6.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.7.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.8.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Spelling.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.9.fwResponseCorrectness"
+[[fields]]
+"1" = "Blank"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.1.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.2.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.3.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.4.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.5.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.6.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.7.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.8.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.9.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.10.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.11.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.12.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.13.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.14.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.15.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.16.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.17.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.18.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.19.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.20.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.21.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.22.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.23.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.11.fwResponseCorrectness"
+[[fields]]
+"1" = "Blank"
+[[fields]]
+"1" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Audience.SubscoreValue"
+[[fields]]
+"1" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.TextStructure.SubscoreValue"
+[[fields]]
+"1" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Ideas.SubscoreValue"
+[[fields]]
+"1" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.PersuasiveDevices.SubscoreValue"
+[[fields]]
+"1" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Vocabulary.SubscoreValue"
+[[fields]]
+"1" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Cohesion.SubscoreValue"
+[[fields]]
+"1" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Paragraphing.SubscoreValue"
+[[fields]]
+"1" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.SentenceStructure.SubscoreValue"
+[[fields]]
+"1" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Punctuation.SubscoreValue"
+[[fields]]
+"1" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Spelling.SubscoreValue"
+[[fields]]
+"54" = "Blank"
+[[fields]]
+"60" = "SchoolInfo.SchoolName"

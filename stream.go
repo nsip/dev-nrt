@@ -144,9 +144,14 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.DomainItemResponsesReport("Spelling"),
 			reports.DomainItemResponsesReport("GrammarAndPunctuation"),
 			reports.DomainItemResponsesReport("Numeracy"),
-			reports.DomainItemResponsesWritingRubricsReport(), // gives further breakdown by subscore
-			// reports.DomainItemResponsesReport("Writing"), // just breakdown at item-level as with other domains
-			// report
+			reports.DomainItemResponsesReport("Writing"),
+			reports.DomainItemResponsesWritingRubricsReport(), // gives further writing breakdown by subscore
+			// 
+			// reports
+			reports.NswAllPearsonY3Report(),
+			reports.NswAllPearsonY5Report(),
+			reports.NswAllPearsonY7Report(),
+			reports.NswAllPearsonY9Report(),
 			reports.PrintAllReport(),
 		)
 		// create a progress bar

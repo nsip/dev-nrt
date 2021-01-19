@@ -78,24 +78,6 @@ func (r *DomainItemResponsesWritingRubrics) calculateFields(sor *records.Student
 			value.Get("ItemResponseList.ItemResponse").
 				ForEach(func(key, value gjson.Result) bool {
 					//
-					// get the item response refid
-					//
-					itemrefid := value.Get("NAPTestItemRefId").String()
-					path := fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.TestletList.Testlet.%d.ItemResponseList.ItemResponse.%d.ItemRefId", domain, testletCount, itemResponseCount)
-					json, _ = sjson.SetBytes(json, path, itemrefid)
-					//
-					// get the item response score
-					//
-					itemscore := value.Get("Score").String()
-					path = fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.TestletList.Testlet.%d.ItemResponseList.ItemResponse.%d.Score", domain, testletCount, itemResponseCount)
-					json, _ = sjson.SetBytes(json, path, itemscore)
-					//
-					// and response correctness
-					//
-					itemcorrectness := value.Get("ResponseCorrectness").String()
-					path = fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.TestletList.Testlet.%d.ItemResponseList.ItemResponse.%d.ResponseCorrectness", domain, testletCount, itemResponseCount)
-					json, _ = sjson.SetBytes(json, path, itemcorrectness)
-					//
 					//
 					// iterate the subscore rubric list for this response
 					//
@@ -103,7 +85,7 @@ func (r *DomainItemResponsesWritingRubrics) calculateFields(sor *records.Student
 						ForEach(func(key, value gjson.Result) bool {
 							ssType := strcase.ToCamel(value.Get("SubscoreType").String())
 							ssValue := value.Get("SubscoreValue").String()
-							path = fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.TestletList.Testlet.%d.ItemResponseList.ItemResponse.%d.SubscoreList.Subscore.%s.SubscoreValue", domain, testletCount, itemResponseCount, ssType)
+							path := fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.TestletList.Testlet.%d.ItemResponseList.ItemResponse.%d.SubscoreList.Subscore.%s.SubscoreValue", domain, testletCount, itemResponseCount, ssType)
 							json, _ = sjson.SetBytes(json, path, ssValue)
 							return true // keep iterating
 						})

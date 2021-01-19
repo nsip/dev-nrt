@@ -10,6 +10,28 @@ import (
 
 var defaultPaddingToken byte = ' '
 
+var ItemCorrectness = map[string]string{
+	"NotAttempted": "9",
+	"NotInPath":    "9",
+	"Correct":      "1",
+	"Incorrect":    "0",
+}
+
+//
+// helper for pearson/acara format fixed-width reports
+// converts an item correctness token to a single number
+//
+func AcaraEncodeItemCorrectness(correctness string) string {
+
+	code, ok := ItemCorrectness[correctness]
+	if !ok {
+		return "0" // same default for unknown values as n2
+	}
+
+	return code
+
+}
+
 // PadRight returns a new string of a specified length in which the end of the current string is padded with spaces or with a specified Unicode character.
 func PadRight(str string, length int, pad byte) string {
 	if len(str) >= length {
