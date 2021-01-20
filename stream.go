@@ -146,12 +146,13 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.DomainItemResponsesReport("Numeracy"),
 			reports.DomainItemResponsesReport("Writing"),
 			reports.DomainItemResponsesWritingRubricsReport(), // gives further writing breakdown by subscore
-			// 
+			//
 			// reports
 			reports.NswAllPearsonY3Report(),
 			reports.NswAllPearsonY5Report(),
 			reports.NswAllPearsonY7Report(),
 			reports.NswAllPearsonY9Report(),
+			//
 			reports.PrintAllReport(),
 		)
 		// create a progress bar

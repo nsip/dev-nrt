@@ -37,11 +37,13 @@ func (r *DomainParticipation) ProcessStudentRecords(in chan *records.StudentOrie
 	go func() {
 		defer close(out)
 		for sor := range in {
-			if r.config.activated { // only process if active
-
-				sor.CalculatedFields = r.calculateFields(sor)
-
+			if !r.config.activated { // only process if active
+				out <- sor
+				continue
 			}
+
+			sor.CalculatedFields = r.calculateFields(sor)
+
 			out <- sor
 		}
 	}()

@@ -37,7 +37,7 @@ func (r *DomainResponsesScores) ProcessStudentRecords(in chan *records.StudentOr
 	go func() {
 		defer close(out)
 		for sor := range in {
-			if r.config.activated { // only process if active
+			if !r.config.activated { // only process if active
 				out <- sor
 				continue
 			}
@@ -104,7 +104,6 @@ func (r *DomainResponsesScores) calculateFields(sor *records.StudentOrientedReco
 		refid := gjson.GetBytes(event, "NAPStudentResponseSet.RefId").String()
 		path = fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.RefId", domain)
 		json, _ = sjson.SetBytes(json, path, refid)
-
 	}
 
 	// iterate the school score summaries of this student, are keyed by camel-case rendering of test domain
