@@ -208,6 +208,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.QcaaNapoTestsReport(),
 			reports.QcaaNapoTestletItemsReport(),
 			reports.SystemCodeframeReport(cfh),
+			reports.QaSystemCodeframeReport(cfh),
 			reports.QldTestDataReport(cfh),
 			reports.QcaaNapoWritingRubricReport(),
 			// keep this pair at end of pipeline to minimize data expansion
