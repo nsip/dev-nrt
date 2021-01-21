@@ -31,6 +31,8 @@ type baseConfig struct {
 	// the associated array of json queries to extract field values for
 	// each column of the report
 	queries []string
+	// rest of the config, can be used by the specific report
+	tree *toml.Tree
 }
 
 //
@@ -187,6 +189,10 @@ func readConfigFromFile(configFilePath string) *baseConfig {
 		config.activated = false
 		return &config
 	}
+
+	// store the tree so the report can access any custom
+	// settings
+	config.tree = tomlConfig
 
 	return &config
 

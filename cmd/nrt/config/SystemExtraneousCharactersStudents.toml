@@ -1,0 +1,36 @@
+
+[usage]
+reportName = "(QA) Prints details of students whose name attributes contain invalid characters"
+activated = true
+outputFileName = "./out/qa/systemExtraneousCharactersStudents.csv"
+
+
+# 
+# report-specific config settings
+# 
+[options]
+regex = "[^a-zA-Z' -]" # note is an inverse regex, invalid if NOT in the expression
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"Family Name" = "StudentPersonal.PersonInfo.Name.FamilyName"
+[[fields]]
+"Given Name" = "StudentPersonal.PersonInfo.Name.GivenName"
+[[fields]]
+"Middle Name" = "StudentPersonal.PersonInfo.Name.MiddleName"
+[[fields]]
+"Preferred Name" = "StudentPersonal.PersonInfo.Name.PreferredGivenName"
+[[fields]]
+"Birth Date" = "StudentPersonal.PersonInfo.Demographics.BirthDate"
+[[fields]]
+"TestLevel" = "StudentPersonal.MostRecent.TestLevel.Code"
+[[fields]]
+"YearLevel" = "StudentPersonal.MostRecent.TestLevel.Code"
+[[fields]]
+"PSI" = "StudentPersonal.OtherIdList.OtherId.#[Type==NAPPlatformStudentId].value"
+

@@ -1,6 +1,6 @@
 
 [usage]
-reportName = "Reports details of any students assigned to schools which are not present in the results data set"
+reportName = "(QA) Reports details of any students assigned to schools which are not present in the results data set"
 activated = true
 outputFileName = "./out/qa/orphanStudents.csv"
 
