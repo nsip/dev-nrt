@@ -1,0 +1,30 @@
+
+[usage]
+reportName = "Summary count of each data object type in the RRD"
+activated = true
+outputFileName = "./out/system_reports/systemObjectsCount.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"Schools" = "SchoolInfo"
+[[fields]]
+"Students" = "StudentPersonal"
+[[fields]]
+"Test Events" = "NAPEventStudentLink"
+[[fields]]
+"Student Responses" = "NAPStudentResponseSet"
+[[fields]]
+"Tests" = "NAPTest"
+[[fields]]
+"Testlets" = "NAPTestlet"
+[[fields]]
+"Test Items" = "NAPTestItem"
+[[fields]]
+"CodeFrames" = "NAPCodeFrame"
+[[fields]]
+"Score Summaries" = "NAPTestScoreSummary"

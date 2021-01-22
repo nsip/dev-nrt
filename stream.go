@@ -68,6 +68,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 		}
 		// create the object report pipeline
 		objpl := pipelines.NewObjectPipeline(
+			reports.SystemObjectsCountReport(),
 			reports.QcaaNapoSchoolsReport(),
 			reports.QcaaNapoStudentsReport(),
 			reports.QcaaTestScoreSummaryReport(),

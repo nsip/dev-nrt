@@ -430,7 +430,17 @@ func (e *Emitter) emitObjectRecords() {
 	defer close(e.objstream)
 
 	// list determiined by needs of current reports, can be extended to any data objects
-	orObjects := []string{"SchoolInfo", "StudentPersonal", "NAPTestScoreSummary"}
+	orObjects := []string{
+		"SchoolInfo", 
+		"StudentPersonal", 
+		"NAPTestScoreSummary",
+		"NAPTest",
+		"NAPTestlet",
+		"NAPTestItem",
+		"NAPStudentResponseSet",
+		"NAPCodeFrame",
+		"NAPEventStudentLink",
+	}
 
 	var it *badger.Iterator
 	var txnErr error
