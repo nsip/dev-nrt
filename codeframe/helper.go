@@ -374,7 +374,13 @@ func (cfh Helper) GetContainersForItem(refid string) map[string]string {
 // comes from codeframe not testlet object
 //
 func (cfh Helper) GetTestletLocationInStage(testletrefid string) string {
-	return cfh.locationInStage[testletrefid]
+
+	lis, ok := cfh.locationInStage[testletrefid]
+	if !ok {
+		return ""
+	}
+
+	return lis
 }
 
 //

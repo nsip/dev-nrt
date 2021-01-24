@@ -431,8 +431,8 @@ func (e *Emitter) emitObjectRecords() {
 
 	// list determiined by needs of current reports, can be extended to any data objects
 	orObjects := []string{
-		"SchoolInfo", 
-		"StudentPersonal", 
+		"SchoolInfo",
+		"StudentPersonal",
 		"NAPTestScoreSummary",
 		"NAPTest",
 		"NAPTestlet",

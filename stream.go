@@ -61,6 +61,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 	// with no business logic
 	//
 	g.Go(func() error {
+
 		// create a record emitter
 		em, err := records.NewEmitter(records.EmitterRepository(r))
 		if err != nil {
@@ -115,6 +116,9 @@ func StreamResults(r *repo.BadgerRepo) error {
 	// for a given student
 	//
 	g.Go(func() error {
+
+		// return nil
+
 		// create a record emitter
 		em, err := records.NewEmitter(records.EmitterRepository(r))
 		if err != nil {
@@ -194,6 +198,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 	// test, teslet, item etc.
 	//
 	g.Go(func() error {
+
 		// create a record emitter
 		em, err := records.NewEmitter(records.EmitterRepository(r))
 		if err != nil {
@@ -253,6 +258,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 	// Special case of event-oriented record processor
 	//
 	g.Go(func() error {
+
 		// create a record emitter
 		em, err := records.NewEmitter(records.EmitterRepository(r))
 		if err != nil {
@@ -304,6 +310,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 	// each record is the test, school, student, event & response
 	//
 	g.Go(func() error {
+
 		// create a record emitter
 		em, err := records.NewEmitter(records.EmitterRepository(r))
 		if err != nil {
@@ -334,6 +341,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.QcaaNapoEventStudentLinkReport(),
 			reports.QcaaNapoStudentResponseSetReport(),
 			reports.OrphanStudentsReport(),
+			reports.QaCodeframeCheckReport(cfh),
 		)
 		// create a progress bar
 		eventBar := uip.AddBar(stats["NAPEventStudentLink"]) // Add a new bar
