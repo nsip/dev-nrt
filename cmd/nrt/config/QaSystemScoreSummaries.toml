@@ -1,0 +1,18 @@
+
+[usage]
+reportName = "Captures presence of score summary by domain for each school"
+activated = true
+outputFileName = "./out/qa/qaSystemScoreSummaries.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"School ACARA ID" = "NAPTestScoreSummary.SchoolACARAId"
+[[fields]]
+"Test Level" = "CalculatedFields.NAPTest.TestContent.TestLevel.Code"
+[[fields]]
+"Test Domain" = "CalculatedFields.NAPTest.TestContent.Domain"
