@@ -345,6 +345,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.QaCodeframeCheckReport(cfh),
 			reports.SystemResponsesReport(),
 			reports.OrphanEventsReport(),
+			reports.SystemMissingTestletsReport(),
 		)
 		// create a progress bar
 		eventBar := uip.AddBar(stats["NAPEventStudentLink"]) // Add a new bar
