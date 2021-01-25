@@ -11,11 +11,11 @@ outputFileName = "./out/system_reports/systemDomainScores.csv"
 # final report
 #
 [[fields]]
-# "School" = "CalculatedFields.SchoolId"
+"School" = "CalculatedFields.SchoolId"
 [[fields]]
-# "YrLevel" = "CalculatedFields.YrLevel"
+"YrLevel" = "CalculatedFields.YrLevel"
 [[fields]]
-# "Domain" = "CalculatedFields.Domain"
+"Domain" = "CalculatedFields.Domain"
 #
 # fields ablve are for report splitting 
 #
