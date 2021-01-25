@@ -121,7 +121,6 @@ func missingTestlets(eor *records.EventOrientedRecord) bool {
 
 	return false
 
-
 	// note: writing test responses have a null path taken member, there's no path
 	// just a single testlet.
 	// the strings.split function returns an array of length 1 however beacuse
