@@ -347,6 +347,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.OrphanEventsReport(),
 			reports.SystemMissingTestletsReport(),
 			reports.SystemParticipationCodeImpactsReport(),
+			reports.SystemParticipationCodeItemImpactsReport(cfh),
 		)
 		// create a progress bar
 		eventBar := uip.AddBar(stats["NAPEventStudentLink"]) // Add a new bar
@@ -386,7 +387,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 	//
 	// allow time for flush of large csv files to complete
 	//
-	time.Sleep(time.Millisecond * 1000)
+	time.Sleep(time.Millisecond * 1200)
 
 	// n.b. output stats as objectcount report
 
