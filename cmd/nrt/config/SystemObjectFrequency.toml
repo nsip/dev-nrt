@@ -1,6 +1,6 @@
 
 [usage]
-reportName = "Reports comparison of events and responses for each student"
+reportName = "(QA) Reports comparison of events and responses for each student"
 activated = true
 outputFileName = "./out/qa/systemObjectFrequency.csv"
 
