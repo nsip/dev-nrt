@@ -136,6 +136,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			//
 			reports.SystemParticipationReport(),
 			reports.IsrPrintingReport(),
+			reports.SystemObjectFrequencyReport(),
 			//
 			// pre-processors
 			//

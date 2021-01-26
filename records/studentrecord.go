@@ -107,7 +107,7 @@ func (sor *StudentOrientedRecord) GetValueString(queryPath string) string {
 }
 
 //
-// not used in 2020, but forward idea is to have codeframe helper
+// not used in 2021, but forward idea is to have codeframe helper
 // generate a full codeframe lookup using refids for all item-
 // testlet-test combos, so everyhting is definitive from refids not based on
 // naming lookups
