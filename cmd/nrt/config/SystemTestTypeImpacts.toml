@@ -1,0 +1,52 @@
+
+[usage]
+reportName = "(QA) Reports tests for which the response contents are unexpected based on the test domain"
+activated = true
+outputFileName = "./out/qa/systemTestTypeImpacts.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"School" = "CalculatedFields.SchoolId"
+[[fields]]
+"YrLevel" = "CalculatedFields.YrLevel"
+[[fields]]
+"Domain" = "CalculatedFields.Domain"
+#
+# fields above are for report splitting 
+#
+
+[[fields]]
+"ACARA ID" = "SchoolInfo.ACARAId"
+[[fields]]
+"School Name" = "SchoolInfo.SchoolName"
+[[fields]]
+"Test Level" = "NAPTest.TestContent.TestLevel.Code"
+[[fields]]
+"Test Domain" = "NAPTest.TestContent.Domain"
+[[fields]]
+"Participation Code" = "NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"Family Name" = "StudentPersonal.PersonInfo.Name.FamilyName"
+[[fields]]
+"Given Name" = "StudentPersonal.PersonInfo.Name.GivenName"
+[[fields]]
+"Birth Date" = "StudentPersonal.PersonInfo.Demographics.BirthDate"
+[[fields]]
+"PSI" = "StudentPersonal.OtherIdList.OtherId.#[Type==NAPPlatformStudentId].value"
+[[fields]]
+"Path Taken For Domain" = "NAPStudentResponseSet.PathTakenForDomain"
+[[fields]]
+"Parallel Test" = "NAPStudentResponseSet.ParallelTest"
+[[fields]]
+"Raw Score" = "NAPStudentResponseSet.DomainScore.RawScore"
+[[fields]]
+"Scaled Score Value" = "NAPStudentResponseSet.DomainScore.ScaledScoreValue"
+[[fields]]
+"ResponseID" = "NAPStudentResponseSet.RefId"
+[[fields]]
+"Error" = "CalculatedFields.SystemTestTypeImpactError"
