@@ -333,6 +333,8 @@ func StreamResults(r *repo.BadgerRepo) error {
 			//
 			reports.WritingExtractReport(),
 			reports.WritingExtractQaPSIReport(),
+			// 
+			// 
 			reports.SaHomeschooledTestsReport(),
 			reports.CompareItemWritingReport(),
 			reports.NswWritingPearsonY3Report(cfh),
@@ -354,6 +356,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.SystemTestTypeImpactsReport(),
 			reports.SystemTestTypeItemImpactsReport(cfh),
 			reports.SystemStudentEventAcaraIdDiscrepanciesReport(),
+			reports.SystemTestYearLevelDiscrepanciesReport(),
 		)
 		// create a progress bar
 		eventBar := uip.AddBar(stats["NAPEventStudentLink"]) // Add a new bar
