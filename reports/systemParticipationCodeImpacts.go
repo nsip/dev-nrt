@@ -2,7 +2,6 @@ package reports
 
 import (
 	"encoding/csv"
-	"errors"
 	"fmt"
 
 	"github.com/nsip/dev-nrt/records"
@@ -12,13 +11,6 @@ import (
 type SystemParticipationCodeImpacts struct {
 	baseReport // embed common setup capability
 }
-
-var (
-	errUnexpectedAdaptivePathway = errors.New("Adaptive pathway without student undertaking test")
-	errUnexpectedScore           = errors.New("Scored test with status other than P or R")
-	errRefusedScore              = errors.New("Non-zero score with status of R")
-	errMissingScore              = errors.New("Unscored test with status of P or R")
-)
 
 //
 // Reports errors when responses contain unexpected information based on the

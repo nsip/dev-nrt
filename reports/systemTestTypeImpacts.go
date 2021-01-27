@@ -2,7 +2,6 @@ package reports
 
 import (
 	"encoding/csv"
-	"errors"
 	"fmt"
 
 	"github.com/nsip/dev-nrt/records"
@@ -25,11 +24,6 @@ func SystemTestTypeImpactsReport() *SystemTestTypeImpacts {
 	return &r
 
 }
-
-var (
-	errWritingAdaptive = errors.New("Writing test with adaptive structure")
-	errNonAdaptive     = errors.New("Non-writing test with non-adaptive structure")
-)
 
 //
 // implement the EventPipe interface, core work of the

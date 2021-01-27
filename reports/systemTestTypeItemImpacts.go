@@ -10,19 +10,18 @@ import (
 	"github.com/tidwall/sjson"
 )
 
-type SystemParticipationCodeItemImpacts struct {
+type SystemTestTypeItemImpacts struct {
 	baseReport // embed common setup capability
 	cfh        codeframe.Helper
 }
 
 //
-// Reports errors when response items contain unexpected information based on the
-// participation code
+// Reports items for which the item responses are unexpected based on the test domain
 //
-func SystemParticipationCodeItemImpactsReport(cfh codeframe.Helper) *SystemParticipationCodeItemImpacts {
+func SystemTestTypeItemImpactsReport(cfh codeframe.Helper) *SystemTestTypeItemImpacts {
 
-	r := SystemParticipationCodeItemImpacts{cfh: cfh}
-	r.initialise("./config/SystemParticipationCodeItemImpacts.toml")
+	r := SystemTestTypeItemImpacts{cfh: cfh}
+	r.initialise("./config/SystemTestTypeItemImpacts.toml")
 	r.printStatus()
 
 	return &r
@@ -33,7 +32,7 @@ func SystemParticipationCodeItemImpactsReport(cfh codeframe.Helper) *SystemParti
 // implement the EventPipe interface, core work of the
 // report engine.
 //
-func (r *SystemParticipationCodeItemImpacts) ProcessEventRecords(in chan *records.EventOrientedRecord) chan *records.EventOrientedRecord {
+func (r *SystemTestTypeItemImpacts) ProcessEventRecords(in chan *records.EventOrientedRecord) chan *records.EventOrientedRecord {
 
 	out := make(chan *records.EventOrientedRecord)
 	go func() {
@@ -53,7 +52,8 @@ func (r *SystemParticipationCodeItemImpacts) ProcessEventRecords(in chan *record
 			//
 			// single event record can produce multiple item errors
 			//
-			for _, itemError := range participationItemImpact(eor) {
+			for _, itemError := range testItemImpact(eor) {
+
 				//
 				// generate any calculated fields required
 				//
@@ -82,20 +82,12 @@ func (r *SystemParticipationCodeItemImpacts) ProcessEventRecords(in chan *record
 }
 
 //
-// checks for anomalies in the record.
+// check each items against the qa criteria, return a list of items that have errors
 //
-// same checks as n2.
-//
-func participationItemImpact(eor *records.EventOrientedRecord) []*itemError {
+func testItemImpact(eor *records.EventOrientedRecord) []*itemError {
 
 	//
-	// fetch properties from record
-	//
-	participationCode := eor.GetValueString("NAPEventStudentLink.ParticipationCode")
-	testDomain := eor.GetValueString("NAPTest.TestContent.Domain")
-
-	//
-	// now iterate testlets -> items in response
+	// iterate testlets -> items in response
 	//
 	itemErrors := make([]*itemError, 0)
 	gjson.GetBytes(eor.NAPStudentResponseSet, "NAPStudentResponseSet.TestletList.Testlet").
@@ -111,34 +103,23 @@ func participationItemImpact(eor *records.EventOrientedRecord) []*itemError {
 					// and the json of the item response
 					ierr.itemResponseJson = value.Raw
 					// properties used for logic tests
-					itemLapsedTime := value.Get("LapsedTimeItem").String()
 					itemScore := value.Get("Score").String()
-					itemResponse := value.Get("Response").String()
 					itemSubScores := value.Get("SubscoreList.Subscore").Array()
 
 					//
 					// validation logic copied from n2 implementation
 					//
-					// note: logic using testletscore has not been ported
-					// as this score n longer exists in dataset
 					//
-					if itemLapsedTime == "" || itemResponse == "" {
-						if participationCode != "P" && participationCode != "S" {
-							ierr.err = errUnexpectedItemResponse
+					if eor.IsWritingResponse() {
+						if nonzero(itemScore) && len(itemSubScores) == 0 { // score assigned but no subscores to justify it
+							ierr.err = errNoWritingSubscores
 							itemErrors = append(itemErrors, ierr)
 						}
 					}
 					//
-					if itemScore == "" {
-						if participationCode == "R" || participationCode == "P" {
-							ierr.err = errMissingItemScore
-							itemErrors = append(itemErrors, ierr)
-						}
-					}
-					//
-					if testDomain == "Writing" && participationCode == "P" {
-						if len(itemSubScores) == 0 {
-							ierr.err = errMissingItemWritingScore
+					if !eor.IsWritingResponse() {
+						if len(itemSubScores) > 0 { // not a writing item, but has subscores
+							ierr.err = errUnexpectedItemSubscores
 							itemErrors = append(itemErrors, ierr)
 						}
 					}
@@ -149,6 +130,7 @@ func participationItemImpact(eor *records.EventOrientedRecord) []*itemError {
 		})
 
 	return itemErrors
+
 }
 
 //
@@ -156,21 +138,26 @@ func participationItemImpact(eor *records.EventOrientedRecord) []*itemError {
 // record containing values that are not in the original data
 //
 //
-func (r *SystemParticipationCodeItemImpacts) calculateFields(eor *records.EventOrientedRecord, ierr *itemError) []byte {
+func (r *SystemTestTypeItemImpacts) calculateFields(eor *records.EventOrientedRecord, ierr *itemError) []byte {
 
 	json := eor.CalculatedFields // maintain existing calculated fields
 
 	itemLocalId := r.cfh.GetCodeframeObjectValueString(ierr.itemRefId, "NAPTestItem.TestItemContent.NAPTestItemLocalId")
 	itemName := r.cfh.GetCodeframeObjectValueString(ierr.itemRefId, "NAPTestItem.TestItemContent.ItemName")
+	itemSubDomain := r.cfh.GetCodeframeObjectValueString(ierr.itemRefId, "NAPTestItem.TestItemContent.Subdomain")
+	itemGenre := r.cfh.GetCodeframeObjectValueString(ierr.itemRefId, "NAPTestItem.TestItemContent.WritingGenre")
 	itemScore := gjson.Get(ierr.itemResponseJson, "Score").String()
 	itemSubScores := gjson.Get(ierr.itemResponseJson, "SubscoreList.Subscore").String()
 
 	json, _ = sjson.SetBytes(json, "CalculatedFields.TestItem.TestItemContent.NAPTestItemLocalId", itemLocalId)
 	json, _ = sjson.SetBytes(json, "CalculatedFields.TestItem.TestItemContent.ItemName", itemName)
+	json, _ = sjson.SetBytes(json, "CalculatedFields.TestItem.TestItemContent.Subdomain", itemSubDomain)
+	json, _ = sjson.SetBytes(json, "CalculatedFields.TestItem.TestItemContent.WritingGenre", itemGenre)
 	json, _ = sjson.SetBytes(json, "CalculatedFields.ItemResponse.Score", itemScore)
 	json, _ = sjson.SetBytes(json, "CalculatedFields.ItemResponse.Subscores", itemSubScores)
 
-	json, _ = sjson.SetBytes(json, "CalculatedFields.ParticipationCodeItemImpactError", ierr.err.Error())
+	json, _ = sjson.SetBytes(json, "CalculatedFields.TestTypeItemImpactError", ierr.err.Error())
 
 	return json
+
 }
