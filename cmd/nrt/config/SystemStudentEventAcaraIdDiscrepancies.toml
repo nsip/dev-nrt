@@ -1,0 +1,38 @@
+
+[usage]
+reportName = "(QA) Reports a row for every test administered at a different school from where the student was enrolled"
+activated = true
+outputFileName = "./out/qa/systemStudentEventAcaraIdDiscrepancies.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"School" = "CalculatedFields.SchoolId"
+[[fields]]
+"YrLevel" = "CalculatedFields.YrLevel"
+[[fields]]
+"Domain" = "CalculatedFields.Domain"
+#
+# fields above are for report splitting 
+#
+
+[[fields]]
+"Family Name" = "StudentPersonal.PersonInfo.Name.FamilyName"
+[[fields]]
+"Given Name" = "StudentPersonal.PersonInfo.Name.GivenName"
+[[fields]]
+"Birth Date" = "StudentPersonal.PersonInfo.Demographics.BirthDate"
+[[fields]]
+"YearLevel" = "StudentPersonal.MostRecent.YearLevel.Code"
+[[fields]]
+"PSI" = "StudentPersonal.OtherIdList.OtherId.#[Type==NAPPlatformStudentId].value"
+[[fields]]
+"Home ACARA ID" = "StudentPersonal.MostRecent.SchoolACARAId"
+[[fields]]
+"Event ACARA ID" = "NAPEventStudentLink.SchoolACARAId"
+[[fields]]
+"Test Local ID" = "NAPEventStudentLink.NAPTestLocalId"
