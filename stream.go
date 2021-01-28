@@ -328,6 +328,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.SystemDomainScoresReport(),
 			reports.CompareRRDtestsReport(),
 			reports.SystemTestCompletenessReport(),
+			reports.QaCodeframeCheckReport(cfh),
 			//
 			// TODO: insert w/e greelist/redlist filters here...
 			// filter should come only before writing-extract reports
@@ -346,7 +347,6 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.QcaaNapoEventStudentLinkReport(),
 			reports.QcaaNapoStudentResponseSetReport(),
 			reports.OrphanStudentsReport(),
-			reports.QaCodeframeCheckReport(cfh),
 			reports.SystemResponsesReport(),
 			reports.OrphanEventsReport(),
 			reports.SystemMissingTestletsReport(),
@@ -358,6 +358,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.SystemTestTypeItemImpactsReport(cfh),
 			reports.SystemStudentEventAcaraIdDiscrepanciesReport(),
 			reports.SystemTestYearLevelDiscrepanciesReport(),
+			reports.SystemRubricSubscoreMatchesReport(cfh),
 		)
 		// create a progress bar
 		eventBar := uip.AddBar(stats["NAPEventStudentLink"]) // Add a new bar
@@ -397,7 +398,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 	//
 	// allow time for flush of large csv files to complete
 	//
-	time.Sleep(time.Millisecond * 1200)
+	time.Sleep(time.Millisecond * 1300)
 
 	// n.b. output stats as objectcount report
 

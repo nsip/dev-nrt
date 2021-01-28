@@ -11,7 +11,6 @@
 package codeframe
 
 import (
-	"fmt"
 	"log"
 	"strconv"
 	"strings"
@@ -347,7 +346,7 @@ func (cfh Helper) GetItem(refid string) (bool, []byte) {
 
 	item, ok := cfh.data["NAPTestItem"][refid]
 	if !ok {
-		fmt.Println("cfh unable to find TestItem", refid)
+		// fmt.Println("cfh unable to find TestItem", refid)
 		return false, []byte{}
 	}
 	return true, item
@@ -413,7 +412,7 @@ func (cfh Helper) GetCodeframeObjectValueString(refid, queryPath string) string 
 	objName := strings.Split(queryPath, ".")[0]
 	record, ok := cfh.data[objName][refid]
 	if !ok {
-		log.Println("GetCodeframeObjectValueString() cannot find value for path:", queryPath)
+		log.Println("GetCodeframeObjectValueString() cannot find value for path:", queryPath, refid)
 		return ""
 	}
 
