@@ -327,14 +327,15 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.QldStudentScoreReport(),
 			reports.SystemDomainScoresReport(),
 			reports.CompareRRDtestsReport(),
+			reports.SystemTestCompletenessReport(),
 			//
 			// TODO: insert w/e greelist/redlist filters here...
 			// filter should come only before writing-extract reports
 			//
 			reports.WritingExtractReport(),
 			reports.WritingExtractQaPSIReport(),
-			// 
-			// 
+			//
+			//
 			reports.SaHomeschooledTestsReport(),
 			reports.CompareItemWritingReport(),
 			reports.NswWritingPearsonY3Report(cfh),
