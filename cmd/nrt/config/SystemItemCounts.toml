@@ -1,0 +1,28 @@
+
+[usage]
+reportName = "(QA) Number of times a test item was encountered by students accross all tests"
+activated = true
+outputFileName = "./out/qa/systemItemCounts.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"Test Name" = "CalculatedFields.SystemItemCounts.TestContent.TestName"
+[[fields]]
+"Test Level" = "CalculatedFields.SystemItemCounts.TestContent.TestLevel.Code"
+[[fields]]
+"Test Domain" = "CalculatedFields.SystemItemCounts.NAPTest.TestContent.Domain"
+[[fields]]
+"TestItem LocalId" = "CalculatedFields.SystemItemCounts.NAPTestItem.TestItemContent.NAPTestItemLocalId"
+[[fields]]
+"Item in Codeframe" = "CalculatedFields.SystemItemCounts.NAPTestItem.ItemInCodeFrame"
+[[fields]]
+"Item Valid Substitute" = "CalculatedFields.SystemItemCounts.NAPTestItem.ItemIsSubstitute"
+[[fields]]
+"Item Usage Count" = "CalculatedFields.SystemItemCounts.NAPTestItem.UsageCount"
+[[fields]]
+"Substitute For" = "CalculatedFields.SystemItemCounts.NAPTestItem.TestItemContent.SubstituteItem.SubstituteItemLocalId"

@@ -268,11 +268,16 @@ func StreamResults(r *repo.BadgerRepo) error {
 		}
 		// create the item reporting pipeline
 		pl := pipelines.NewEventPipeline(
-			// processors to set up reports, need to be kept in this order
+			//
+			// pre-processors to set up reports, need to be kept in this order
+			//
 			reports.EventRecordSplitterBlockReport(),
 			reports.ItemResponseExtractorReport(),
 			reports.ItemDetailReport(cfh),
+			//
 			// actual reports
+			//
+			reports.SystemItemCountsReport(cfh),
 			reports.NswItemPrintingReport(),
 			reports.QcaaNapoStudentResponsesReport(),
 			reports.ItemPrintingReport(),
