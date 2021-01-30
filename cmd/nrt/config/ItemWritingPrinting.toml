@@ -1,0 +1,93 @@
+
+[usage]
+reportName = "Summary of response data for writing tests, one row per student"
+activated = true
+outputFileName = "./out/qa/itemWritingPrinting.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"School" = "CalculatedFields.SchoolId"
+[[fields]]
+"YrLevel" = "CalculatedFields.YrLevel"
+[[fields]]
+"Domain" = "CalculatedFields.Domain"
+#
+# fields above are for report splitting 
+#
+
+[[fields]]
+"Test Name" = "NAPTest.TestContent.TestName"
+[[fields]]
+"Test level" = "NAPTest.TestContent.TestLevel.Code"
+[[fields]]
+"Test Domain" = "NAPTest.TestContent.Domain"
+[[fields]]
+"ItemRefID" = "CalculatedFields.ItemWritingPrinting.NAPTestItem.RefId"
+[[fields]]
+"Test Item Local Id" = "CalculatedFields.ItemWritingPrinting.NAPTestItem.NAPTestItemLocalId"
+[[fields]]
+"Test Item Name" = "CalculatedFields.ItemWritingPrinting.NAPTestItem.ItemName"
+[[fields]]
+"Subdomain" = "CalculatedFields.ItemWritingPrinting.NAPTestItem.Subdomain"
+[[fields]]
+"Writing Genre" = "CalculatedFields.ItemWritingPrinting.NAPTestItem.WritingGenre"
+[[fields]]
+"Birth Date" = "StudentPersonal.PersonInfo.Demographics.BirthDate"
+[[fields]]
+"ACARA ID" = "SchoolInfo.ACARAId"
+[[fields]]
+"PSI" = "NAPEventStudentLink.PlatformStudentIdentifier"
+# [[fields]]
+# no longer part of dataser
+# "Testlet Score" = "NAPStudentResponseSet.TestletList.Testlet.0.TestletScore"
+[[fields]]
+"Item Score" = "NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.Score"
+[[fields]]
+"Item Lapsed Time" = "NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.LapsedTimeItem"
+[[fields]]
+"Item Response" = "CalculatedFields.ItemWritingPrinting.EscapedResponse"
+[[fields]]
+"Participation Code" = "NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"Testlet LocalId" = "NAPStudentResponseSet.TestletList.Testlet.0.NAPTestletLocalId"
+[[fields]]
+"Response Correctness" = "NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.ResponseCorrectness"
+[[fields]]
+"Item Substituted For" = "CalculatedFields.ItemWritingPrinting.NAPTestItem.SubstituteFor"
+
+[[fields]]
+"Spelling Score" = "CalculatedFields.ItemWritingPrinting.Spelling.Score"
+[[fields]]
+"Audience Score" = "CalculatedFields.ItemWritingPrinting.Audience.Score"
+[[fields]]
+"Text Structure Score" = "CalculatedFields.ItemWritingPrinting.TextStructure.Score"
+[[fields]]
+"Paragraphing Score" = "CalculatedFields.ItemWritingPrinting.Paragraphing.Score"
+[[fields]]
+"Sentence Structure Score" = "CalculatedFields.ItemWritingPrinting.SentenceStructure.Score"
+[[fields]]
+"Punctuation Score" = "CalculatedFields.ItemWritingPrinting.Punctuation.Score"
+[[fields]]
+"Ideas Score" = "CalculatedFields.ItemWritingPrinting.Ideas.Score"
+[[fields]]
+"Persuasive Devices Score" = "CalculatedFields.ItemWritingPrinting.PersuasiveDevices.Score"
+[[fields]]
+"Vocabulary Score" = "CalculatedFields.ItemWritingPrinting.Vocabulary.Score"
+[[fields]]
+"Cohesion Score" = "CalculatedFields.ItemWritingPrinting.Cohesion.Score"
+
+
+
+
+
+
+
+
+
+
+
