@@ -1,0 +1,20 @@
+
+[usage]
+reportName = "(QA) Reports any score summary objects where the schoolinfo they relate to is not a registered school in the rrd dataset"
+activated = true
+outputFileName = "./out/qa/orphanScoreSummaries.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"NAP Test Local Id" = "NAPTestScoreSummary.NAPTestLocalId"
+[[fields]]
+"Summary RefId" = "NAPTestScoreSummary.RefId"
+[[fields]]
+"SchoolInfo RefId" = "NAPTestScoreSummary.SchoolInfoRefId"
+[[fields]]
+"SchoolACARAId" = "NAPTestScoreSummary.SchoolACARAId"
