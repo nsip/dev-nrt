@@ -112,6 +112,93 @@ func StreamResults(r *repo.BadgerRepo) error {
 		return nil
 	})
 
+	// ====================
+
+	//
+	// Student-oriented reports processor2
+	// each record contains all test responses and events
+	// for a given student
+	//
+	g.Go(func() error {
+
+		// return nil
+
+		// create a record emitter
+		em, err := records.NewEmitter(records.EmitterRepository(r))
+		if err != nil {
+			return err
+		}
+		// create the object report pipeline
+		pl := pipelines.NewStudentPipeline(
+			// pre-processors
+			//
+			reports.StudentRecordSplitterBlockReport(),
+			reports.DomainParticipationReport(),
+			reports.DomainResponsesScoresReport(),
+			// reports
+			//
+			// reports.SystemParticipationReport(),
+			// reports.IsrPrintingReport(),
+			// reports.SystemObjectFrequencyReport(),
+			//
+			// pre-processors
+			//
+			reports.DomainDACReport(cfh),
+			// reports
+			//
+			// reports.IsrPrintingExpandedReport(),
+			// reports.NswPrintReport(),
+			//
+			// pre- processors
+			//
+			reports.DomainItemResponsesReport("Reading"),
+			reports.DomainItemResponsesReport("Spelling"),
+			reports.DomainItemResponsesReport("GrammarAndPunctuation"),
+			reports.DomainItemResponsesReport("Numeracy"),
+			reports.DomainItemResponsesReport("Writing"),
+			reports.DomainItemResponsesWritingRubricsReport(), // gives further writing breakdown by subscore
+			//
+			// reports
+			reports.NswAllPearsonY3Report(),
+			reports.NswAllPearsonY5Report(),
+			reports.NswAllPearsonY7Report(),
+			reports.NswAllPearsonY9Report(),
+			//
+			// reports.PrintAllReport(),
+		)
+		// create a progress bar
+		stuBar := uip.AddBar(stats["StudentPersonal"])
+		stuBar.AppendCompleted().PrependElapsed()
+		stuBar.PrependFunc(func(b *uiprogress.Bar) string {
+			return strutil.Resize(" Student-based reports-2:", 25)
+		})
+
+		//
+		// register an output handler for pipeline, used for progress-bar
+		// but could also be audit sink, backup of processed records etc.
+		//
+		// NOTE: must be handler here even with empty body
+		// otherwise exit channel blocks for pipeline
+		//
+		go pl.Dequeue(func(sor *records.StudentOrientedRecord) {
+			// easy win no-op, also reclaims memory
+			// sor = nil
+			stuBar.Incr()
+		})
+		defer pl.Close()
+		//
+		// now iterate the object records, passing them through
+		// the processing pipeline
+		//
+		for sor := range em.StudentBasedStream() {
+			pl.Enqueue(sor)
+		}
+
+		return nil
+	})
+
+	// ===================
+
 	//
 	// Student-oriented reports processor
 	// each record contains all test responses and events
@@ -149,20 +236,20 @@ func StreamResults(r *repo.BadgerRepo) error {
 			//
 			// pre- processors
 			//
-			reports.DomainItemResponsesReport("Reading"),
-			reports.DomainItemResponsesReport("Spelling"),
-			reports.DomainItemResponsesReport("GrammarAndPunctuation"),
-			reports.DomainItemResponsesReport("Numeracy"),
-			reports.DomainItemResponsesReport("Writing"),
-			reports.DomainItemResponsesWritingRubricsReport(), // gives further writing breakdown by subscore
+			// reports.DomainItemResponsesReport("Reading"),
+			// reports.DomainItemResponsesReport("Spelling"),
+			// reports.DomainItemResponsesReport("GrammarAndPunctuation"),
+			// reports.DomainItemResponsesReport("Numeracy"),
+			// reports.DomainItemResponsesReport("Writing"),
+			// reports.DomainItemResponsesWritingRubricsReport(), // gives further writing breakdown by subscore
 			//
 			// reports
-			reports.NswAllPearsonY3Report(),
-			reports.NswAllPearsonY5Report(),
-			reports.NswAllPearsonY7Report(),
-			reports.NswAllPearsonY9Report(),
+			// reports.NswAllPearsonY3Report(),
+			// reports.NswAllPearsonY5Report(),
+			// reports.NswAllPearsonY7Report(),
+			// reports.NswAllPearsonY9Report(),
 			//
-			reports.PrintAllReport(),
+			// reports.PrintAllReport(),
 		)
 		// create a progress bar
 		stuBar := uip.AddBar(stats["StudentPersonal"])
@@ -341,6 +428,8 @@ func StreamResults(r *repo.BadgerRepo) error {
 			//
 			reports.WritingExtractReport(),
 			reports.WritingExtractQaPSIReport(),
+			reports.QaSchoolsWritingExtractReport(),
+			reports.QaSchoolsReport(),
 			//
 			//
 			reports.SaHomeschooledTestsReport(),

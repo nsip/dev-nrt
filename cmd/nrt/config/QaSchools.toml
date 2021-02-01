@@ -1,0 +1,132 @@
+
+[usage]
+reportName = "(QA) Summary of student distributions accross year-levels and tests with participation data"
+activated = true
+outputFileName = "./out/qa/qaSchools.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+
+[[fields]]
+"SchoolName" = "SchoolInfo.SchoolName"
+# [[fields]] # no longer provided
+# "Sector" = "DerivedSector"
+[[fields]]
+"Sector" = "SchoolInfo.SchoolSector"
+# [[fields]] # no longer provided
+# "System" = "DerivedSystem"
+# [[fields]] # no longer provided
+# "Independent" = "IndependentSchool"
+# [[fields]] # no longer provided
+# "Type" = "SchoolType"
+[[fields]]
+"Local ID" = "SchoolInfo.LocalId"
+[[fields]]
+"ACARA ID" = "CalculatedFields.QaSchools.SchoolACARAId"
+# [[fields]] # no longer provided
+# "State ID" = "StateProvinceId"
+# [[fields]] # no longer provided
+# "District" = "SchoolDistrict"
+# [[fields]] # no longer provided
+# "Address" = "AddressList.Address"
+# 
+[[fields]]
+"Total Student Events" = "CalculatedFields.QaSchools.TotalStudents"
+# 
+[[fields]]
+"Students in School Y3" = "CalculatedFields.QaSchools.YearLevel.3.TotalStudents"
+[[fields]]
+"Students in Test Y3" = "CalculatedFields.QaSchools.TestLevel.3.TotalStudents"
+[[fields]]
+"Students in School Y5" = "CalculatedFields.QaSchools.YearLevel.5.TotalStudents"
+[[fields]]
+"Students in Test Y5" = "CalculatedFields.QaSchools.TestLevel.5.TotalStudents"
+[[fields]]
+"Students in School Y7" = "CalculatedFields.QaSchools.YearLevel.7.TotalStudents"
+[[fields]]
+"Students in Test Y7" = "CalculatedFields.QaSchools.TestLevel.7.TotalStudents"
+[[fields]]
+"Students in School Y9" = "CalculatedFields.QaSchools.YearLevel.9.TotalStudents"
+[[fields]]
+"Students in Test Y9" = "CalculatedFields.QaSchools.TestLevel.9.TotalStudents"
+# 
+[[fields]]
+"Total Test Attempts" = "CalculatedFields.QaSchools.TotalTestAttempts"
+# 
+[[fields]]
+"Y3 G&P" = "CalculatedFields.QaSchools.TestLevel.3.TestDomain.GrammarAndPunctuation.TotalAttempts"
+[[fields]]
+"Y3 Writing" = "CalculatedFields.QaSchools.TestLevel.3.TestDomain.Writing.TotalAttempts"
+[[fields]]
+"Y3 Numeracy" = "CalculatedFields.QaSchools.TestLevel.3.TestDomain.Numeracy.TotalAttempts"
+[[fields]]
+"Y3 Reading" = "CalculatedFields.QaSchools.TestLevel.3.TestDomain.Reading.TotalAttempts"
+[[fields]]
+"Y3 Spelling" = "CalculatedFields.QaSchools.TestLevel.3.TestDomain.Spelling.TotalAttempts"
+# 
+[[fields]]
+"Y5 G&P" = "CalculatedFields.QaSchools.TestLevel.5.TestDomain.GrammarAndPunctuation.TotalAttempts"
+[[fields]]
+"Y5 Writing" = "CalculatedFields.QaSchools.TestLevel.5.TestDomain.Writing.TotalAttempts"
+[[fields]]
+"Y5 Numeracy" = "CalculatedFields.QaSchools.TestLevel.5.TestDomain.Numeracy.TotalAttempts"
+[[fields]]
+"Y5 Reading" = "CalculatedFields.QaSchools.TestLevel.5.TestDomain.Reading.TotalAttempts"
+[[fields]]
+"Y5 Spelling" = "CalculatedFields.QaSchools.TestLevel.5.TestDomain.Spelling.TotalAttempts"
+# 
+[[fields]]
+"Y7 G&P" = "CalculatedFields.QaSchools.TestLevel.7.TestDomain.GrammarAndPunctuation.TotalAttempts"
+[[fields]]
+"Y7 Writing" = "CalculatedFields.QaSchools.TestLevel.7.TestDomain.Writing.TotalAttempts"
+[[fields]]
+"Y7 Numeracy" = "CalculatedFields.QaSchools.TestLevel.7.TestDomain.Numeracy.TotalAttempts"
+[[fields]]
+"Y7 Reading" = "CalculatedFields.QaSchools.TestLevel.7.TestDomain.Reading.TotalAttempts"
+[[fields]]
+"Y7 Spelling" = "CalculatedFields.QaSchools.TestLevel.7.TestDomain.Spelling.TotalAttempts"
+# 
+[[fields]]
+"Y9 G&P" = "CalculatedFields.QaSchools.TestLevel.9.TestDomain.GrammarAndPunctuation.TotalAttempts"
+[[fields]]
+"Y9 Writing" = "CalculatedFields.QaSchools.TestLevel.9.TestDomain.Writing.TotalAttempts"
+[[fields]]
+"Y9 Numeracy" = "CalculatedFields.QaSchools.TestLevel.9.TestDomain.Numeracy.TotalAttempts"
+[[fields]]
+"Y9 Reading" = "CalculatedFields.QaSchools.TestLevel.9.TestDomain.Reading.TotalAttempts"
+[[fields]]
+"Y9 Spelling" = "CalculatedFields.QaSchools.TestLevel.9.TestDomain.Spelling.TotalAttempts"
+# 
+[[fields]]
+"Not Enrolled (X)" = "CalculatedFields.QaSchools.ParticipationCode.X.TotalAttempts"
+[[fields]]
+"Absent (A)" = "CalculatedFields.QaSchools.ParticipationCode.A.TotalAttempts"
+[[fields]]
+"Cancelled (C)" = "CalculatedFields.QaSchools.ParticipationCode.C.TotalAttempts"
+[[fields]]
+"Exempt (E)" = "CalculatedFields.QaSchools.ParticipationCode.E.TotalAttempts"
+[[fields]]
+"Withdrawn (W)" = "CalculatedFields.QaSchools.ParticipationCode.W.TotalAttempts"
+[[fields]]
+"Sanctioned Abandon. (S)" = "CalculatedFields.QaSchools.ParticipationCode.S.TotalAttempts"
+[[fields]]
+"Refused (R)" = "CalculatedFields.QaSchools.ParticipationCode.R.TotalAttempts"
+[[fields]]
+"Alt Format (F)" = "CalculatedFields.QaSchools.ParticipationCode.F.TotalAttempts"
+# 
+[[fields]]
+"Disruptions" = "CalculatedFields.QaSchools.TotalDisruptions"
+# 
+# [[fields]]
+# "Writing Extracts Y3" = "CalculatedFields.QaSchools.TestLevel.3.TotalExtracts"
+# [[fields]]
+# "Writing Extracts Y5" = "CalculatedFields.QaSchools.TestLevel.5.TotalExtracts"
+# [[fields]]
+# "Writing Extracts Y7" = "CalculatedFields.QaSchools.TestLevel.7.TotalExtracts"
+# [[fields]]
+# "Writing Extracts Y9" = "CalculatedFields.QaSchools.TestLevel.9.TotalExtracts"
+
