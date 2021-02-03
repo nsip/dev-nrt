@@ -180,16 +180,20 @@ func (r *SystemItemCounts) calculateFields(ic itemContext, usageCount int) []byt
 	//
 	// get any details required about this item
 	//
-	subRefId, isSubstitute := r.cfh.IsSubstituteItem(ic.itemRefId)
-	//
 	var itemLocalId, subLocalId string
 	inCodeFrame, _ := r.cfh.GetItem(ic.itemRefId)
 	if inCodeFrame {
 		itemLocalId = r.cfh.GetCodeframeObjectValueString(ic.itemRefId, "NAPTestItem.TestItemContent.NAPTestItemLocalId")
 	}
-	validSubItem, _ := r.cfh.GetItem(subRefId)
-	if validSubItem {
-		subLocalId = r.cfh.GetCodeframeObjectValueString(subRefId, "NAPTestItem.TestItemContent.NAPTestItemLocalId")
+	//
+	// check substitute status
+	//
+	subRefIds, isSubstitute := r.cfh.IsSubstituteItem(ic.itemRefId)
+	for subRefId := range subRefIds {
+		validSubItem, _ := r.cfh.GetItem(subRefId)
+		if validSubItem {
+			subLocalId = r.cfh.GetCodeframeObjectValueString(subRefId, "NAPTestItem.TestItemContent.NAPTestItemLocalId")
+		}
 	}
 
 	//

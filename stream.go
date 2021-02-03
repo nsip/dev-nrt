@@ -130,11 +130,13 @@ func StreamResults(r *repo.BadgerRepo) error {
 		}
 		// create the object report pipeline
 		pl := pipelines.NewStudentPipeline(
+			// 
 			// pre-processors
 			//
 			reports.StudentRecordSplitterBlockReport(),
 			reports.DomainParticipationReport(),
 			reports.DomainResponsesScoresReport(),
+			// 
 			// reports
 			//
 			// reports.SystemParticipationReport(),
@@ -144,6 +146,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			// pre-processors
 			//
 			reports.DomainDACReport(cfh),
+			// 
 			// reports
 			//
 			// reports.IsrPrintingExpandedReport(),
@@ -164,7 +167,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.NswAllPearsonY7Report(),
 			reports.NswAllPearsonY9Report(),
 			//
-			// reports.PrintAllReport(),
+			reports.PrintAllReport(),
 		)
 		// create a progress bar
 		stuBar := uip.AddBar(stats["StudentPersonal"])
@@ -297,9 +300,10 @@ func StreamResults(r *repo.BadgerRepo) error {
 		// create the codeframe report pipeline
 		cfpl := pipelines.NewCodeframePipeline(
 			reports.QcaaNapoTestletsReport(cfh),
-			// remaining codeframe reports need item-test-link multiplexer to
+			// remaining codeframe reports need htis item-test-link multiplexer to
 			// come first in the pipeline sequence
 			reports.ItemTestLinkReport(cfh),
+			//
 			reports.QcaaNapoItemsReport(),
 			reports.QcaaNapoTestsReport(),
 			reports.QcaaNapoTestletItemsReport(),
@@ -307,7 +311,9 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.QaSystemCodeframeReport(cfh),
 			reports.QldTestDataReport(cfh),
 			reports.QcaaNapoWritingRubricReport(),
+			//
 			// keep this pair at end of pipeline to minimize data expansion
+			//
 			reports.ItemRubricExtractorReport(),
 			reports.QcaaNapoWritingRubricReport(),
 		)
@@ -455,6 +461,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.SystemTestYearLevelDiscrepanciesReport(),
 			reports.SystemRubricSubscoreMatchesReport(cfh),
 			reports.ItemWritingPrintingReport(cfh),
+			reports.ItemExpectedResponsesReport(cfh),
 		)
 		// create a progress bar
 		eventBar := uip.AddBar(stats["NAPEventStudentLink"]) // Add a new bar

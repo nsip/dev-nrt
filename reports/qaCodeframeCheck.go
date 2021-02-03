@@ -22,7 +22,7 @@ type codeframeIssue struct {
 	testletLocalId string
 	itemRefId      string
 	itemLocalId    string
-	itemSubRefId   string
+	itemSubRefIds  map[string]struct{}
 	itemSubLocalId string
 	substitue      bool
 }
@@ -130,7 +130,7 @@ func (r *QaCodeframeCheck) calculateFields(issue *codeframeIssue) []byte {
 	// codeframe - in effect the item/substitute refernces have been created the wrong way round
 	//
 	if issue.substitue {
-		json, _ = sjson.SetBytes(json, "CalculatedFields.SubstituteItemRefId", issue.itemSubRefId)
+		json, _ = sjson.SetBytes(json, "CalculatedFields.SubstituteItemRefId", issue.itemSubRefIds)
 		json, _ = sjson.SetBytes(json, "CalculatedFields.SubstituteItemLocalId", issue.itemSubLocalId)
 		json, _ = sjson.SetBytes(json, "CalculatedFields.ErrorType", "codeframe acyclical use of substitute item")
 	}
@@ -173,13 +173,17 @@ func (r *QaCodeframeCheck) validate(eor *records.EventOrientedRecord) {
 					//
 					// first we need ot see if this is a substitute item
 					//
-					if cfi.itemSubRefId, cfi.substitue = r.cfh.IsSubstituteItem(cfi.itemRefId); cfi.substitue {
+					if cfi.itemSubRefIds, cfi.substitue = r.cfh.IsSubstituteItem(cfi.itemRefId); cfi.substitue {
 						//
 						// if it is then use the substitute to look up the
 						// codeframe validity, codeframe itself doesn;t know about
 						// substitute items
 						//
-						containers = r.cfh.GetContainersForItem(cfi.itemSubRefId)
+						for subRefId := range cfi.itemSubRefIds {
+							for k, v := range r.cfh.GetContainersForItem(subRefId) {
+								containers[k] = v // add testlet-test reference to lookup
+							}
+						}
 						cfi.itemSubLocalId = r.cfh.GetCodeframeObjectValueString(cfi.itemRefId, "NAPTestItem.TestItemContent.NAPTestItemLocalId")
 					} else {
 						//

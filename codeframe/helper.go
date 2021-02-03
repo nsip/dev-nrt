@@ -33,7 +33,8 @@ type Helper struct {
 	itemSequence    map[string]map[string]string
 	locationInStage map[string]string
 	rubrics         []string
-	substitutes     map[string]string
+	substitutes     map[string]map[string]struct{}
+	expectedItems   map[string]map[string]map[string]struct{}
 }
 
 //
@@ -49,8 +50,9 @@ func NewHelper(r *repository.BadgerRepo) (Helper, error) {
 		reverseLookup:   make(map[string]map[string]string, 0),
 		itemSequence:    make(map[string]map[string]string, 0),
 		locationInStage: make(map[string]string, 0),
-		substitutes:     make(map[string]string, 0),
+		substitutes:     make(map[string]map[string]struct{}, 0),
 		rubrics:         []string{},
+		expectedItems:   make(map[string]map[string]map[string]struct{}, 0),
 	} // initialise the internal maps
 
 	// wrap repo in emitter
@@ -93,6 +95,10 @@ func NewHelper(r *repository.BadgerRepo) (Helper, error) {
 	// extract item sequencing within testlets
 	//
 	h.extractItemSequence()
+	//
+	// extract expected items per testlet
+	//
+	h.extractExpectedTestletItems()
 
 	return h, nil
 
@@ -137,6 +143,10 @@ func (cfh *Helper) extractItemSequence() {
 //
 func (cfh *Helper) extractSubstitutes() {
 	var itemRefId, substituteRefId string
+	//
+	// codeframe can contain items with substitutes, making them reverse substitutions
+	// probably not deliberate, but capture anyway
+	//
 	for _, cfBytes := range cfh.data["NAPCodeFrame"] {
 		//
 		// iterate the nested json strucure & extract substitutes
@@ -149,9 +159,12 @@ func (cfh *Helper) extractSubstitutes() {
 						// see if this item is a substitute
 						value.Get("TestItemContent.ItemSubstitutedForList.SubstituteItem").
 							ForEach(func(key, value gjson.Result) bool {
-								// if so get the refid of the item it subs for
+								if _, ok := cfh.substitutes[itemRefId]; !ok { // watch for null values
+									cfh.substitutes[itemRefId] = make(map[string]struct{}, 0)
+								}
+								// if so get the refid of the items it can sub for
 								substituteRefId = value.Get("SubstituteItemRefId").String()
-								cfh.substitutes[itemRefId] = substituteRefId
+								cfh.substitutes[itemRefId][substituteRefId] = struct{}{}
 								return true // keep iterating
 							})
 						return true // keep iterating
@@ -159,6 +172,27 @@ func (cfh *Helper) extractSubstitutes() {
 				return true // keep iterating
 			})
 	}
+
+	//
+	// main capture is from the atomic items themselves
+	//
+	for _, itemBytes := range cfh.data["NAPTestItem"] {
+		//
+		// iterate the nested json strucure & extract substitutes
+		//
+		itemRefId = gjson.GetBytes(itemBytes, "NAPTestItem.RefId").String()
+		gjson.GetBytes(itemBytes, "NAPTestItem.TestItemContent.ItemSubstitutedForList.SubstituteItem").
+			ForEach(func(key, value gjson.Result) bool {
+				if _, ok := cfh.substitutes[itemRefId]; !ok { // watch for null values
+					cfh.substitutes[itemRefId] = make(map[string]struct{}, 0)
+				}
+				// if so get the refid of the items it can sub for
+				substituteRefId = value.Get("SubstituteItemRefId").String()
+				cfh.substitutes[itemRefId][substituteRefId] = struct{}{}
+				return true // keep iterating
+			})
+	}
+
 }
 
 //
@@ -339,6 +373,63 @@ func (cfh Helper) GetDACs() []string {
 }
 
 //
+// creates lookup sets of the items (refids) associated with
+// each test/teslet combination
+//
+//
+func (cfh *Helper) extractExpectedTestletItems() {
+
+	expectedItems := make(map[string]map[string]map[string]struct{}, 0)
+
+	var cfTestRefId, testletRefId, itemRefId string
+	for _, cfBytes := range cfh.data["NAPCodeFrame"] {
+		//
+		// get the test id
+		//
+		cfTestRefId = gjson.GetBytes(cfBytes, "NAPCodeFrame.NAPTestRefId").String()
+		if _, ok := expectedItems[cfTestRefId]; !ok { // avoid null nodes
+			expectedItems[cfTestRefId] = make(map[string]map[string]struct{}, 0)
+		}
+		//
+		// iterate the nested json strucure & extract containers
+		//
+		gjson.GetBytes(cfBytes, "NAPCodeFrame.TestletList.Testlet").
+			ForEach(func(key, value gjson.Result) bool {
+				testletRefId = value.Get("NAPTestletRefId").String() // get the testlet refid
+				value.Get("TestItemList.TestItem").
+					ForEach(func(key, value gjson.Result) bool {
+						itemRefId = value.Get("TestItemRefId").String()             // get the item refid
+						if _, ok := expectedItems[cfTestRefId][testletRefId]; !ok { // avoid null nodes
+							expectedItems[cfTestRefId][testletRefId] = make(map[string]struct{}, 0)
+						}
+						expectedItems[cfTestRefId][testletRefId][itemRefId] = struct{}{} // store the lookup
+						return true                                                      // keep iterating
+					})
+				return true // keep iterating
+			})
+	}
+
+	cfh.expectedItems = expectedItems
+}
+
+//
+// For given test/testlet combination returns list of expected items
+// - returned is a map[string]struct{} so acts as a set that can
+// have lookups performed against it to test for presence of members
+// the contents of the set are the refids of the expected items
+//
+func (cfh Helper) GetExpectedTestletItems(testRefId, testletRefId string) map[string]struct{} {
+
+	items, ok := cfh.expectedItems[testRefId][testletRefId]
+	if !ok {
+		return map[string]struct{}{}
+	}
+
+	return items
+
+}
+
+//
 // return the json block for a given testitem refid
 // boolean return value indicates if a value was found
 //
@@ -383,19 +474,20 @@ func (cfh Helper) GetTestletLocationInStage(testletrefid string) string {
 }
 
 //
-// for a given item refid, returns the refid (string) of the item
-// this item substitutes for
+// for a given item refid, returns the set of refids (string) of the item
+// this item substitutes for, returned as a set (map[string]struct{}) so can
+// be tested for membership.
 // boolean return can be used simply to determine if this item is
 // a substitute
 //
-func (cfh Helper) IsSubstituteItem(refid string) (string, bool) {
+func (cfh Helper) IsSubstituteItem(itemRefid string) (map[string]struct{}, bool) {
 
-	subForRefId, ok := cfh.substitutes[refid]
+	subsForRefId, ok := cfh.substitutes[itemRefid]
 	if !ok {
-		return "", ok
+		return map[string]struct{}{}, ok
 	}
 
-	return subForRefId, ok
+	return subsForRefId, ok
 }
 
 //

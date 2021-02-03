@@ -115,11 +115,11 @@ func (r *ItemWritingPrinting) calculateFields(eor *records.EventOrientedRecord) 
 	json, _ = sjson.SetBytes(json, path, itemGenre)
 
 	path = "CalculatedFields.ItemWritingPrinting.NAPTestItem.SubstituteFor"
-	subRefId, ok := r.cfh.IsSubstituteItem(itemRefId)
-	if !ok {
-		subRefId = "" // not a substitute
+	subRefIds, ok := r.cfh.IsSubstituteItem(itemRefId)
+	if ok {
+		json, _ = sjson.SetBytes(json, path, subRefIds)
 	}
-	json, _ = sjson.SetBytes(json, path, subRefId)
+
 	//
 	// then the writing rubric scores
 	//
