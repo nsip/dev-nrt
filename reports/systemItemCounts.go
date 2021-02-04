@@ -180,7 +180,7 @@ func (r *SystemItemCounts) calculateFields(ic itemContext, usageCount int) []byt
 	//
 	// get any details required about this item
 	//
-	var itemLocalId, subLocalId string
+	var itemLocalId string
 	inCodeFrame, _ := r.cfh.GetItem(ic.itemRefId)
 	if inCodeFrame {
 		itemLocalId = r.cfh.GetCodeframeObjectValueString(ic.itemRefId, "NAPTestItem.TestItemContent.NAPTestItemLocalId")
@@ -188,12 +188,11 @@ func (r *SystemItemCounts) calculateFields(ic itemContext, usageCount int) []byt
 	//
 	// check substitute status
 	//
+	var subLocalIds []string
 	subRefIds, isSubstitute := r.cfh.IsSubstituteItem(ic.itemRefId)
 	for subRefId := range subRefIds {
-		validSubItem, _ := r.cfh.GetItem(subRefId)
-		if validSubItem {
-			subLocalId = r.cfh.GetCodeframeObjectValueString(subRefId, "NAPTestItem.TestItemContent.NAPTestItemLocalId")
-		}
+		localId := r.cfh.GetCodeframeObjectValueString(subRefId, "NAPTestItem.TestItemContent.NAPTestItemLocalId")
+		subLocalIds = append(subLocalIds, localId)
 	}
 
 	//
@@ -208,7 +207,7 @@ func (r *SystemItemCounts) calculateFields(ic itemContext, usageCount int) []byt
 	json, _ = sjson.SetBytes(json, "CalculatedFields.SystemItemCounts.NAPTestItem.UsageCount", usageCount)
 
 	json, _ = sjson.SetBytes(json, "CalculatedFields.SystemItemCounts.NAPTestItem.TestItemContent.NAPTestItemLocalId", itemLocalId)
-	json, _ = sjson.SetBytes(json, "CalculatedFields.SystemItemCounts.NAPTestItem.TestItemContent.SubstituteItem.SubstituteItemLocalId", subLocalId)
+	json, _ = sjson.SetBytes(json, "CalculatedFields.SystemItemCounts.NAPTestItem.TestItemContent.SubstituteItem.SubstituteItemLocalId", subLocalIds)
 
 	return json
 }

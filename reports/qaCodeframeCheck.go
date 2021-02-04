@@ -118,7 +118,7 @@ func (r *QaCodeframeCheck) calculateFields(issue *codeframeIssue) []byte {
 
 	json := issue.eor.CalculatedFields
 
-	// add new stuff but remember we are able to access full eor in props
+	// add details of any issues found
 	json, _ = sjson.SetBytes(json, "CalculatedFields.NAPTestlet.RefId", issue.testletRefId)
 	json, _ = sjson.SetBytes(json, "CalculatedFields.NAPTestlet.TestletContent.NAPTestletLocalId", issue.testletLocalId)
 	json, _ = sjson.SetBytes(json, "CalculatedFields.NAPTestItem.RefId", issue.itemRefId)
@@ -154,7 +154,7 @@ func (r *QaCodeframeCheck) validate(eor *records.EventOrientedRecord) {
 	gjson.GetBytes(eor.NAPStudentResponseSet, "NAPStudentResponseSet.TestletList.Testlet").
 		ForEach(func(key, value gjson.Result) bool {
 			cfi := &codeframeIssue{}
-			containers := make(map[string]string, 0)
+			containers := make(map[string][]string, 0)
 			//
 			// get testlet identifiers
 			//
@@ -200,9 +200,11 @@ func (r *QaCodeframeCheck) validate(eor *records.EventOrientedRecord) {
 					// in the codeframe for this item have at least one match with the
 					// combination captured in this response
 					//
-					for testlet, test := range containers {
-						if testlet == cfi.testletRefId && test == cfi.testRefId {
-							return true // keep iterating - gjson equiv. of continue - to next item response
+					for testlet, tests := range containers {
+						for _, test := range tests {
+							if testlet == cfi.testletRefId && test == cfi.testRefId {
+								return true // keep iterating - gjson equiv. of continue - to next item response
+							}
 						}
 					}
 					//

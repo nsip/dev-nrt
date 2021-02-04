@@ -52,26 +52,29 @@ func (r *ItemTestLink) ProcessCodeframeRecords(in chan *records.CodeframeRecord)
 			//
 			// get all test containers associated with this item
 			//
-			for testletRefId, testRefId := range r.cfh.GetContainersForItem(cfr.RefId()) {
-				// fetch localids
-				testLocalId := r.cfh.GetCodeframeObjectValueString(testRefId, "NAPTest.TestContent.NAPTestLocalId")
-				testletLocalId := r.cfh.GetCodeframeObjectValueString(testletRefId, "NAPTestlet.TestletContent.NAPTestletLocalId")
-				// get sequnce info
-				testletLIS := r.cfh.GetTestletLocationInStage(testletRefId)
-				itemSeqNo := r.cfh.GetItemTestletSequenceNumber(cfr.RefId(), testletRefId)
-				// create a copy for each test, and assign the container ids etc. to calculated fields
-				calcf, _ := sjson.SetBytes([]byte{}, "CalculatedFields.NAPTestRefId", testRefId)
-				calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestletRefId", testletRefId)
-				calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestLocalId", testLocalId)
-				calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestletLocalId", testletLocalId)
-				calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestItem.SequenceNumber", itemSeqNo)
-				calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestlet.TestletContent.LocationInStage", testletLIS)
-				newcfr := records.CodeframeRecord{
-					RecordType:       cfr.RecordType,
-					Json:             cfr.Json,
-					CalculatedFields: calcf,
+			for testletRefId, testRefIds := range r.cfh.GetContainersForItem(cfr.RefId()) {
+				for _, testRefId := range testRefIds {
+					// fetch localids
+					testLocalId := r.cfh.GetCodeframeObjectValueString(testRefId, "NAPTest.TestContent.NAPTestLocalId")
+					testletLocalId := r.cfh.GetCodeframeObjectValueString(testletRefId, "NAPTestlet.TestletContent.NAPTestletLocalId")
+					// get sequnce info
+					testletLIS := r.cfh.GetTestletLocationInStage(testletRefId)
+					itemSeqNo := r.cfh.GetItemTestletSequenceNumber(cfr.RefId(), testletRefId)
+					// create a copy for each test, and assign the container ids etc. to calculated fields
+					calcf, _ := sjson.SetBytes([]byte{}, "CalculatedFields.NAPTestRefId", testRefId)
+					calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestletRefId", testletRefId)
+					calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestLocalId", testLocalId)
+					calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestletLocalId", testletLocalId)
+					calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestItem.SequenceNumber", itemSeqNo)
+					calcf, _ = sjson.SetBytes(calcf, "CalculatedFields.NAPTestlet.TestletContent.LocationInStage", testletLIS)
+					newcfr := records.CodeframeRecord{
+						RecordType:       cfr.RecordType,
+						Json:             cfr.Json,
+						CalculatedFields: calcf,
+					}
+					out <- &newcfr
 				}
-				out <- &newcfr
+
 			}
 		}
 	}()

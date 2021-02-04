@@ -29,7 +29,7 @@ import (
 //
 type Helper struct {
 	data            map[string]map[string][]byte
-	reverseLookup   map[string]map[string]string
+	reverseLookup   map[string]map[string][]string
 	itemSequence    map[string]map[string]string
 	locationInStage map[string]string
 	rubrics         []string
@@ -47,7 +47,7 @@ func NewHelper(r *repository.BadgerRepo) (Helper, error) {
 
 	h := Helper{
 		data:            make(map[string]map[string][]byte, 0),
-		reverseLookup:   make(map[string]map[string]string, 0),
+		reverseLookup:   make(map[string]map[string][]string, 0),
 		itemSequence:    make(map[string]map[string]string, 0),
 		locationInStage: make(map[string]string, 0),
 		substitutes:     make(map[string]map[string]struct{}, 0),
@@ -174,7 +174,7 @@ func (cfh *Helper) extractSubstitutes() {
 	}
 
 	//
-	// main capture is from the atomic items themselves
+	// main capture of substitutes is from the atomic items themselves
 	//
 	for _, itemBytes := range cfh.data["NAPTestItem"] {
 		//
@@ -247,9 +247,17 @@ func (cfh *Helper) extractLocationInStage() {
 // e.g. Test from Item - find the test/s an item was assinged to
 // via testlets
 //
+// note: testlets are not normally re-used across tests, but the common
+// exception is for them to be re-used in writing/alt_writing tests
+//
 func (cfh *Helper) buildReverseLookup() {
 
+	lookup := make(map[string]map[string][]string, 0)
+
 	var testRefId, testletRefId, itemRefId string
+	//
+	// extract core lookup from codeframe
+	//
 	for _, cfBytes := range cfh.data["NAPCodeFrame"] {
 		//
 		// get the test id
@@ -264,15 +272,48 @@ func (cfh *Helper) buildReverseLookup() {
 				value.Get("TestItemList.TestItem").
 					ForEach(func(key, value gjson.Result) bool {
 						itemRefId = value.Get("TestItemRefId").String() // get the item refid
-						if _, ok := cfh.reverseLookup[itemRefId]; !ok { // avoid null nodes
-							cfh.reverseLookup[itemRefId] = make(map[string]string, 0)
+						if _, ok := lookup[itemRefId]; !ok {            // avoid null nodes
+							lookup[itemRefId] = make(map[string][]string, 0)
 						}
-						cfh.reverseLookup[itemRefId][testletRefId] = testRefId // store the lookup
-						return true                                            // keep iterating
+						if _, ok := lookup[itemRefId][testletRefId]; !ok { // avoid null nodes
+							lookup[itemRefId][testletRefId] = make([]string, 0)
+						}
+						lookup[itemRefId][testletRefId] = append(lookup[itemRefId][testletRefId], testRefId) // store the lookup
+						return true                                                                          // keep iterating
 					})
 				return true // keep iterating
 			})
 	}
+
+	//
+	// also iterate just testlests as those used for alternate writing (for example)
+	// are not reflected in the main codeframe
+	//
+	for _, testletBytes := range cfh.data["NAPTestlet"] {
+		//
+		// get the test/testlet id
+		//
+		testRefId = gjson.GetBytes(testletBytes, "NAPTestlet.NAPTestRefId").String()
+		testletRefId = gjson.GetBytes(testletBytes, "NAPTestlet.RefId").String() // get the testlet refid
+		//
+		// iterate the nested json strucure & extract items
+		//
+		gjson.GetBytes(testletBytes, "NAPTestlet.TestItemList.TestItem").
+			ForEach(func(key, value gjson.Result) bool {
+				itemRefId = value.Get("TestItemRefId").String() // get the item refid
+				if _, ok := lookup[itemRefId]; !ok {            // avoid null nodes
+					lookup[itemRefId] = make(map[string][]string, 0)
+				}
+				if _, ok := lookup[itemRefId][testletRefId]; !ok { // avoid null nodes
+					lookup[itemRefId][testletRefId] = make([]string, 0)
+				}
+				lookup[itemRefId][testletRefId] = append(lookup[itemRefId][testletRefId], testRefId) // store the lookup
+				return true                                                                          // keep iterating
+			})
+	}
+
+	cfh.reverseLookup = lookup
+
 }
 
 //
@@ -450,9 +491,9 @@ func (cfh Helper) GetItem(refid string) (bool, []byte) {
 //
 // returns a map of pairs where key is the testlet refid and value is the test refid
 //
-func (cfh Helper) GetContainersForItem(refid string) map[string]string {
+func (cfh Helper) GetContainersForItem(refid string) map[string][]string {
 
-	c := make(map[string]string, 0)
+	c := make(map[string][]string, 0)
 	c = cfh.reverseLookup[refid]
 
 	return c

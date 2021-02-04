@@ -44,10 +44,10 @@ func StreamResults(r *repo.BadgerRepo) error {
 	//
 	var uip *uiprogress.Progress
 	uip = uiprogress.New()
-	defer uip.Stop()
+	// defer uip.Stop()
 	fmt.Printf("\n\n--- Running Reports:\n\n")
 	uip.Start()
-	// uip.Stop()
+	uip.Stop()
 
 	//
 	// start the different processing pipelines concurrently
@@ -130,13 +130,13 @@ func StreamResults(r *repo.BadgerRepo) error {
 		}
 		// create the object report pipeline
 		pl := pipelines.NewStudentPipeline(
-			// 
+			//
 			// pre-processors
 			//
 			reports.StudentRecordSplitterBlockReport(),
 			reports.DomainParticipationReport(),
 			reports.DomainResponsesScoresReport(),
-			// 
+			//
 			// reports
 			//
 			// reports.SystemParticipationReport(),
@@ -146,7 +146,7 @@ func StreamResults(r *repo.BadgerRepo) error {
 			// pre-processors
 			//
 			reports.DomainDACReport(cfh),
-			// 
+			//
 			// reports
 			//
 			// reports.IsrPrintingExpandedReport(),
@@ -299,10 +299,17 @@ func StreamResults(r *repo.BadgerRepo) error {
 		}
 		// create the codeframe report pipeline
 		cfpl := pipelines.NewCodeframePipeline(
+			//
+			// report
+			//
 			reports.QcaaNapoTestletsReport(cfh),
+			//
+			// pre-processor
 			// remaining codeframe reports need htis item-test-link multiplexer to
 			// come first in the pipeline sequence
 			reports.ItemTestLinkReport(cfh),
+			//
+			// reports
 			//
 			reports.QcaaNapoItemsReport(),
 			reports.QcaaNapoTestsReport(),
@@ -310,11 +317,14 @@ func StreamResults(r *repo.BadgerRepo) error {
 			reports.SystemCodeframeReport(cfh),
 			reports.QaSystemCodeframeReport(cfh),
 			reports.QldTestDataReport(cfh),
-			reports.QcaaNapoWritingRubricReport(),
 			//
 			// keep this pair at end of pipeline to minimize data expansion
+			// pre-processor
 			//
 			reports.ItemRubricExtractorReport(),
+			//
+			// report
+			//
 			reports.QcaaNapoWritingRubricReport(),
 		)
 		// create a progress bar
