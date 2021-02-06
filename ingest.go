@@ -14,9 +14,9 @@ import (
 // Given a foldername ingest looks for all xml/xml.zip files and
 // processes them into the supplied repository.
 //
-func IngestResults(folderName string, r *repo.BadgerRepo) error {
+func ingestResults(folderName string, r *repo.BadgerRepo) error {
 
-	defer utils.TimeTrack(time.Now(), "IngestResults()")
+	defer utils.TimeTrack(time.Now(), "Results data ingest")
 
 	//
 	// capture stats from each file ingested

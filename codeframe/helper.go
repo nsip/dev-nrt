@@ -14,12 +14,10 @@ import (
 	"log"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/nsip/dev-nrt/pipelines"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/nsip/dev-nrt/repository"
-	"github.com/nsip/dev-nrt/utils"
 	"github.com/tidwall/gjson"
 )
 
@@ -43,7 +41,7 @@ type Helper struct {
 //
 func NewHelper(r *repository.BadgerRepo) (Helper, error) {
 
-	defer utils.TimeTrack(time.Now(), "codeframe NewHelper()")
+	// defer utils.TimeTrack(time.Now(), "codeframe NewHelper()")
 
 	h := Helper{
 		data:            make(map[string]map[string][]byte, 0),
