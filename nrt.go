@@ -91,6 +91,7 @@ func (tr *Transformer) Run() error {
 	defer tr.repository.Close()
 
 	if tr.stopAfterIngest {
+		fmt.Println("--- Halting post-ingest.")
 		return nil
 	}
 
@@ -120,22 +121,26 @@ func (tr *Transformer) Run() error {
 	//
 	// run the report processing streams
 	//
-	return tr.streamResults()
+	err =  tr.streamResults()
+	if err != nil {
+		return err
+	}
 
+	// =================================
+	// 
 	// split
 
+	// =================================
+	// 
+	// tidy up
+	err = os.RemoveAll("./out/null/")
+	if err != nil {
+		return err
+	}
+
+	return nil
+
 }
-
-// stats & codeframe can only be done after ingest/valid db
-//
-// auto-ingest; decision...
-// T.ingest ...
-//
-// T.getStats, tells us if valid repo by numbers e.g. tests
-// T.buildHelper
-
-//
-// T.stream ...
 
 // ==========================================
 //

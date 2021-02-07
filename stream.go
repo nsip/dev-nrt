@@ -27,7 +27,7 @@ func (tr *Transformer) streamResults() error {
 	if tr.qaReports {
 		fmt.Printf("\n\n--- Running Reports (+QA reports):\n\n")
 	} else {
-		fmt.Printf("\n\n--- Running Reports (no QA reports):\n\n")
+		fmt.Printf("\n\n--- Running Reports (-QA reports):\n\n")
 	}
 	if tr.showProgress {
 		tr.uip.Start()
@@ -155,8 +155,10 @@ func (tr *Transformer) simpleObjectReports() error {
 	if err != nil {
 		return err
 	}
-	// create the object report pipeline
-	objpl := pipelines.NewObjectPipeline(
+
+	// create the pipeline members
+	// regular reports
+	rpt := []pipelines.ObjectPipe{
 		reports.SystemObjectsCountReport(),
 		reports.QcaaNapoSchoolsReport(),
 		reports.QcaaNapoStudentsReport(),
@@ -164,10 +166,20 @@ func (tr *Transformer) simpleObjectReports() error {
 		reports.SystemSchoolsReport(),
 		reports.SystemScoreSummariesReport(),
 		reports.QldStudentReport(),
-		reports.SystemExtraneousCharactersStudentsReport(), // qa
-		reports.QaSystemScoreSummariesReport(tr.helper),    // qa
-		reports.OrphanScoreSummariesReport(),               // qa
-	)
+	}
+	// include qa reports if requested
+	if tr.qaReports {
+		qa := []pipelines.ObjectPipe{
+			reports.SystemExtraneousCharactersStudentsReport(), // qa
+			reports.QaSystemScoreSummariesReport(tr.helper),    // qa
+			reports.OrphanScoreSummariesReport(),               // qa
+		}
+		rpt = append(rpt, qa...)
+	}
+
+	// create the object report pipeline
+	objpl := pipelines.NewObjectPipeline(rpt...)
+
 	// create a progress bar
 	barsize := tr.stats["SchoolInfo"] + tr.stats["StudentPersonal"] + tr.stats["NAPTestScoreSummary"]
 	bar := tr.uip.AddBar(barsize)
@@ -207,13 +219,16 @@ func (tr *Transformer) simpleObjectReports() error {
 // for a given student
 //
 func (tr *Transformer) studentReports() error {
+
 	// create a record emitter
 	em, err := records.NewEmitter(records.EmitterRepository(tr.repository))
 	if err != nil {
 		return err
 	}
-	// create the object report pipeline
-	pl := pipelines.NewStudentPipeline(
+
+	// create report processor sequences
+	// reports & processors are deliberately sequenced for greatest efficiency
+	rpt := []pipelines.StudentPipe{
 		// pre-processors
 		//
 		reports.StudentRecordSplitterBlockReport(),
@@ -223,8 +238,13 @@ func (tr *Transformer) studentReports() error {
 		//
 		reports.SystemParticipationReport(),
 		reports.IsrPrintingReport(),
-		reports.SystemObjectFrequencyReport(), // qa
-		//
+	}
+	// insert qa report if reuested
+	if tr.qaReports {
+		rpt = append(rpt, reports.SystemObjectFrequencyReport())
+	}
+	// construct second half of processor chain
+	rpt2 := []pipelines.StudentPipe{
 		// pre-processors
 		//
 		reports.DomainDACReport(tr.helper),
@@ -232,7 +252,13 @@ func (tr *Transformer) studentReports() error {
 		//
 		reports.IsrPrintingExpandedReport(),
 		reports.NswPrintReport(),
-	)
+	}
+	// create single processor list, in desired order
+	rpt = append(rpt, rpt2...)
+
+	// create the object report pipeline
+	pl := pipelines.NewStudentPipeline(rpt...)
+
 	// create a progress bar
 	bar := tr.uip.AddBar(tr.stats["StudentPersonal"])
 	bar.AppendCompleted().PrependElapsed()
@@ -277,8 +303,10 @@ func (tr *Transformer) codeframeReports() error {
 	if err != nil {
 		return err
 	}
-	// create the codeframe report pipeline
-	cfpl := pipelines.NewCodeframePipeline(
+
+	// create report processor sequences
+	// reports & processors are deliberately sequenced for greatest efficiency
+	rpt := []pipelines.CodeframePipe{
 		//
 		// report
 		//
@@ -295,7 +323,16 @@ func (tr *Transformer) codeframeReports() error {
 		reports.QcaaNapoTestsReport(),
 		reports.QcaaNapoTestletItemsReport(),
 		reports.SystemCodeframeReport(tr.helper),
-		reports.QaSystemCodeframeReport(tr.helper), // qa
+	}
+	// add qa reports if requested
+	if tr.qaReports {
+		rpt = append(rpt, reports.QaSystemCodeframeReport(tr.helper))
+	}
+	// create second half of processor sequence
+	rpt2 := []pipelines.CodeframePipe{
+		//
+		// report
+		//
 		reports.QldTestDataReport(tr.helper),
 		//
 		// keep this pair at end of pipeline to minimize data expansion
@@ -306,7 +343,13 @@ func (tr *Transformer) codeframeReports() error {
 		// report
 		//
 		reports.QcaaNapoWritingRubricReport(),
-	)
+	}
+	// create single processor list, in desired order
+	rpt = append(rpt, rpt2...)
+
+	// create the codeframe report pipeline
+	cfpl := pipelines.NewCodeframePipeline(rpt...)
+
 	// create a progress bar
 	barSize := tr.stats["NAPCodeFrame"] + tr.stats["NAPTest"] + tr.stats["NAPTestlet"] + tr.stats["NAPTestItem"]
 	codeframeBar := tr.uip.AddBar(barSize)
@@ -412,17 +455,13 @@ func (tr *Transformer) eventReports() error {
 	if err != nil {
 		return err
 	}
-	// create the item reporting pipeline
-	pl := pipelines.NewEventPipeline(
-		//
-		//
+
+	rpt := []pipelines.EventPipe{
 		reports.EventRecordSplitterBlockReport(),
 		reports.ActSystemDomainScoresReport(),
 		reports.QldStudentScoreReport(),
 		reports.SystemDomainScoresReport(),
 		reports.CompareRRDtestsReport(),
-		reports.SystemTestCompletenessReport(),    // qa
-		reports.QaCodeframeCheckReport(tr.helper), // qa
 		reports.SaHomeschooledTestsReport(),
 		reports.CompareItemWritingReport(),
 		reports.NswWritingPearsonY3Report(tr.helper),
@@ -432,22 +471,37 @@ func (tr *Transformer) eventReports() error {
 		reports.SystemPNPEventsReport(),
 		reports.QcaaNapoEventStudentLinkReport(),
 		reports.QcaaNapoStudentResponseSetReport(),
-		reports.OrphanStudentsReport(),                              // qa
-		reports.SystemResponsesReport(),                             // qa
-		reports.OrphanEventsReport(),                                // qa
-		reports.SystemMissingTestletsReport(),                       // qa
-		reports.SystemParticipationCodeImpactsReport(),              // qa
-		reports.SystemParticipationCodeItemImpactsReport(tr.helper), // qa
-		reports.SystemTestAttemptsReport(),                          // qa
-		reports.SystemTestIncidentsReport(),                         // qa
-		reports.SystemTestTypeImpactsReport(),                       // qa
-		reports.SystemTestTypeItemImpactsReport(tr.helper),          // qa
-		reports.SystemStudentEventAcaraIdDiscrepanciesReport(),      // qa
-		reports.SystemTestYearLevelDiscrepanciesReport(),            // qa
-		reports.SystemRubricSubscoreMatchesReport(tr.helper),        // qa
-		reports.ItemWritingPrintingReport(tr.helper),                // qa
-		reports.ItemExpectedResponsesReport(tr.helper),              // qa
-	)
+	}
+	//
+	// add qa reports if requested
+	//
+	if tr.qaReports {
+		qa := []pipelines.EventPipe{
+			reports.QaSchoolsReport(),                                   // qa
+			reports.SystemTestCompletenessReport(),                      // qa
+			reports.QaCodeframeCheckReport(tr.helper),                   // qa
+			reports.OrphanStudentsReport(),                              // qa
+			reports.SystemResponsesReport(),                             // qa
+			reports.OrphanEventsReport(),                                // qa
+			reports.SystemMissingTestletsReport(),                       // qa
+			reports.SystemParticipationCodeImpactsReport(),              // qa
+			reports.SystemParticipationCodeItemImpactsReport(tr.helper), // qa
+			reports.SystemTestAttemptsReport(),                          // qa
+			reports.SystemTestIncidentsReport(),                         // qa
+			reports.SystemTestTypeImpactsReport(),                       // qa
+			reports.SystemTestTypeItemImpactsReport(tr.helper),          // qa
+			reports.SystemStudentEventAcaraIdDiscrepanciesReport(),      // qa
+			reports.SystemTestYearLevelDiscrepanciesReport(),            // qa
+			reports.SystemRubricSubscoreMatchesReport(tr.helper),        // qa
+			reports.ItemWritingPrintingReport(tr.helper),                // qa
+			reports.ItemExpectedResponsesReport(tr.helper),              // qa
+		}
+		rpt = append(rpt, qa...)
+	}
+
+	// create the item reporting pipeline
+	pl := pipelines.NewEventPipeline(rpt...)
+
 	// create a progress bar
 	bar := tr.uip.AddBar(tr.stats["NAPEventStudentLink"]) // Add a new bar
 	bar.AppendCompleted().PrependElapsed()
@@ -492,14 +546,13 @@ func (tr *Transformer) writingExtractReports() error {
 	}
 	// create the item reporting pipeline
 	pl := pipelines.NewEventPipeline(
+		reports.QaSchoolsWritingExtractReport(), // qa report but always created with writing extract
 		//
 		// TODO: insert w/e greelist/redlist filters here...
 		// filter should come only before writing-extract reports
 		//
 		reports.WritingExtractReport(),
 		reports.WritingExtractQaPSIReport(),
-		reports.QaSchoolsWritingExtractReport(),
-		reports.QaSchoolsReport(),
 	)
 	// create a progress bar
 	bar := tr.uip.AddBar(tr.stats["NAPEventStudentLink"]) // Add a new bar
