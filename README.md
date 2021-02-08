@@ -17,12 +17,13 @@ Download a pre-built binary distribution for your platform (Windows, Linux, Mac)
 https://github.com/nsip/dev-nrt/releases/latest
 
 Unpack the downloaded zip file, and you should see a folder structure like this:
-
+```
 /NRT-Mac-v0_0_1 
 	nrt(.exe)
 	├── config
 	│   	└── internal
 	└── testdata
+```
 
 in the folder is 
 -  the nrt executable (nrt.exe if on windows), 
@@ -55,6 +56,7 @@ this will produce the following message:
 
 but the folder layout of your installation will now look like this:
 
+```
 /NRT-Mac-v0_0_1 
 nrt(.exe)
 ├── config
@@ -62,6 +64,7 @@ nrt(.exe)
 ├── in
 ├── kv
 └── testdata
+```
 
 the /in folder has been created as has a /kv folder the app will use internally.
 
@@ -115,7 +118,7 @@ First nrt ingests the data, and presents a set of summary statistics, then it pr
 The indicator '(-QA reports)' shows that qa reports are not included in this set, this changes to (+QA reports) if qa reports have been requested by the user.
 
 All generated reports are output to the /out folder which nrt creates. The folder structure after a full run of data ingest, and all reports would look like this:
-
+```
 | => 
 /NRT-Mac-v0_0_1 
 nrt(.exe)
@@ -129,7 +132,7 @@ nrt(.exe)
 │   ├── system_reports
 │   └── writing_extract
 └── testdata
-
+```
 
 A description of the various command-line options to configure the reporting output of nrt is available at any time by invoking ./nrt --help:
 
