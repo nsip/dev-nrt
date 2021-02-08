@@ -11,7 +11,6 @@
 package codeframe
 
 import (
-	"log"
 	"strconv"
 	"strings"
 
@@ -543,7 +542,7 @@ func (cfh Helper) GetCodeframeObjectValueString(refid, queryPath string) string 
 	objName := strings.Split(queryPath, ".")[0]
 	record, ok := cfh.data[objName][refid]
 	if !ok {
-		log.Println("GetCodeframeObjectValueString() cannot find value for path:", queryPath, refid)
+		// log.Println("GetCodeframeObjectValueString() cannot find value for path:", queryPath, refid)
 		return ""
 	}
 
@@ -560,7 +559,7 @@ func (cfh Helper) GetItemTestletSequenceNumber(itemrefid, testletrefid string) s
 
 	sqnum, ok := cfh.itemSequence[itemrefid][testletrefid]
 	if !ok {
-		log.Println("No sequence number found for item:testlet pair:", itemrefid, testletrefid)
+		// log.Println("No sequence number found for item:testlet pair:", itemrefid, testletrefid)
 		return ""
 	}
 

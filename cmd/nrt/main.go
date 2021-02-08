@@ -74,7 +74,6 @@ func main() {
 		opts = append(opts, all...)
 	}
 
-
 	tr, err := nrt.NewTransformer(opts...)
 	if err != nil {
 		log.Println("Error building transformer", err)

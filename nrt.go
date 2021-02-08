@@ -121,17 +121,17 @@ func (tr *Transformer) Run() error {
 	//
 	// run the report processing streams
 	//
-	err =  tr.streamResults()
+	err = tr.streamResults()
 	if err != nil {
 		return err
 	}
 
 	// =================================
-	// 
+	//
 	// split
 
 	// =================================
-	// 
+	//
 	// tidy up
 	err = os.RemoveAll("./out/null/")
 	if err != nil {
