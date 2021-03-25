@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/gosuri/uiprogress"
+	splitter "github.com/nsip/dev-nrt-splitter"
 	"github.com/nsip/dev-nrt/codeframe"
 	"github.com/nsip/dev-nrt/repository"
 )
@@ -129,17 +130,28 @@ func (tr *Transformer) Run() error {
 	// =================================
 	//
 	// split
+	err = splitter.NrtSplit("./config_split/config.toml")
+	if err != nil {
+		return err
+	}
 
 	// =================================
 	//
 	// tidy up
-	err = os.RemoveAll("./out/null/")
+	err = os.RemoveAll("./out/")
+	if err != nil {
+		return err
+	}
+
+	// =================================
+	//
+	// final ("./out_split/" is from ./config_split/config.toml value)
+	err = os.Rename("./out_split/", "./out/")
 	if err != nil {
 		return err
 	}
 
 	return nil
-
 }
 
 // ==========================================

@@ -1,0 +1,14 @@
+# This is a sample configuration.
+
+InFolder = "./out/"    # (string), in which folder splitter processes report csv files.
+WalkSubFolders = true  # (bool), if true, splitter process every file including the file in sub-folders; otherwise, ignores sub-folder files.
+
+[Trim]
+Enabled = true                            # (bool), turn on/off Trim function.
+Columns = ["School", "YrLevel", "Domain"] # (string array), which columns to be removed from original csv file.
+OutFolder = "./out_split/"                # (string), in which folder trimmed csv files should be output.
+
+[Splitting]
+Enabled = true                            # (bool), turn on/off Splitting function.
+OutFolder = "./out_split/"                # (string), in which folder split results should be output.
+Schema = ["School", "YrLevel", "Domain"]  # (string array), header sequence for splitting. Each header creates its split category folder. 

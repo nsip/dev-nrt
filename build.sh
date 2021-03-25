@@ -93,7 +93,7 @@ rm -rf build
 mkdir -p build
 
 # echo "NRTBUILD: Static Code"
-cd $ORIGINALPATH
+cd "$ORIGINALPATH"
 
 echo "NRT-BUILD: Creating NRT @ $NRT_BRANCH"
 cd cmd/nrt
@@ -101,14 +101,15 @@ echo "NRT-BUILD: building NRT application"
 go build -ldflags="$LDFLAGS"
 
 # copy supporting files
-rsync -av * $ORIGINALPATH/build/
-rsync -av config $ORIGINALPATH/build/
+rsync -av * "$ORIGINALPATH"/build/
+rsync -av config "$ORIGINALPATH"/build/
+rsync -av config_split "$ORIGINALPATH"/build/
 # remove golang files copied
-rm $ORIGINALPATH/build/main.go || true
+rm "$ORIGINALPATH"/build/main.go || true
 
 # include test data samples in distribution
-cd $ORIGINALPATH
-rsync -av testdata $ORIGINALPATH/build/
+cd "$ORIGINALPATH"
+rsync -av testdata "$ORIGINALPATH"/build/
 
 # include this project readme as minimal documentation
 echo "NRT-BUILD: Documentation"

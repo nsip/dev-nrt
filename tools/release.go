@@ -10,7 +10,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/BurntSushi/toml"
 	pb "gopkg.in/cheggaaa/pb.v1"
 )
 
@@ -135,9 +134,9 @@ func uploadFile(release jsonRelease, name string, filename string) jsonUpload {
 // If called with just the project name, we generate versioning code
 func main() {
 	// Load configuration
-	if _, err := toml.DecodeFile(os.Getenv("HOME")+"/.nsip.toml", &cfg); err != nil {
-		log.Fatalln("Unable to read default config, aborting.", err)
-	}
+	// if _, err := toml.DecodeFile(os.Getenv("HOME")+"/.nsip.toml", &cfg); err != nil {
+	// 	log.Fatalln("Unable to read default config, aborting.", err)
+	// }
 	// log.Printf("Username=%s, Password=%s", cfg.Username, cfg.Password)
 
 	// TODO Check Username and password above
