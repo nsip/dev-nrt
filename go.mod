@@ -25,16 +25,16 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/nats-io/nuid v1.0.1
-	github.com/nsip/dev-nrt-splitter v0.0.2
+	github.com/nsip/dev-nrt-splitter v0.0.6
 	github.com/pelletier/go-toml v1.8.1
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/tamerh/xml-stream-parser v1.4.0
 	github.com/tamerh/xpath v1.0.0 // indirect
-	github.com/tidwall/gjson v1.7.1
+	github.com/tidwall/gjson v1.7.3
 	github.com/tidwall/sjson v1.1.5
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect
-	golang.org/x/net v0.0.0-20210324205630-d1beb07c2056 // indirect
+	golang.org/x/net v0.0.0-20210326060303-6b1517762897 // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	gopkg.in/cheggaaa/pb.v1 v1.0.28
 

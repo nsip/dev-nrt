@@ -16,4 +16,4 @@
 
 cmd/nrt/nrt
 
-testdata/
+# testdata/

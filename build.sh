@@ -42,7 +42,7 @@ echo "NRT-BUILD: VERSION=$VERSION"
 
 # Specific branches
 # NRT_BRANCH="master" # always for formal release
-NRT_BRANCH="develop" # for testing/alphas etc.
+NRT_BRANCH="add-splitter" # for testing/alphas etc.
 
 
 ORIGINALPATH=`pwd`
