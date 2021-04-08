@@ -8,7 +8,7 @@ import (
 
 //
 // simple wrapper for objects associated with the
-// codeframe, can be tests, telstlets and testitems
+// codeframe, can be tests, testlets and testitems
 //
 //
 type CodeframeRecord struct {

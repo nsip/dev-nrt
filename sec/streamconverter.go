@@ -52,9 +52,9 @@ type Result struct {
 //
 type StreamExtractConverter struct {
 	reader        io.Reader   // the file/stream of xml to process
-	dataObjects   []string    // list of data objects (e.g. StudentPersonal, ScholInfo etc.) to extract
+	dataObjects   []string    // list of data objects (e.g. StudentPersonal, SchoolInfo etc.) to extract
 	resultChannel chan Result // channel to export json blobs
-	sampleSize    int         // numer of objects to extract, -1 for no restrictions
+	sampleSize    int         // number of objects to extract, -1 for no restrictions
 	attrPrefix    string      // flag attributes with this prefix
 	contentToken  string      // identify element content to distinguish from attributes
 	progressBar   bool        // show a progress bar for reading xml input
@@ -88,7 +88,7 @@ func NewStreamExtractConverter(r io.Reader, opts ...Option) (*StreamExtractConve
 
 //
 // Invokes the parsing and converting
-// of the input stream, and channal can be ranged over
+// of the input stream, and channel can be ranged over
 // to collect json blob results
 //
 func (sec *StreamExtractConverter) Stream() chan Result {
@@ -151,7 +151,7 @@ type JsonMap map[string]interface{}
 //
 func convertXML(xml *xmlparser.XMLElement, attrPrefix, contentToken string) Result {
 
-	name, data := convertNode(*xml, attrPrefix, contentToken) //deref pointer to make recursive method easier
+	name, data := convertNode(*xml, attrPrefix, contentToken) //defer pointer to make recursive method easier
 
 	// var json = jsoniter.ConfigCompatibleWithStandardLibrary
 	var json = jsoniter.ConfigFastest
@@ -176,7 +176,7 @@ func convertXML(xml *xmlparser.XMLElement, attrPrefix, contentToken string) Resu
 //
 func convertNode(target xmlparser.XMLElement, attrPrefix, contentToken string) (string, JsonMap) {
 
-	// initialise the json strucure for this node
+	// initialise the json strutcure for this node
 	node := JsonMap{target.Name: JsonMap{}}
 	// convenience reference of data map to fill under this node's main key
 	jm := node[target.Name].(JsonMap)
@@ -209,13 +209,13 @@ func convertNode(target xmlparser.XMLElement, attrPrefix, contentToken string) (
 			k2 := fmt.Sprintf("%s%s", attrPrefix, k)
 			jm[k2] = v
 		}
-		if target.InnerText != "" { // attribues under PESC force innertext to be assigned to a value member
+		if target.InnerText != "" { // attributes under PESC force innertext to be assigned to a value member
 			jm[contentToken] = target.InnerText
-			return target.Name, node // if thre's content, we're a terminal leaf node
+			return target.Name, node // if there's content, we're a terminal leaf node
 		}
 	}
 
-	// check if we are a terminatng leaf
+	// check if we are a terminating leaf
 	if target.InnerText != "" {
 		node[target.Name] = target.InnerText
 		return target.Name, node
@@ -331,7 +331,7 @@ func ProgressBar(streamSize int) Option {
 }
 
 //
-// You must specifiy the objects/xml Types to be
+// You must specify the objects/xml Types to be
 // extracted and converted from the stream
 //
 func ObjectsToExtract(dataObjects []string) Option {

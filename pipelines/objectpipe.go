@@ -11,7 +11,7 @@ type ObjectPipe interface {
 }
 
 //
-// pipleline to attach multiple reports to the
+// pipeline to attach multiple reports to the
 // Object stream
 //
 type ObjectPipeline struct {

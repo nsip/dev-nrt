@@ -429,7 +429,7 @@ func (e *Emitter) emitObjectRecords() {
 
 	defer close(e.objstream)
 
-	// list determiined by needs of current reports, can be extended to any data objects
+	// list determined by needs of current reports, can be extended to any data objects
 	orObjects := []string{
 		"SchoolInfo",
 		"StudentPersonal",

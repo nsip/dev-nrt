@@ -11,7 +11,7 @@ import (
 //
 // As this record aggregates, these aliases and constants are used
 // to create a data structure that holds artefacts by domain, where
-// strucure is [NAPTest RefId][record type - event, response,...] = json blob
+// structure is [NAPTest RefId][record type - event, response,...] = json blob
 //
 type RecordType int
 type outputs map[string]map[RecordType][]byte
@@ -99,7 +99,7 @@ func (sor *StudentOrientedRecord) GetValueString(queryPath string) string {
 	case "CalculatedFields":
 		data = sor.CalculatedFields
 	default:
-		// if not an object, then assume extended codeframe refrence
+		// if not an object, then assume extended codeframe reference
 		return sor.codeframeValueString(queryPath)
 	}
 
@@ -109,7 +109,7 @@ func (sor *StudentOrientedRecord) GetValueString(queryPath string) string {
 //
 // not used in 2021, but forward idea is to have codeframe helper
 // generate a full codeframe lookup using refids for all item-
-// testlet-test combos, so everyhting is definitive from refids not based on
+// testlet-test combos, so everything is definitive from refids not based on
 // naming lookups
 //
 func (sor *StudentOrientedRecord) codeframeValueString(queryPath string) string {
@@ -129,7 +129,7 @@ func (sor *StudentOrientedRecord) GetEventsByDomain() map[string][]byte {
 		// get the domain from the test record
 		test := records[rtTest]
 		domain := gjson.GetBytes(test, "NAPTest.TestContent.Domain").String()
-		// camel-case the daomin name for use in json 'Grammar and Punctuation' -> 'GrannarAndPunctuation'
+		// camel-case the domain name for use in json 'Grammar and Punctuation' -> 'GrannarAndPunctuation'
 		ccdomain := strcase.ToCamel(domain)
 		// create the domain/event pair
 		ebd[ccdomain] = records[rtEvent]
@@ -170,7 +170,7 @@ func (sor *StudentOrientedRecord) GetResponsesByDomain() map[string][]byte {
 		// get the domain from the test record
 		test := records[rtTest]
 		domain := gjson.GetBytes(test, "NAPTest.TestContent.Domain").String()
-		// camel-case the daomin name for use in json 'Grammar and Punctuation' -> 'GrannarAndPunctuation'
+		// camel-case the domain name for use in json 'Grammar and Punctuation' -> 'GrannarAndPunctuation'
 		ccdomain := strcase.ToCamel(domain)
 		// create the domain/response pair
 		rbd[ccdomain] = records[rtResponse]
@@ -230,7 +230,7 @@ func (sor *StudentOrientedRecord) GetScoreSummariesByDomain() map[string][]byte 
 		// get the domain from the test record
 		test := records[rtTest]
 		domain := gjson.GetBytes(test, "NAPTest.TestContent.Domain").String()
-		// camel-case the daomin name for use in json 'Grammar and Punctuation' -> 'GrannarAndPunctuation'
+		// camel-case the domain name for use in json 'Grammar and Punctuation' -> 'GrannarAndPunctuation'
 		ccdomain := strcase.ToCamel(domain)
 		// create the domain/response pair
 		ssbd[ccdomain] = records[rtScoreSummary]
@@ -259,7 +259,7 @@ func (sor *StudentOrientedRecord) AddScoreSummary(jsonNAPTestScoreSummary []byte
 }
 
 //
-// returns the rerfids of the tests taken by this student
+// returns the refids of the tests taken by this student
 //
 func (sor *StudentOrientedRecord) GetNAPTestRefIds() []string {
 

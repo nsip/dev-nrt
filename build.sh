@@ -10,7 +10,7 @@ if [ "$OSNAME" == "help" ]; then
   echo "Build NRT"
   echo " - Requirements:"
   echo "    . Access to nsip github"
-  echo "    . go - version 1.14 or above"
+  echo "    . go - version 1.16 or above"
   echo "    . Utilities - git, zip, unzip, curl"
   echo " - NRT version is detected using tools/release and tags, taken from nsip github"
   echo " - OS is auto detect, or can be provided:"
