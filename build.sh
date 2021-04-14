@@ -10,7 +10,7 @@ if [ "$OSNAME" == "help" ]; then
   echo "Build NRT"
   echo " - Requirements:"
   echo "    . Access to nsip github"
-  echo "    . go - version 1.14 or above"
+  echo "    . go - version 1.16 or above"
   echo "    . Utilities - git, zip, unzip, curl"
   echo " - NRT version is detected using tools/release and tags, taken from nsip github"
   echo " - OS is auto detect, or can be provided:"
@@ -42,7 +42,7 @@ echo "NRT-BUILD: VERSION=$VERSION"
 
 # Specific branches
 # NRT_BRANCH="master" # always for formal release
-NRT_BRANCH="develop" # for testing/alphas etc.
+NRT_BRANCH="add-splitter" # for testing/alphas etc.
 
 
 ORIGINALPATH=`pwd`
@@ -93,7 +93,7 @@ rm -rf build
 mkdir -p build
 
 # echo "NRTBUILD: Static Code"
-cd $ORIGINALPATH
+cd "$ORIGINALPATH"
 
 echo "NRT-BUILD: Creating NRT @ $NRT_BRANCH"
 cd cmd/nrt
@@ -101,14 +101,15 @@ echo "NRT-BUILD: building NRT application"
 go build -ldflags="$LDFLAGS"
 
 # copy supporting files
-rsync -av * $ORIGINALPATH/build/
-rsync -av config $ORIGINALPATH/build/
+rsync -av * "$ORIGINALPATH"/build/
+rsync -av config "$ORIGINALPATH"/build/
+rsync -av config_split "$ORIGINALPATH"/build/
 # remove golang files copied
-rm $ORIGINALPATH/build/main.go || true
+rm "$ORIGINALPATH"/build/main.go || true
 
 # include test data samples in distribution
-cd $ORIGINALPATH
-rsync -av testdata $ORIGINALPATH/build/
+cd "$ORIGINALPATH"
+rsync -av testdata "$ORIGINALPATH"/build/
 
 # include this project readme as minimal documentation
 echo "NRT-BUILD: Documentation"

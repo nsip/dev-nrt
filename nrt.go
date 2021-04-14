@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/gosuri/uiprogress"
+	splitter "github.com/nsip/dev-nrt-splitter"
 	"github.com/nsip/dev-nrt/codeframe"
 	"github.com/nsip/dev-nrt/repository"
 )
@@ -130,6 +131,11 @@ func (tr *Transformer) Run() error {
 	// =================================
 	//
 	// split
+	splitter.EnableProgBar(tr.showProgress)
+	err = splitter.NrtSplit("./config_split/config.toml")
+	if err != nil {
+		return err
+	}
 
 	// =================================
 	//
@@ -140,7 +146,6 @@ func (tr *Transformer) Run() error {
 	}
 
 	return nil
-
 }
 
 // ==========================================
@@ -185,9 +190,9 @@ func (tr *Transformer) setOptions(options ...Option) error {
 // Show progress bars for report processing.
 // (The progress bar for data ingest is always shown)
 // Defaults to true.
-// Reasons to disable are: to get clear visiblilty of any
+// Reasons to disable are: to get clear visibility of any
 // std.Out console messages so they don't mix with the console
-// progress bars. Also if piping the ouput to a file
+// progress bars. Also if piping the output to a file
 // the progress bars are witten out sequentially producing a lot
 // of unnecessary noise data in the file.
 //
@@ -200,7 +205,7 @@ func ShowProgress(sp bool) Option {
 
 //
 // Make transformer stop once data ingest is complete
-// various report confgurations can then be run
+// various report configurations can then be run
 // independently without reloading the results data
 // Default is false, tranformer will ingest data and move
 // directly to report processing
@@ -213,7 +218,7 @@ func StopAfterIngest(sai bool) Option {
 }
 
 //
-// Even if an exisitng datastore has been created
+// Even if an existing datastore has been created
 // in the past, this option ensures that the old data
 // is removed and the ingest cycle is run again
 // reading all data files from the input folder.
@@ -227,7 +232,7 @@ func ForceIngest(fi bool) Option {
 }
 
 //
-// Tells NRT to go sraight the the report processing
+// Tells NRT to go straight the the report processing
 // activity, as data has already been ingested at
 // an earlier point in time
 //
@@ -272,7 +277,7 @@ func XmlExtractReports(xml bool) Option {
 //
 // indicate whether the most heavyweight/detailed
 // reports will be included in this run of the
-// transformer, inlcuding these has the largest effect
+// transformer, including these has the largest effect
 // on overall processing time
 //
 func ItemLevelReports(ilevel bool) Option {

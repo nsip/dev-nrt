@@ -11,7 +11,7 @@ type CodeframePipe interface {
 }
 
 //
-// pipleline to attach multiple reports to the
+// pipeline to attach multiple reports to the
 // codeframe stream
 //
 type CodeframePipeline struct {

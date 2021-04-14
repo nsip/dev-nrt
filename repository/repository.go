@@ -12,7 +12,7 @@ import (
 
 //
 // Allow definition of query at call-site by
-// abstraxcting to function
+// abstracting to function
 //
 type BadgerQueryFunc func(txn *badger.Txn) error
 
@@ -132,7 +132,7 @@ func (br *BadgerRepo) Store(r sec.Result, idxf IndexFunc) error {
 
 //
 // persists a copy of the recorded object counts back into
-// the repository, particualarly used for sizing progress
+// the repository, particularly used for sizing progress
 // bars etc. when reports are run against the repo with
 // no prior ingest phase.
 //
