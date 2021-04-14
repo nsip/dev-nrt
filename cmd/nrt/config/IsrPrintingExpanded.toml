@@ -35,7 +35,7 @@ outputFileName = "./out/system_reports/isrPrintingExpanded.csv"
 [[fields]]
 "Indigenous Status" = "StudentPersonal.PersonInfo.Demographics.IndigenousStatus"
 [[fields]]
-"LBOTE Status" = "StudentPersonal.PersonInfo.Demographics.LanguageList.Language.0.Code"
+"LBOTE Status" = "StudentPersonal.PersonInfo.Demographics.LBOTE"
 [[fields]]
 "Parent 1 School Education" = "StudentPersonal.MostRecent.Parent1SchoolEducationLevel"
 [[fields]]

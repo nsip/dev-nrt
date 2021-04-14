@@ -16,7 +16,9 @@ require (
 	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/mattn/go-runewidth v0.0.10 // indirect
 	github.com/nats-io/nuid v1.0.1
+	github.com/nsip/sifxml2go v0.0.0-20210301053240-e6ece7304c58
 	github.com/pelletier/go-toml v1.2.0
+	github.com/subchen/go-xmldom v1.1.2
 	github.com/tamerh/xml-stream-parser v1.4.0
 	github.com/tamerh/xpath v1.0.0 // indirect
 	github.com/tidwall/gjson v1.6.1

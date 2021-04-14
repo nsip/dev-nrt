@@ -27,7 +27,7 @@ outputFileName = "./out/system_reports/systemCodeframe.csv"
 [[fields]]
 "Testlet Max. Score" = "CalculatedFields.NAPTestlet.TestletContent.TestletMaximumScore"
 [[fields]]
-" Item Subdomain" = "NAPTestItem.TestItemContent.Subdomain"
+"Item Subdomain" = "NAPTestItem.TestItemContent.Subdomain"
 [[fields]]
 "Item Descriptor" = "NAPTestItem.TestItemContent.ItemDescriptor"
 [[fields]]

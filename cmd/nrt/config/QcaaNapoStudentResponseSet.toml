@@ -45,4 +45,4 @@ outputFileName = "./out/system_reports/qcaa_napo_student_response_set.csv"
 [[fields]]
 "STUDENT_PROFICIENCY" = "NAPStudentResponseSet.DomainScore.StudentProficiency"
 [[fields]]
-"PLAUSIBLE_SCALED_VALUE" = "NAPStudentResponseSet.DomainScore.PlausibleScaledValueList.PlausibleScaledValue.#.PlausibleScaledValue"
+"PLAUSIBLE_SCALED_VALUE" = "NAPStudentResponseSet.DomainScore.PlausibleScaledValueList.PlausibleScaledValue"

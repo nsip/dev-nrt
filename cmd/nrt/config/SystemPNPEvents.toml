@@ -29,4 +29,4 @@ outputFileName = "./out/system_reports/systemPNPEvents.csv"
 [[fields]]
 "NAPTestLocalID" = "NAPEventStudentLink.NAPTestLocalId"
 [[fields]]
-"Adjustments" = "NAPEventStudentLink.Adjustment.PNPCodeList.PNPCode.#.PNPCode"
+"Adjustments" = "NAPEventStudentLink.Adjustment.PNPCodeList.PNPCode"

@@ -51,4 +51,4 @@ outputFileName = "./out/qa/systemCodeframe.csv"
 [[fields]]
 "ItemSubstitutedForList" = "NAPTestItem.TestItemContent.ItemSubstitutedForList.SubstituteItem.#.SubstituteItemLocalId"
 [[fields]]
-"ContentDescriptionList" = "NAPTestItem.TestItemContent.ContentDescriptionList.ContentDescription.#.ContentDescription"
+"ContentDescriptionList" = "NAPTestItem.TestItemContent.ContentDescriptionList.ContentDescription"

@@ -73,7 +73,7 @@ outputFileName = "./out/system_reports/nswPrint.csv"
 [[fields]]
 "Parent 2 Language at Home" = "StudentPersonal.MostRecent.Parent2Language"
 [[fields]]
-"LBOTE" = "StudentPersonal.PersonInfo.Demographics.LanguageList.Language.0.Code"
+"LBOTE" = "StudentPersonal.PersonInfo.Demographics.LBOTE"
 [[fields]]
 "Full Fee Paying Student" = "StudentPersonal.MostRecent.FFPOS"
 [[fields]]

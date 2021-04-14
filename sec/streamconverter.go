@@ -226,21 +226,57 @@ func convertNode(target xmlparser.XMLElement, attrPrefix, contentToken string) (
 		switch {
 		case len(elements) > 1 || strings.HasSuffix(target.Name, "List"): // elements designated as list under PESC must still be a list even if only one item
 			// handler for elements that contain arrays
-			list := []JsonMap{}
-			for _, e := range elements {
-				_, childData := convertNode(e, attrPrefix, contentToken)
-				for k, v := range childData {
-					// can be k/v pair or full object
-					v2, ok := v.(JsonMap)
-					if ok {
-						list = append(list, v2)
-					} else {
-						list = append(list, JsonMap{k: v})
+			/*
+				list := []JsonMap{}
+				for _, e := range elements {
+					_, childData := convertNode(e, attrPrefix, contentToken)
+					for k, v := range childData {
+						// can be k/v pair or full object
+						v2, ok := v.(JsonMap)
+						if ok {
+							list = append(list, v2)
+						} else {
+							list = append(list, JsonMap{k: v})
+						}
 					}
 				}
+				if len(list) > 0 {
+					jm[key] = list
+				}
+			*/
+			// different handling for list of structs and list of values
+			_, childData := convertNode(elements[0], attrPrefix, contentToken)
+			var val interface{}
+			for _, v := range childData {
+				val = v
+				break
 			}
-			if len(list) > 0 {
-				jm[key] = list
+			_, ok := val.(JsonMap)
+			if ok { // this is a struct
+				list := []JsonMap{}
+				for _, e := range elements {
+					_, childData := convertNode(e, attrPrefix, contentToken)
+					for _, v := range childData {
+						v2, _ := v.(JsonMap)
+						list = append(list, v2)
+					}
+				}
+				if len(list) > 0 {
+					jm[key] = list
+				}
+			} else { // this is a list of values
+				list := []string{}
+				for _, e := range elements {
+					_, childData := convertNode(e, attrPrefix, contentToken)
+					for _, v := range childData {
+						v2, _ := v.(string)
+						list = append(list, v2)
+					}
+				}
+				if len(list) > 0 {
+					jm[key] = list
+				}
+
 			}
 		default:
 			// handler for individual objects

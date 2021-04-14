@@ -58,6 +58,11 @@ func (tr *Transformer) streamResults() error {
 		g.Go(tr.writingExtractReports)
 	}
 
+	// xml extract
+	if tr.xmlReports {
+		g.Go(tr.xmlExtractReports)
+	}
+
 	// wait for report streams to end
 	if g.Wait() != nil {
 		return g.Wait()
@@ -579,6 +584,59 @@ func (tr *Transformer) writingExtractReports() error {
 	//
 	for eor := range em.EventBasedStream() {
 		pl.Enqueue(eor)
+	}
+
+	return nil
+
+}
+
+// XML Extract reports. Patterns after Simple object reports processor
+// takes data objects and converts to XML
+// with minimal business logic
+func (tr *Transformer) xmlExtractReports() error {
+
+	// create a record emitter
+	em, err := records.NewEmitter(records.EmitterRepository(tr.repository))
+	if err != nil {
+		return err
+	}
+
+	// create the pipeline members
+	// regular reports
+	rpt := []pipelines.ObjectPipe{
+		reports.XmlRedactionReport(),
+	}
+
+	// create the object report pipeline
+	objpl := pipelines.NewObjectPipeline(rpt...)
+
+	// create a progress bar
+	barsize := tr.stats["SchoolInfo"] + tr.stats["StudentPersonal"] + tr.stats["NAPTestScoreSummary"]
+	bar := tr.uip.AddBar(barsize)
+	bar.AppendCompleted().PrependElapsed()
+	bar.PrependFunc(func(b *uiprogress.Bar) string {
+		return strutil.Resize(" Simple reports:", 35)
+	})
+
+	//
+	// register an output handler for pipeline, used for progress-bar
+	// but could also be audit sink, backup of processed records etc.
+	//
+	// NOTE: must be handler here even with empty body
+	// otherwise exit channel blocks for pipeline
+	//
+	go objpl.Dequeue(func(cfr *records.ObjectRecord) {
+		// easy win no-op, also reclaims memory
+		// cfr = nil
+		bar.Incr()
+	})
+	defer objpl.Close()
+	//
+	// now iterate the object records, passing them through
+	// the processing pipeline
+	//
+	for or := range em.ObjectStream() {
+		objpl.Enqueue(or)
 	}
 
 	return nil

@@ -19,7 +19,7 @@ outputFileName = "./out/system_reports/systemScoreSummaries.csv"
 [[fields]]
 "Domain Jurisdiction Average" = "NAPTestScoreSummary.DomainJurisdictionAverage"
 [[fields]]
-" Domain National Average " = "NAPTestScoreSummary.DomainNationalAverage"
+"Domain National Average" = "NAPTestScoreSummary.DomainNationalAverage"
 [[fields]]
 "Domain Top National 60%" = "NAPTestScoreSummary.DomainTopNational60Percent"
 [[fields]]
