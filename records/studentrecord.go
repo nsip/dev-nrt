@@ -68,7 +68,10 @@ func (sor *StudentOrientedRecord) SchoolInfoRefId() string {
 	// iterate naplan data
 	for _, data := range sor.naplanOutputs {
 		// find an event & extract the school refid
-		eventJson := data[rtEvent]
+		eventJson, ok := data[rtEvent]
+		if !ok {
+			continue
+		}
 		if schoolRefId := gjson.GetBytes(eventJson, "NAPEventStudentLink.SchoolInfoRefId"); schoolRefId.Exists() {
 			return schoolRefId.String() // return as soon as we have one
 		}
@@ -131,6 +134,9 @@ func (sor *StudentOrientedRecord) GetEventsByDomain() map[string][]byte {
 		domain := gjson.GetBytes(test, "NAPTest.TestContent.Domain").String()
 		// camel-case the daomin name for use in json 'Grammar and Punctuation' -> 'GrannarAndPunctuation'
 		ccdomain := strcase.ToCamel(domain)
+		if _, ok := records[rtEvent]; !ok {
+			continue
+		}
 		// create the domain/event pair
 		ebd[ccdomain] = records[rtEvent]
 	}
@@ -172,6 +178,9 @@ func (sor *StudentOrientedRecord) GetResponsesByDomain() map[string][]byte {
 		domain := gjson.GetBytes(test, "NAPTest.TestContent.Domain").String()
 		// camel-case the daomin name for use in json 'Grammar and Punctuation' -> 'GrannarAndPunctuation'
 		ccdomain := strcase.ToCamel(domain)
+		if _, ok := records[rtResponse]; !ok {
+			continue
+		}
 		// create the domain/response pair
 		rbd[ccdomain] = records[rtResponse]
 	}
@@ -232,6 +241,9 @@ func (sor *StudentOrientedRecord) GetScoreSummariesByDomain() map[string][]byte 
 		domain := gjson.GetBytes(test, "NAPTest.TestContent.Domain").String()
 		// camel-case the daomin name for use in json 'Grammar and Punctuation' -> 'GrannarAndPunctuation'
 		ccdomain := strcase.ToCamel(domain)
+		if _, ok := records[rtScoreSummary]; !ok {
+			continue
+		}
 		// create the domain/response pair
 		ssbd[ccdomain] = records[rtScoreSummary]
 	}

@@ -69,9 +69,10 @@ func (r *DomainDAC) calculateFields(sor *records.StudentOrientedRecord) []byte {
 		activeCodes := map[string]struct{}{}
 		gjson.GetBytes(event, "NAPEventStudentLink.Adjustment.PNPCodeList.PNPCode").
 			ForEach(func(key, value gjson.Result) bool {
-				pnpcode := value.Get("PNPCode").String() // get pnp code
-				activeCodes[pnpcode] = struct{}{}        // log as active
-				return true                              // keep iterating
+				//pnpcode := value.Get("PNPCode").String() // get pnp code
+				pnpcode := value.String()         // get pnp code
+				activeCodes[pnpcode] = struct{}{} // log as active
+				return true                       // keep iterating
 			})
 		//
 		// then create the overall DAC matrix

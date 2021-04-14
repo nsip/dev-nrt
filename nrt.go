@@ -31,6 +31,7 @@ type Transformer struct {
 	itemLevelReports bool
 	coreReports      bool
 	wxReports        bool
+	xmlReports       bool
 	forceIngest      bool
 	skipIngest       bool
 	stopAfterIngest  bool
@@ -158,6 +159,7 @@ func defaultOptions() []Option {
 		ItemLevelReports(false),
 		CoreReports(true),
 		WritingExtractReports(false),
+		XmlExtractReports(false),
 		ForceIngest(true),
 		StopAfterIngest(false),
 		ShowProgress(true),
@@ -247,6 +249,21 @@ func WritingExtractReports(wx bool) Option {
 		tr.wxReports = wx
 		if wx {
 			tr.coreReports = false // set so can run just wx, or add core as later option to re-instate
+		}
+		return nil
+	}
+}
+
+//
+// indicate whether the XML reports
+// (output of ingested files back as XML, with redaction)
+// will be included in this run of the transformer
+//
+func XmlExtractReports(xml bool) Option {
+	return func(tr *Transformer) error {
+		tr.xmlReports = xml
+		if xml {
+			tr.coreReports = false // set so can run just xml, or add core as later option to re-instate
 		}
 		return nil
 	}

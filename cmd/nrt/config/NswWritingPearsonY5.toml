@@ -42,8 +42,7 @@ outputFileName = "./out/system_reports/nswWritingPearsonY5.csv"
 [[fields]]
 "1" = "StudentPersonal.PersonInfo.Demographics.IndigenousStatus"
 [[fields]]
-# "1" = "Student.LBOTE" - we don't have this, replaced with blank
-"1" = "CalculatedFields.BlankToken"
+"1" = "StudentPersonal.PersonInfo.Demographics.LBOTE"
 [[fields]]
 "1" = "StudentPersonal.MostRecent.Parent1SchoolEducationLevel"
 [[fields]]
