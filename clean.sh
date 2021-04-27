@@ -5,6 +5,8 @@ set -e
 rm -rf ./build
 rm -f NRT-*-v*.*.*.zip
 
+rm -rf ./cmd/nrt/in ./cmd/nrt/kv ./cmd/nrt/out
+
 # delete all Linux binary files
 find . -type f -executable -exec sh -c "file -i '{}' | grep -q 'x-executable; charset=binary'" \; -print | xargs rm -f
 
