@@ -9,6 +9,6 @@ Columns = ["School", "YrLevel", "Domain"] # (string array), which columns to be 
 OutFolder = "./out/"                      # (string), in which folder trimmed csv files should be output.
 
 [Splitting]
-Enabled = true                            # (bool), turn on/off Splitting function.
-OutFolder = "./out/"                      # (string), in which folder split results should be output.
+Enabled = false                           # (bool), turn on/off Splitting function.
+OutFolder = "./out_split/"                # (string), in which folder split results should be output.
 Schema = ["School", "YrLevel", "Domain"]  # (string array), header sequence for splitting. Each header creates its split category folder. 

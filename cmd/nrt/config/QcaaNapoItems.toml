@@ -45,11 +45,11 @@ outputFileName = "./out/system_reports/qcaa_napo_items.csv"
 [[fields]]
 "ITEM_PROFICIENCY_LEVEL" = "NAPTestItem.TestItemContent.ItemProficiencyLevel"
 [[fields]]
-"CONTENT_DESCRIPTION" = "NAPTestItem.TestItemContent.ContentDescriptionList.ContentDescription.#.ContentDescription"
+"CONTENT_DESCRIPTION" = "NAPTestItem.TestItemContent.ContentDescriptionList.ContentDescription"
 [[fields]]
 "SUBSTITUTE_ITEM_REFIDS" = "NAPTestItem.TestItemContent.ItemSubstitutedForList.SubstituteItem.#.SubstituteItemRefId"
 [[fields]]
 "SUBSTITUTE_ITEM_LOCALIDS" = "NAPTestItem.TestItemContent.ItemSubstitutedForList.SubstituteItem.#.SubstituteItemLocalId"
 [[fields]]
-"SUBSTITUTE_ITEM_PNP_CODES" = "NAPTestItem.TestItemContent.ItemSubstitutedForList.SubstituteItem.#.PNPCodeList.PNPCode.#.PNPCode"
+"SUBSTITUTE_ITEM_PNP_CODES" = "NAPTestItem.TestItemContent.ItemSubstitutedForList.SubstituteItem.#.PNPCodeList.PNPCode"
 

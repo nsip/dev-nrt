@@ -3,16 +3,10 @@ module github.com/nsip/dev-nrt
 go 1.16
 
 require (
-	github.com/BurntSushi/toml v0.3.1
-	github.com/DataDog/zstd v1.4.8 // indirect
 	github.com/PuerkitoBio/goquery v1.6.1
-	github.com/andybalholm/cascadia v1.2.0 // indirect
-	github.com/antchfx/xpath v1.1.11 // indirect
 	github.com/clipperhouse/jargon v1.0.7
-	github.com/clipperhouse/uax29 v1.6.8 // indirect
 	github.com/dgraph-io/badger/v2 v2.2007.2
-	github.com/dgraph-io/ristretto v0.0.3 // indirect
-	github.com/dgryski/go-farm v0.0.0-20200201041132-a6ae2369ad13 // indirect
+	github.com/fatih/color v1.10.0 // indirect
 	github.com/fatih/set v0.2.1
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/golang/snappy v0.0.3 // indirect
@@ -37,5 +31,4 @@ require (
 	golang.org/x/net v0.0.0-20210423184538-5f58ad60dda6 // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	gopkg.in/cheggaaa/pb.v1 v1.0.28
-
 )

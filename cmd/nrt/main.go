@@ -12,7 +12,7 @@ func main() {
 	//
 	// set of command-line flags to support, inlcuding n2 flags as aliases
 	//
-	var qa, ingest, itemLevel, coreReports, writingExtract, showProgress, forceIngest, skipIngest, allReports bool
+	var qa, ingest, itemLevel, coreReports, writingExtract, xmlExtract, showProgress, forceIngest, skipIngest, allReports bool
 	var inputFolder string
 	flag.BoolVar(&qa, "qa", false, "include QA reports in results processing")
 	flag.BoolVar(&ingest, "ingest", false, "halt processing after data has been ingested")
@@ -24,6 +24,7 @@ func main() {
 	flag.BoolVar(&coreReports, "coreReports", false, "run core naplan reports - (alias for n2 -reports flag)")
 	flag.BoolVar(&writingExtract, "writingextract", false, "run writing extract reports; generates writing inputs for marking systems")
 	flag.BoolVar(&writingExtract, "writingExtract", false, "(alias) run writing extract reports; generates writing inputs for marking systems")
+	flag.BoolVar(&xmlExtract, "xml", false, "run XML redaction reports; exports XML for ingested records with nominated fields removed")
 	flag.BoolVar(&showProgress, "showProgress", true, "show progress bars in console for report processing")
 	flag.StringVar(&inputFolder, "inputFolder", "./in/", "folder containing results data files for processing")
 	flag.BoolVar(&allReports, "allReports", false, "runs every report including qa reports")
@@ -54,6 +55,9 @@ func main() {
 	if writingExtract {
 		opts = append(opts, nrt.WritingExtractReports(writingExtract))
 	}
+	if xmlExtract {
+		opts = append(opts, nrt.XmlExtractReports(xmlExtract))
+	}
 	if coreReports { // always add after writingExtract to support running both at same time if required
 		opts = append(opts, nrt.CoreReports(coreReports))
 	}
@@ -67,6 +71,7 @@ func main() {
 		all := []nrt.Option{
 			nrt.ItemLevelReports(true),
 			nrt.WritingExtractReports(true),
+			nrt.XmlExtractReports(true),
 			nrt.CoreReports(true),
 			nrt.ItemLevelReports(true),
 			nrt.QAReports(true),
