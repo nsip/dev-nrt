@@ -317,6 +317,7 @@ func (tr *Transformer) codeframeReports() error {
 		// report
 		//
 		reports.QcaaNapoTestletsReport(tr.helper),
+		reports.NswItemDescriptorsReport(),
 		//
 		// pre-processor
 		// remaining codeframe reports need htis item-test-link multiplexer to
