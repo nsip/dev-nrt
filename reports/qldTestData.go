@@ -4,7 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 
-	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
@@ -12,13 +12,13 @@ import (
 
 type QldTestData struct {
 	baseReport // embed common setup capability
-	cfh        codeframe.Helper
+	cfh        helper.CodeframeHelper
 }
 
 //
 // Simplified breakdown of items in test
 //
-func QldTestDataReport(cfh codeframe.Helper) *QldTestData {
+func QldTestDataReport(cfh helper.CodeframeHelper) *QldTestData {
 
 	r := QldTestData{cfh: cfh}
 	r.initialise("./config/QldTestData.toml")

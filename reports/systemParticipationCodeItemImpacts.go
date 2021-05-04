@@ -4,7 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 
-	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
@@ -12,14 +12,14 @@ import (
 
 type SystemParticipationCodeItemImpacts struct {
 	baseReport // embed common setup capability
-	cfh        codeframe.Helper
+	cfh        helper.CodeframeHelper
 }
 
 //
 // Reports errors when response items contain unexpected information based on the
 // participation code
 //
-func SystemParticipationCodeItemImpactsReport(cfh codeframe.Helper) *SystemParticipationCodeItemImpacts {
+func SystemParticipationCodeItemImpactsReport(cfh helper.CodeframeHelper) *SystemParticipationCodeItemImpacts {
 
 	r := SystemParticipationCodeItemImpacts{cfh: cfh}
 	r.initialise("./config/SystemParticipationCodeItemImpacts.toml")

@@ -4,7 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 
-	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
@@ -12,13 +12,13 @@ import (
 
 type ItemExpectedResponses struct {
 	baseReport // embed common setup capability
-	cfh        codeframe.Helper
+	cfh        helper.CodeframeHelper
 }
 
 //
 // Highlights any differences between the items expected to be presented and those seen by the student
 //
-func ItemExpectedResponsesReport(cfh codeframe.Helper) *ItemExpectedResponses {
+func ItemExpectedResponsesReport(cfh helper.CodeframeHelper) *ItemExpectedResponses {
 
 	r := ItemExpectedResponses{cfh: cfh}
 	r.initialise("./config/ItemExpectedResponses.toml")

@@ -6,7 +6,7 @@ import (
 
 	"github.com/gosuri/uiprogress"
 	splitter "github.com/nsip/dev-nrt-splitter"
-	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/repository"
 )
 
@@ -27,7 +27,8 @@ type Transformer struct {
 	repository       *repository.BadgerRepo
 	inputFolder      string
 	uip              *uiprogress.Progress
-	helper           codeframe.Helper
+	helper           helper.CodeframeHelper
+	objecthelper     helper.ObjectHelper
 	qaReports        bool
 	itemLevelReports bool
 	coreReports      bool
@@ -113,11 +114,21 @@ func (tr *Transformer) Run() error {
 	//
 	// Build the codeframe helper
 	//
-	cfh, err := codeframe.NewHelper(r)
+	cfh, err := helper.NewCodeframeHelper(r)
 	if err != nil {
 		return err
 	}
 	tr.helper = cfh
+
+	// ====================================
+	//
+	// Build the object helper
+	//
+	oh, err := helper.NewObjectHelper(r)
+	if err != nil {
+		return err
+	}
+	tr.objecthelper = oh
 
 	// ==================================
 	//

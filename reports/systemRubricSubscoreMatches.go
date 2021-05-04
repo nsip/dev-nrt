@@ -6,7 +6,7 @@ import (
 
 	"github.com/fatih/set"
 	"github.com/iancoleman/strcase"
-	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
@@ -14,7 +14,7 @@ import (
 
 type SystemRubricSubscoreMatches struct {
 	baseReport // embed common setup capability
-	cfh        codeframe.Helper
+	cfh        helper.CodeframeHelper
 }
 
 type mismatches struct {
@@ -31,7 +31,7 @@ type mismatches struct {
 // subscores (i.e. missing), or if subscores do not match the expected list
 // for the item.
 //
-func SystemRubricSubscoreMatchesReport(cfh codeframe.Helper) *SystemRubricSubscoreMatches {
+func SystemRubricSubscoreMatchesReport(cfh helper.CodeframeHelper) *SystemRubricSubscoreMatches {
 
 	r := SystemRubricSubscoreMatches{cfh: cfh}
 	r.initialise("./config/SystemRubricSubscoreMatches.toml")

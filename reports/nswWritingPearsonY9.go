@@ -7,21 +7,21 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/sjson"
 )
 
 type NswWritingPearsonY9 struct {
 	baseReport // embed common setup capability
-	cfh        codeframe.Helper
+	cfh        helper.CodeframeHelper
 }
 
 //
 // Creates fixed format report of writing rubric scores in pearson format
 // of 205 char lines.
 //
-func NswWritingPearsonY9Report(cfh codeframe.Helper) *NswWritingPearsonY9 {
+func NswWritingPearsonY9Report(cfh helper.CodeframeHelper) *NswWritingPearsonY9 {
 
 	r := NswWritingPearsonY9{cfh: cfh}
 	r.initialise("./config/NswWritingPearsonY9.toml")

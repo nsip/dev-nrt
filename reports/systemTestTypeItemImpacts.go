@@ -4,7 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 
-	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
@@ -12,13 +12,13 @@ import (
 
 type SystemTestTypeItemImpacts struct {
 	baseReport // embed common setup capability
-	cfh        codeframe.Helper
+	cfh        helper.CodeframeHelper
 }
 
 //
 // Reports items for which the item responses are unexpected based on the test domain
 //
-func SystemTestTypeItemImpactsReport(cfh codeframe.Helper) *SystemTestTypeItemImpacts {
+func SystemTestTypeItemImpactsReport(cfh helper.CodeframeHelper) *SystemTestTypeItemImpacts {
 
 	r := SystemTestTypeItemImpacts{cfh: cfh}
 	r.initialise("./config/SystemTestTypeItemImpacts.toml")

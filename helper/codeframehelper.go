@@ -8,7 +8,7 @@
 // data extraction needs.
 //
 //
-package codeframe
+package helper
 
 import (
 	"strconv"
@@ -24,7 +24,7 @@ import (
 // Encapsulates data and helper methods to make
 // working with codeframe objects easier
 //
-type Helper struct {
+type CodeframeHelper struct {
 	data            map[string]map[string][]byte
 	reverseLookup   map[string]map[string][]string
 	itemSequence    map[string]map[string]string
@@ -38,11 +38,11 @@ type Helper struct {
 // Creates a new codeframe helper instance.
 // r - a repository containing the rrd data
 //
-func NewHelper(r *repository.BadgerRepo) (Helper, error) {
+func NewCodeframeHelper(r *repository.BadgerRepo) (CodeframeHelper, error) {
 
-	// defer utils.TimeTrack(time.Now(), "codeframe NewHelper()")
+	// defer utils.TimeTrack(time.Now(), "codeframe NewCodeframeHelper()")
 
-	h := Helper{
+	h := CodeframeHelper{
 		data:            make(map[string]map[string][]byte, 0),
 		reverseLookup:   make(map[string]map[string][]string, 0),
 		itemSequence:    make(map[string]map[string]string, 0),
@@ -107,7 +107,7 @@ func NewHelper(r *repository.BadgerRepo) (Helper, error) {
 // NOTE: index needs baselining from 1 to align with testlet
 // definitions - codeframe baselines from 0
 //
-func (cfh *Helper) extractItemSequence() {
+func (cfh *CodeframeHelper) extractItemSequence() {
 
 	var testletRefId, itemRefId, sequenceNumber string
 	for _, cfBytes := range cfh.data["NAPCodeFrame"] {
@@ -138,7 +138,7 @@ func (cfh *Helper) extractItemSequence() {
 // creates a lookup to resolve substitute items against
 // their alternates
 //
-func (cfh *Helper) extractSubstitutes() {
+func (cfh *CodeframeHelper) extractSubstitutes() {
 	var itemRefId, substituteRefId string
 	//
 	// codeframe can contain items with substitutes, making them reverse substitutions
@@ -196,7 +196,7 @@ func (cfh *Helper) extractSubstitutes() {
 // implement the codeframe pipe interface, so this can be attached to a
 // codeframe emitter.
 //
-func (cfh Helper) ProcessCodeframeRecords(in chan *records.CodeframeRecord) chan *records.CodeframeRecord {
+func (cfh CodeframeHelper) ProcessCodeframeRecords(in chan *records.CodeframeRecord) chan *records.CodeframeRecord {
 	out := make(chan *records.CodeframeRecord)
 	go func() {
 		defer close(out)
@@ -221,7 +221,7 @@ func (cfh Helper) ProcessCodeframeRecords(in chan *records.CodeframeRecord) chan
 // telstlet location in stage only available in
 // codeframe, so create lookup - testletid -> location
 //
-func (cfh *Helper) extractLocationInStage() {
+func (cfh *CodeframeHelper) extractLocationInStage() {
 
 	var testletRefId, lis string
 	for _, cfBytes := range cfh.data["NAPCodeFrame"] {
@@ -247,7 +247,7 @@ func (cfh *Helper) extractLocationInStage() {
 // note: testlets are not normally re-used across tests, but the common
 // exception is for them to be re-used in writing/alt_writing tests
 //
-func (cfh *Helper) buildReverseLookup() {
+func (cfh *CodeframeHelper) buildReverseLookup() {
 
 	lookup := make(map[string]map[string][]string, 0)
 
@@ -317,7 +317,7 @@ func (cfh *Helper) buildReverseLookup() {
 // internal function to create list of writing rubric types
 // / subscores from actual test data
 //
-func (cfh *Helper) extractRubrics() {
+func (cfh *CodeframeHelper) extractRubrics() {
 
 	rubrics := []string{}
 
@@ -361,7 +361,7 @@ func (cfh *Helper) extractRubrics() {
 //
 // returns ordered list of writing rubrics
 //
-func (cfh Helper) WritingRubricTypes() []string {
+func (cfh CodeframeHelper) WritingRubricTypes() []string {
 
 	return cfh.WritingSubscoreTypes()
 
@@ -370,7 +370,7 @@ func (cfh Helper) WritingRubricTypes() []string {
 //
 // alias for writing rubrics, known as subscores in results
 //
-func (cfh Helper) WritingSubscoreTypes() []string {
+func (cfh CodeframeHelper) WritingSubscoreTypes() []string {
 
 	return cfh.rubrics
 }
@@ -378,7 +378,7 @@ func (cfh Helper) WritingSubscoreTypes() []string {
 //
 // get the list of Disability Adjustment Codes supported for this naplan cycle
 //
-func (cfh Helper) GetDACs() []string {
+func (cfh CodeframeHelper) GetDACs() []string {
 	return []string{
 		// school-level
 		"AIA", //"Alternative items - audio",
@@ -415,7 +415,7 @@ func (cfh Helper) GetDACs() []string {
 // each test/teslet combination
 //
 //
-func (cfh *Helper) extractExpectedTestletItems() {
+func (cfh *CodeframeHelper) extractExpectedTestletItems() {
 
 	expectedItems := make(map[string]map[string]map[string]struct{}, 0)
 
@@ -456,7 +456,7 @@ func (cfh *Helper) extractExpectedTestletItems() {
 // have lookups performed against it to test for presence of members
 // the contents of the set are the refids of the expected items
 //
-func (cfh Helper) GetExpectedTestletItems(testRefId, testletRefId string) map[string]struct{} {
+func (cfh CodeframeHelper) GetExpectedTestletItems(testRefId, testletRefId string) map[string]struct{} {
 
 	items, ok := cfh.expectedItems[testRefId][testletRefId]
 	if !ok {
@@ -471,7 +471,7 @@ func (cfh Helper) GetExpectedTestletItems(testRefId, testletRefId string) map[st
 // return the json block for a given testitem refid
 // boolean return value indicates if a value was found
 //
-func (cfh Helper) GetItem(refid string) (bool, []byte) {
+func (cfh CodeframeHelper) GetItem(refid string) (bool, []byte) {
 
 	item, ok := cfh.data["NAPTestItem"][refid]
 	if !ok {
@@ -488,7 +488,7 @@ func (cfh Helper) GetItem(refid string) (bool, []byte) {
 //
 // returns a map of pairs where key is the testlet refid and value is the test refid
 //
-func (cfh Helper) GetContainersForItem(refid string) map[string][]string {
+func (cfh CodeframeHelper) GetContainersForItem(refid string) map[string][]string {
 
 	c := make(map[string][]string, 0)
 	c = cfh.reverseLookup[refid]
@@ -501,7 +501,7 @@ func (cfh Helper) GetContainersForItem(refid string) map[string][]string {
 // find location in stage for testlet
 // comes from codeframe not testlet object
 //
-func (cfh Helper) GetTestletLocationInStage(testletrefid string) string {
+func (cfh CodeframeHelper) GetTestletLocationInStage(testletrefid string) string {
 
 	lis, ok := cfh.locationInStage[testletrefid]
 	if !ok {
@@ -518,7 +518,7 @@ func (cfh Helper) GetTestletLocationInStage(testletrefid string) string {
 // boolean return can be used simply to determine if this item is
 // a substitute
 //
-func (cfh Helper) IsSubstituteItem(itemRefid string) (map[string]struct{}, bool) {
+func (cfh CodeframeHelper) IsSubstituteItem(itemRefid string) (map[string]struct{}, bool) {
 
 	subsForRefId, ok := cfh.substitutes[itemRefid]
 	if !ok {
@@ -534,7 +534,7 @@ func (cfh Helper) IsSubstituteItem(itemRefid string) (map[string]struct{}, bool)
 // refid - the identifier of the object to be queried
 // queryPath the gjson query string to apply to the object
 //
-func (cfh Helper) GetCodeframeObjectValueString(refid, queryPath string) string {
+func (cfh CodeframeHelper) GetCodeframeObjectValueString(refid, queryPath string) string {
 
 	//
 	// get the root object
@@ -555,7 +555,7 @@ func (cfh Helper) GetCodeframeObjectValueString(refid, queryPath string) string 
 //
 // returns the sequnce number for a test item within a testlet
 //
-func (cfh Helper) GetItemTestletSequenceNumber(itemrefid, testletrefid string) string {
+func (cfh CodeframeHelper) GetItemTestletSequenceNumber(itemrefid, testletrefid string) string {
 
 	sqnum, ok := cfh.itemSequence[itemrefid][testletrefid]
 	if !ok {

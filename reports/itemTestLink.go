@@ -1,13 +1,13 @@
 package reports
 
 import (
-	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/sjson"
 )
 
 type ItemTestLink struct {
-	cfh        codeframe.Helper
+	cfh        helper.CodeframeHelper
 	baseReport // embed common setup capability
 }
 
@@ -18,7 +18,7 @@ type ItemTestLink struct {
 // and possibly even different tests
 //
 //
-func ItemTestLinkReport(cfh codeframe.Helper) *ItemTestLink {
+func ItemTestLinkReport(cfh helper.CodeframeHelper) *ItemTestLink {
 
 	r := ItemTestLink{cfh: cfh}
 	r.initialise("./config/internal/ItemTestLink.toml")

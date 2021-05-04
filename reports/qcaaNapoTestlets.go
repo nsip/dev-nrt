@@ -4,20 +4,20 @@ import (
 	"encoding/csv"
 	"fmt"
 
-	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/sjson"
 )
 
 type QcaaNapoTestlets struct {
 	baseReport // embed common setup capability
-	cfh        codeframe.Helper
+	cfh        helper.CodeframeHelper
 }
 
 //
 // Detailed Breakdown of Testlets
 //
-func QcaaNapoTestletsReport(cfh codeframe.Helper) *QcaaNapoTestlets {
+func QcaaNapoTestletsReport(cfh helper.CodeframeHelper) *QcaaNapoTestlets {
 
 	r := QcaaNapoTestlets{cfh: cfh}
 	r.initialise("./config/QcaaNapoTestlets.toml")

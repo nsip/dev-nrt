@@ -178,6 +178,7 @@ func (tr *Transformer) simpleObjectReports() error {
 			reports.SystemExtraneousCharactersStudentsReport(), // qa
 			reports.QaSystemScoreSummariesReport(tr.helper),    // qa
 			reports.OrphanScoreSummariesReport(),               // qa
+			reports.QaGuidCheckReport(tr.objecthelper),         // qa
 		}
 		rpt = append(rpt, qa...)
 	}
