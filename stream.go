@@ -178,6 +178,7 @@ func (tr *Transformer) simpleObjectReports() error {
 			reports.SystemExtraneousCharactersStudentsReport(), // qa
 			reports.QaSystemScoreSummariesReport(tr.helper),    // qa
 			reports.OrphanScoreSummariesReport(),               // qa
+			reports.QaGuidCheckReport(tr.objecthelper),         // qa
 		}
 		rpt = append(rpt, qa...)
 	}
@@ -316,6 +317,7 @@ func (tr *Transformer) codeframeReports() error {
 		// report
 		//
 		reports.QcaaNapoTestletsReport(tr.helper),
+		reports.NswItemDescriptorsReport(),
 		//
 		// pre-processor
 		// remaining codeframe reports need htis item-test-link multiplexer to

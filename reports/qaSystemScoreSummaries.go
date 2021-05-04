@@ -4,20 +4,20 @@ import (
 	"encoding/csv"
 	"fmt"
 
-	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/sjson"
 )
 
 type QaSystemScoreSummaries struct {
 	baseReport // embed common setup capability
-	cfh        codeframe.Helper
+	cfh        helper.CodeframeHelper
 }
 
 //
 // Reports occurence of score summary by school per domain
 //
-func QaSystemScoreSummariesReport(cfh codeframe.Helper) *QaSystemScoreSummaries {
+func QaSystemScoreSummariesReport(cfh helper.CodeframeHelper) *QaSystemScoreSummaries {
 
 	r := QaSystemScoreSummaries{cfh: cfh}
 	r.initialise("./config/QaSystemScoreSummaries.toml")

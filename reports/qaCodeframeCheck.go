@@ -4,7 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 
-	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
@@ -29,7 +29,7 @@ type codeframeIssue struct {
 
 type QaCodeframeCheck struct {
 	baseReport // embed common setup capability
-	cfh        codeframe.Helper
+	cfh        helper.CodeframeHelper
 	issues     []*codeframeIssue
 }
 
@@ -41,7 +41,7 @@ type QaCodeframeCheck struct {
 // only writes it out once all data has passed through.
 //
 //
-func QaCodeframeCheckReport(cfh codeframe.Helper) *QaCodeframeCheck {
+func QaCodeframeCheckReport(cfh helper.CodeframeHelper) *QaCodeframeCheck {
 
 	r := QaCodeframeCheck{cfh: cfh}
 	r.initialise("./config/QaCodeframeCheck.toml")

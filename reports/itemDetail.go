@@ -1,7 +1,7 @@
 package reports
 
 import (
-	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
@@ -9,7 +9,7 @@ import (
 
 type ItemDetail struct {
 	baseReport // embed common setup capability
-	cfh        codeframe.Helper
+	cfh        helper.CodeframeHelper
 }
 
 //
@@ -18,7 +18,7 @@ type ItemDetail struct {
 // Does not write any output itself but adds the full
 // item definition to the calculated fields
 //
-func ItemDetailReport(cfh codeframe.Helper) *ItemDetail {
+func ItemDetailReport(cfh helper.CodeframeHelper) *ItemDetail {
 
 	r := ItemDetail{cfh: cfh}
 	r.initialise("./config/internal/ItemDetail.toml")

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
@@ -13,7 +13,7 @@ import (
 
 type SystemItemCounts struct {
 	baseReport // embed common setup capability
-	cfh        codeframe.Helper
+	cfh        helper.CodeframeHelper
 	usage      itemUsage // storage for data from stream
 }
 
@@ -70,7 +70,7 @@ type itemUsage = map[itemContext]int
 //
 // Number of times a test item was encountered by students accross all tests
 //
-func SystemItemCountsReport(cfh codeframe.Helper) *SystemItemCounts {
+func SystemItemCountsReport(cfh helper.CodeframeHelper) *SystemItemCounts {
 
 	r := SystemItemCounts{
 		cfh:   cfh,

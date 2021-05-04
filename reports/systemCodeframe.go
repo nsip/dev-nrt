@@ -4,14 +4,14 @@ import (
 	"encoding/csv"
 	"fmt"
 
-	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
 
 type SystemCodeframe struct {
-	cfh        codeframe.Helper
+	cfh        helper.CodeframeHelper
 	baseReport // embed common setup capability
 }
 
@@ -19,7 +19,7 @@ type SystemCodeframe struct {
 // Summary of all codeframe objects showing every
 // combination of test->testlet->item
 //
-func SystemCodeframeReport(cfh codeframe.Helper) *SystemCodeframe {
+func SystemCodeframeReport(cfh helper.CodeframeHelper) *SystemCodeframe {
 
 	r := SystemCodeframe{cfh: cfh}
 	r.initialise("./config/SystemCodeframe.toml")
