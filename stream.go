@@ -3,10 +3,8 @@ package nrt
 import (
 	"context"
 	"fmt"
-
+	"sync/atomic"
 	"time"
-
-	"golang.org/x/sync/errgroup"
 
 	"github.com/gosuri/uiprogress"
 	"github.com/gosuri/uiprogress/util/strutil"
@@ -14,6 +12,7 @@ import (
 	"github.com/nsip/dev-nrt/records"
 	"github.com/nsip/dev-nrt/reports"
 	"github.com/nsip/dev-nrt/utils"
+	"golang.org/x/sync/errgroup"
 )
 
 //
@@ -421,7 +420,7 @@ func (tr *Transformer) eventItemReports() error {
 		reports.ItemPrintingReport(),
 	)
 	// create a progress bar
-	bar := tr.uip.AddBar(tr.stats["NAPEventStudentLink"] * 25) // 25 is expansion factor of events to items
+	bar := tr.uip.AddBar(tr.stats["NAPEventStudentLink"])
 	bar.AppendCompleted().PrependElapsed()
 	bar.PrependFunc(func(b *uiprogress.Bar) string {
 		return strutil.Resize(" Item-level (event-based):", 35)
@@ -433,9 +432,12 @@ func (tr *Transformer) eventItemReports() error {
 	// NOTE: must be handler here even with empty body
 	// otherwise exit channel blocks for pipeline
 	//
+	var procsize uint64
 	go pl.Dequeue(func(eor *records.EventOrientedRecord) {
 		// easy win no-op, also reclaims memory
 		// eor = nil
+		atomic.AddUint64(&procsize, 1)
+		bar.Set(int(procsize))
 		bar.Incr() // update the progress bar
 	})
 	defer pl.Close()

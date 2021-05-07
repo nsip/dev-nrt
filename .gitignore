@@ -19,4 +19,5 @@ cmd/nrt/nrt
 # if do need this one, get it from other branches 
 testdata/rrd.xml.zip
 
-
+build
+*.zip
