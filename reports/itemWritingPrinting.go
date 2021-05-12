@@ -6,20 +6,20 @@ import (
 	"html"
 
 	"github.com/iancoleman/strcase"
-	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/sjson"
 )
 
 type ItemWritingPrinting struct {
 	baseReport // embed common setup capability
-	cfh        codeframe.Helper
+	cfh        helper.CodeframeHelper
 }
 
 //
 // Summary of response data for writing tests, one row per student
 //
-func ItemWritingPrintingReport(cfh codeframe.Helper) *ItemWritingPrinting {
+func ItemWritingPrintingReport(cfh helper.CodeframeHelper) *ItemWritingPrinting {
 
 	r := ItemWritingPrinting{cfh: cfh}
 	r.initialise("./config/ItemWritingPrinting.toml")

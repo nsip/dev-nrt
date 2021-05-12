@@ -3,7 +3,7 @@ package reports
 import (
 	"fmt"
 
-	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
@@ -11,7 +11,7 @@ import (
 
 type DomainDAC struct {
 	baseReport // embed common setup capability
-	cfh        codeframe.Helper
+	cfh        helper.CodeframeHelper
 	dacs       []string
 }
 
@@ -21,7 +21,7 @@ type DomainDAC struct {
 // codes are flagged as true if they were in force
 // for the given domain for the student
 //
-func DomainDACReport(cfh codeframe.Helper) *DomainDAC {
+func DomainDACReport(cfh helper.CodeframeHelper) *DomainDAC {
 
 	r := DomainDAC{cfh: cfh, dacs: cfh.GetDACs()}
 	r.initialise("./config/internal/DomainDAC.toml")

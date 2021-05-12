@@ -1,0 +1,33 @@
+
+[usage]
+reportName = "(QA) Finds any broken GUID links"
+activated = true
+outputFileName = "./out/qa/systemGuidCheck.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"School" = "CalculatedFields.SchoolId"
+[[fields]]
+"YrLevel" = "CalculatedFields.YrLevel"
+[[fields]]
+"Domain" = "CalculatedFields.Domain"
+#
+# fields above are for report splitting 
+#
+
+[[fields]]
+"Object Name" = "CalculatedFields.ObjectName"
+[[fields]]
+"Object Type" = "CalculatedFields.ObjectType"
+[[fields]]
+"GUID" = "CalculatedFields.GUID"
+[[fields]]
+"Should Point To" = "CalculatedFields.ShouldPointTo"
+[[fields]]
+"PointsTo" = "CalculatedFields.PointsTo"
+

@@ -4,21 +4,21 @@ import (
 	"encoding/csv"
 	"fmt"
 
-	"github.com/nsip/dev-nrt/codeframe"
+	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
 
 type QaSystemCodeframe struct {
-	cfh        codeframe.Helper
+	cfh        helper.CodeframeHelper
 	baseReport // embed common setup capability
 }
 
 //
 // Slightly extended system codeframe report
 //
-func QaSystemCodeframeReport(cfh codeframe.Helper) *QaSystemCodeframe {
+func QaSystemCodeframeReport(cfh helper.CodeframeHelper) *QaSystemCodeframe {
 
 	r := QaSystemCodeframe{cfh: cfh}
 	r.initialise("./config/QaSystemCodeframe.toml")

@@ -4,23 +4,20 @@ import (
 	"encoding/csv"
 	"fmt"
 
-	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
-	"github.com/tidwall/sjson"
 )
 
-type QcaaNapoTestlets struct {
+type NswItemDescriptors struct {
 	baseReport // embed common setup capability
-	cfh        helper.CodeframeHelper
 }
 
 //
-// Detailed Breakdown of Testlets
+// Detailed breakdown of each TestITem
 //
-func QcaaNapoTestletsReport(cfh helper.CodeframeHelper) *QcaaNapoTestlets {
+func NswItemDescriptorsReport() *NswItemDescriptors {
 
-	r := QcaaNapoTestlets{cfh: cfh}
-	r.initialise("./config/QcaaNapoTestlets.toml")
+	r := NswItemDescriptors{}
+	r.initialise("./config/NswItemDescriptors.toml")
 	r.printStatus()
 
 	return &r
@@ -31,7 +28,7 @@ func QcaaNapoTestletsReport(cfh helper.CodeframeHelper) *QcaaNapoTestlets {
 // implement the EventPipe interface, core work of the
 // report engine.
 //
-func (r *QcaaNapoTestlets) ProcessCodeframeRecords(in chan *records.CodeframeRecord) chan *records.CodeframeRecord {
+func (r *NswItemDescriptors) ProcessCodeframeRecords(in chan *records.CodeframeRecord) chan *records.CodeframeRecord {
 
 	out := make(chan *records.CodeframeRecord)
 	go func() {
@@ -48,15 +45,10 @@ func (r *QcaaNapoTestlets) ProcessCodeframeRecords(in chan *records.CodeframeRec
 				continue
 			}
 
-			if cfr.RecordType != "NAPTestlet" {
+			if cfr.RecordType != "NAPTestItem" {
 				out <- cfr
 				continue
 			}
-
-			//
-			// generate any calculated fields required
-			//
-			cfr.CalculatedFields = r.calculateFields(cfr)
 
 			//
 			// now loop through the ouput definitions to create a
@@ -77,16 +69,4 @@ func (r *QcaaNapoTestlets) ProcessCodeframeRecords(in chan *records.CodeframeRec
 		}
 	}()
 	return out
-}
-
-//
-// generates a block of json that can be added to the
-// record containing values that are not in the original data
-//
-//
-func (r *QcaaNapoTestlets) calculateFields(cfr *records.CodeframeRecord) []byte {
-
-	json, _ := sjson.SetBytes([]byte{}, "CalculatedFields.LocationInStage", r.cfh.GetTestletLocationInStage(cfr.RefId()))
-
-	return json
 }
