@@ -2,7 +2,7 @@
 [usage]
 reportName = "(QA) Finds any broken GUID links"
 activated = true
-outputFileName = "./out/qa/qaGuidCheck.csv"
+outputFileName = "./out/qa/systemGuidCheck.csv"
 
 # Order of fields below is left to right order
 # columns will appear in final output, can be changed as needed.

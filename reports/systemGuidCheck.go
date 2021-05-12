@@ -39,7 +39,7 @@ type QaGuidCheck struct {
 func QaGuidCheckReport(cfh helper.ObjectHelper) *QaGuidCheck {
 
 	r := QaGuidCheck{cfh: cfh}
-	r.initialise("./config/QaGuidCheck.toml")
+	r.initialise("./config/SystemGuidCheck.toml")
 	r.printStatus()
 
 	return &r
