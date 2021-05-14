@@ -11,7 +11,7 @@ OutFolder = "./out/" # (string), in which folder trimmed csv files should be out
 
 [Split]
 Enabled = false # (bool), turn on/off Split function.
-IgnoreFolder = "./ignore/" # (string), If not empty string, dump unsplittable csv file into this folder. If empty, ignore unsplittable csv files.
+IgnoreFolder = "./out_split/ignore/" # (string), If not empty string, dump unsplittable csv file into this folder. If empty, ignore unsplittable csv files.
 OutFolder = "./out_split/" # (string), in which folder split results should be output.
 Schema = ["School", "YrLevel", "Domain"] # (string array), header sequence for splitting. Each header creates its split category folder.            
 StrictMode = true # (bool), If true, splittable csv file must have all [Schema] headers. Otherwise, dump it into IgnoreFolder. If false, use partial, sequence [Schema] to do splitting, and IgnoreFolders are also into its own split result path.
