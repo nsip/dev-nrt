@@ -47,6 +47,16 @@ func (we *WritingExtract) ProcessEventRecords(in chan *records.EventOrientedReco
 		for eor := range in {
 			if we.config.activated { // only process if active
 				if eor.IsWritingResponse() { // only process writing responses
+					// if there is no response recorded and no start time,
+					// consider this to be an open event, and ignore it
+					if len(eor.GetValueString("NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.Response")) == 0 {
+						participationCode := eor.GetValueString("NAPEventStudentLink.ParticipationCode")
+						startTime := eor.GetValueString("NAPEventStudentLink.StartTime")
+						if participationCode == "P" && len(startTime) == 0 {
+							continue
+						}
+					}
+
 					//
 					// generate any calculated fields required
 					//

@@ -39,5 +39,5 @@ func (cfr *CodeframeRecord) GetValueString(queryPath string) string {
 		data = cfr.Json
 	}
 
-	return gjson.GetBytes(data, queryPath).String()
+	return strings.Replace(gjson.GetBytes(data, queryPath).String(), "\n", "\\n", -1)
 }
