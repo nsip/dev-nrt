@@ -106,7 +106,7 @@ func (sor *StudentOrientedRecord) GetValueString(queryPath string) string {
 		return sor.codeframeValueString(queryPath)
 	}
 
-	return gjson.GetBytes(data, queryPath).String()
+	return strings.Replace(gjson.GetBytes(data, queryPath).String(), "\n", "\\n", -1)
 }
 
 //
