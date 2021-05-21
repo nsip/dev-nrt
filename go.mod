@@ -25,7 +25,7 @@ require (
 	github.com/nats-io/nuid v1.0.1
 	github.com/nsip/dev-nrt-splitter v0.0.14
 	github.com/nsip/sifxml2go v0.0.0-20210301053240-e6ece7304c58
-	github.com/pelletier/go-toml v1.9.0
+	github.com/pelletier/go-toml v1.9.1
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/subchen/go-xmldom v1.1.2

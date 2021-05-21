@@ -113,8 +113,8 @@ github.com/nsip/dev-nrt-splitter v0.0.14/go.mod h1:GXTiroNKDp+cdylQIAsr64e9jxjzh
 github.com/nsip/sifxml2go v0.0.0-20210301053240-e6ece7304c58 h1:z/A/6CfIRQIFVF04pZ4YFX8Pkaa4rbn5d/4eE9xy4Nw=
 github.com/nsip/sifxml2go v0.0.0-20210301053240-e6ece7304c58/go.mod h1:7p/hFojy0oNFRQBVOhu557XvdwE5wu7JBL1VVSz+Jqw=
 github.com/pelletier/go-toml v1.2.0/go.mod h1:5z9KED0ma1S8pY6P1sdut58dfprrGBbd/94hg7ilaic=
-github.com/pelletier/go-toml v1.9.0 h1:NOd0BRdOKpPf0SxkL3HxSQOG7rNh+4kl6PHcBPFs7Q0=
-github.com/pelletier/go-toml v1.9.0/go.mod h1:u1nR/EPcESfeI/szUZKdtJ0xRNbUoANCkoOuaOx1Y+c=
+github.com/pelletier/go-toml v1.9.1 h1:a6qW1EVNZWH9WGI6CsYdD8WAylkoXBS5yv0XHlh17Tc=
+github.com/pelletier/go-toml v1.9.1/go.mod h1:u1nR/EPcESfeI/szUZKdtJ0xRNbUoANCkoOuaOx1Y+c=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
