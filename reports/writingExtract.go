@@ -49,31 +49,34 @@ func (we *WritingExtract) ProcessEventRecords(in chan *records.EventOrientedReco
 				if eor.IsWritingResponse() { // only process writing responses
 					// if there is no response recorded and no start time,
 					// consider this to be an open event, and ignore it
+					skip := false
 					if len(eor.GetValueString("NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.Response")) == 0 {
 						participationCode := eor.GetValueString("NAPEventStudentLink.ParticipationCode")
 						startTime := eor.GetValueString("NAPEventStudentLink.StartTime")
 						if participationCode == "P" && len(startTime) == 0 {
-							continue
+							skip = true
 						}
 					}
 
-					//
-					// generate any calculated fields required
-					//
-					eor.CalculatedFields = we.calculateFields(eor)
-					//
-					// now loop through the ouput definitions to create a
-					// row of results
-					//
-					var result string
-					var row []string = make([]string, 0, len(we.config.queries))
-					for _, query := range we.config.queries {
-						result = eor.GetValueString(query)
-						row = append(row, result)
-					}
-					// write the row to the output file
-					if err := w.Write(row); err != nil {
-						fmt.Println("Warning: error writing record to csv:", we.config.name, err)
+					if !skip {
+						//
+						// generate any calculated fields required
+						//
+						eor.CalculatedFields = we.calculateFields(eor)
+						//
+						// now loop through the ouput definitions to create a
+						// row of results
+						//
+						var result string
+						var row []string = make([]string, 0, len(we.config.queries))
+						for _, query := range we.config.queries {
+							result = eor.GetValueString(query)
+							row = append(row, result)
+						}
+						// write the row to the output file
+						if err := w.Write(row); err != nil {
+							fmt.Println("Warning: error writing record to csv:", we.config.name, err)
+						}
 					}
 				}
 			}
