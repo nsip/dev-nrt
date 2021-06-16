@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html"
 	"strconv"
+	"strings"
 
 	"github.com/nats-io/nuid"
 	"github.com/nsip/dev-nrt/records"
@@ -97,7 +98,7 @@ func (we *WritingExtract) calculateFields(eor *records.EventOrientedRecord) []by
 	anonid := nuid.Next()
 	ir := eor.GetValueString("NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.Response")
 	ir = html.UnescapeString(ir) // html of writing response needs unescaping
-	wc := strconv.Itoa(countwords(ir))
+	wc := strconv.Itoa(countwords(strings.Replace(ir, "\\n", "\n", -1)))
 
 	json := eor.CalculatedFields
 	json, _ = sjson.SetBytes(json, "CalculatedFields.AnonId", anonid)

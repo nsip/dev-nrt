@@ -15,7 +15,7 @@ outputFileName = "./out/system_reports/systemCodeframe.csv"
 [[fields]]
 "Level" = "CalculatedFields.NAPTest.TestContent.TestLevel.Code"
 [[fields]]
-"Domain" = "CalculatedFields.NAPTest.TestContent.Domain"
+" Domain" = "CalculatedFields.NAPTest.TestContent.Domain"
 [[fields]]
 "Type" = "CalculatedFields.NAPTest.TestContent.TestType"
 [[fields]]

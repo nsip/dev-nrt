@@ -19,7 +19,7 @@ outputFileName = "./out/system_reports/nswAllPearsonY7.csv"
 [[fields]]
 "4" = "StudentPersonal.MostRecent.TestLevel.Code"
 [[fields]]
-"9" = "SchoolInfo.ACARAId"
+"09" = "SchoolInfo.ACARAId"
 [[fields]]
 "15" = "StudentPersonal.OtherIdList.OtherId.#[Type==NAPPlatformStudentId].value"
 [[fields]]
@@ -27,7 +27,7 @@ outputFileName = "./out/system_reports/nswAllPearsonY7.csv"
 [[fields]]
 "1" = "SchoolInfo.SchoolSector"
 [[fields]]
-"8" = "StudentPersonal.PersonInfo.Demographics.BirthDate"
+"8" = "CalculatedFields.TruncatedDOB"
 [[fields]]
 "1" = "StudentPersonal.PersonInfo.Demographics.Sex"
 [[fields]]

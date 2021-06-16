@@ -179,6 +179,8 @@ func (r *SystemTestCompleteness) calculateFields(key stcrKey) []byte {
 	var path string
 	var totalAttempts int
 	for pCode, count := range r.ac[key] {
+		//for _, pCode := range []string{"P", "S", "R"} {
+		//	count := r.ac[key][pCode]
 		path = fmt.Sprintf("CalculatedFields.SystemTestCompleteness.%s_AttemptsCount", pCode)
 		json, _ = sjson.SetBytes(json, path, count)
 		switch pCode {

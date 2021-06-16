@@ -86,6 +86,10 @@ func (r *NswWritingPearsonY9) ProcessEventRecords(in chan *records.EventOriented
 				if convErr != nil {
 					log.Println("WARNING: unexpected value for field length in ", r.configFileName, r.config.header[i])
 				}
+				paddingToken := defaultPaddingToken
+				if r.config.header[i][0] == '0' {
+					paddingToken = paddingToken
+				}
 				paddedResult = PadLeft(result, length, defaultPaddingToken)
 				row.WriteString(paddedResult)
 			}

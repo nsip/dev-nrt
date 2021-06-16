@@ -1,6 +1,6 @@
 
 [usage]
-reportName = "(QA) Number of times a test item was encountered by students accross all tests"
+reportName = "(QA) Number of times a test item was encountered by students across all tests"
 activated = true
 outputFileName = "./out/qa/systemItemCounts.csv"
 
@@ -19,9 +19,9 @@ outputFileName = "./out/qa/systemItemCounts.csv"
 [[fields]]
 "TestItem LocalId" = "CalculatedFields.SystemItemCounts.NAPTestItem.TestItemContent.NAPTestItemLocalId"
 [[fields]]
-"Item in Codeframe" = "CalculatedFields.SystemItemCounts.NAPTestItem.ItemInCodeFrame"
-[[fields]]
 "Item Valid Substitute" = "CalculatedFields.SystemItemCounts.NAPTestItem.ItemIsSubstitute"
+[[fields]]
+"Item in Codeframe" = "CalculatedFields.SystemItemCounts.NAPTestItem.ItemInCodeFrame"
 [[fields]]
 "Item Usage Count" = "CalculatedFields.SystemItemCounts.NAPTestItem.UsageCount"
 [[fields]]

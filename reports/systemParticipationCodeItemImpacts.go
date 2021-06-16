@@ -3,6 +3,7 @@ package reports
 import (
 	"encoding/csv"
 	"fmt"
+	"strconv"
 
 	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
@@ -115,6 +116,7 @@ func participationItemImpact(eor *records.EventOrientedRecord) []*itemError {
 					itemScore := value.Get("Score").String()
 					itemResponse := value.Get("Response").String()
 					itemSubScores := value.Get("SubscoreList.Subscore").Array()
+					itemscore_num, _ := strconv.Atoi(itemScore)
 
 					//
 					// validation logic copied from n2 implementation
@@ -123,20 +125,30 @@ func participationItemImpact(eor *records.EventOrientedRecord) []*itemError {
 					// as this score n longer exists in dataset
 					//
 					if itemLapsedTime == "" || itemResponse == "" {
-						if participationCode != "P" && participationCode != "S" {
+						if participationCode != "P" && participationCode != "S" && !(testDomain == "Writing" && participationCode == "F") {
 							ierr.err = errUnexpectedItemResponse
 							itemErrors = append(itemErrors, ierr)
 						}
 					}
+					if (itemScore != "" || len(itemSubScores) > 0) &&
+						participationCode != "P" && participationCode != "R" && !(testDomain == "Writing" && participationCode == "F") {
+						ierr.err = errUnexpectedItemScore
+						itemErrors = append(itemErrors, ierr)
+					}
+					if ((itemScore != "" && itemscore_num != 0) || len(itemSubScores) > 0) &&
+						participationCode == "R" {
+						ierr.err = errNonZeroItemScore
+						itemErrors = append(itemErrors, ierr)
+					}
 					//
 					if itemScore == "" {
-						if participationCode == "R" || participationCode == "P" {
+						if participationCode == "R" || participationCode == "P" || (testDomain == "Writing" && participationCode == "F") {
 							ierr.err = errMissingItemScore
 							itemErrors = append(itemErrors, ierr)
 						}
 					}
 					//
-					if testDomain == "Writing" && participationCode == "P" {
+					if testDomain == "Writing" && (participationCode == "P" || participationCode == "F") {
 						if len(itemSubScores) == 0 {
 							ierr.err = errMissingItemWritingScore
 							itemErrors = append(itemErrors, ierr)

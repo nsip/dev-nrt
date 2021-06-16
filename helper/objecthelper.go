@@ -8,6 +8,8 @@
 package helper
 
 import (
+	"github.com/tidwall/gjson"
+
 	"github.com/nsip/dev-nrt/pipelines"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/nsip/dev-nrt/repository"
@@ -18,7 +20,8 @@ import (
 // working with objects easier
 //
 type ObjectHelper struct {
-	data map[string]map[string][]byte
+	data        map[string]map[string][]byte
+	incodeframe map[string]bool
 }
 
 //
@@ -28,7 +31,8 @@ type ObjectHelper struct {
 func NewObjectHelper(r *repository.BadgerRepo) (ObjectHelper, error) {
 
 	h := ObjectHelper{
-		data: make(map[string]map[string][]byte, 0),
+		data:        make(map[string]map[string][]byte, 0),
+		incodeframe: make(map[string]bool),
 	} // initialise the internal maps
 
 	// wrap repo in emitter
@@ -68,6 +72,31 @@ func (cfh ObjectHelper) ProcessObjectRecords(in chan *records.ObjectRecord) chan
 			}
 			cfh.data[cfr.RecordType][cfr.RefId()] = cfr.Json
 
+			if cfr.RecordType == "NAPCodeFrame" {
+				testid := cfr.GetValueString("NAPCodeFrame.NAPTestRefId")
+				cfh.incodeframe[testid] = true
+
+				gjson.GetBytes(cfr.Json, "NAPCodeFrame.TestletList.Testlet").
+					ForEach(func(key, value gjson.Result) bool {
+						testletRefId := value.Get("NAPTestletRefId").String()
+						cfh.incodeframe[testletRefId] = true
+						//
+						// now iterate testlet item responses
+						//
+						value.Get("TestItemList.TestItem").
+							ForEach(func(key, value gjson.Result) bool {
+								//
+								// get item identifiers
+								//
+								itemRefId := value.Get("TestItemRefId").String()
+								cfh.incodeframe[itemRefId] = true
+								return true // keep iterating, move on to next item response
+							})
+						return true // keep iterating
+					})
+
+			}
+
 			out <- cfr
 		}
 
@@ -86,4 +115,10 @@ func (cfh ObjectHelper) GetTypeFromGuid(guid string) string {
 		}
 	}
 	return ""
+}
+
+// is this object referenced by the codeframe?
+func (cfh ObjectHelper) InCodeFrame(guid string) bool {
+	_, ok := cfh.incodeframe[guid]
+	return ok
 }

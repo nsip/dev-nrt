@@ -39,8 +39,8 @@ outputFileName = "./out/qa/itemExpectedResponses.csv"
 "# Incorrect Items Testlet 1" = "CalculatedFields.ItemExpectedResponses.Testlet.1.FoundItems.Incorrect"
 [[fields]]
 "# Not Attempted Items Testlet 1" = "CalculatedFields.ItemExpectedResponses.Testlet.1.FoundItems.NotAttempted"
-# [[fields]] # no longer in rrd explicitly, by implication are in expected not found list
-# "# Not In Path Items testlet 1" = "CalculatedFields.ItemExpectedResponses.Testlet.1.FoundItems.NotInPath"
+[[fields]] # no longer in rrd explicitly, by implication are in expected not found list
+"# Not In Path Items testlet 1" = "CalculatedFields.ItemExpectedResponses.Testlet.1.FoundItems.NotInPath"
 [[fields]]
 "Expected Items Not Found Testlet 1" = "CalculatedFields.ItemExpectedResponses.Testlet.1.ExpectedItemsNotFound"
 [[fields]]
@@ -58,8 +58,8 @@ outputFileName = "./out/qa/itemExpectedResponses.csv"
 "# Incorrect Items Testlet 2" = "CalculatedFields.ItemExpectedResponses.Testlet.2.FoundItems.Incorrect"
 [[fields]]
 "# Not Attempted Items Testlet 2" = "CalculatedFields.ItemExpectedResponses.Testlet.2.FoundItems.NotAttempted"
-# [[fields]] # no longer in rrd explicitly, by implication are in expected not found list
-# "# Not In Path Items testlet 1" = "CalculatedFields.ItemExpectedResponses.Testlet.1.FoundItems.NotInPath"
+[[fields]] # no longer in rrd explicitly, by implication are in expected not found list
+"# Not In Path Items testlet 1" = "CalculatedFields.ItemExpectedResponses.Testlet.1.FoundItems.NotInPath"
 [[fields]]
 "Expected Items Not Found Testlet 2" = "CalculatedFields.ItemExpectedResponses.Testlet.2.ExpectedItemsNotFound"
 [[fields]]
@@ -77,8 +77,8 @@ outputFileName = "./out/qa/itemExpectedResponses.csv"
 "# Incorrect Items Testlet 3" = "CalculatedFields.ItemExpectedResponses.Testlet.3.FoundItems.Incorrect"
 [[fields]]
 "# Not Attempted Items Testlet 3" = "CalculatedFields.ItemExpectedResponses.Testlet.3.FoundItems.NotAttempted"
-# [[fields]] # no longer in rrd explicitly, by implication are in expected not found list
-# "# Not In Path Items testlet 1" = "CalculatedFields.ItemExpectedResponses.Testlet.1.FoundItems.NotInPath"
+[[fields]] # no longer in rrd explicitly, by implication are in expected not found list
+"# Not In Path Items testlet 1" = "CalculatedFields.ItemExpectedResponses.Testlet.1.FoundItems.NotInPath"
 [[fields]]
 "Expected Items Not Found Testlet 3" = "CalculatedFields.ItemExpectedResponses.Testlet.3.ExpectedItemsNotFound"
 [[fields]]
@@ -96,8 +96,8 @@ outputFileName = "./out/qa/itemExpectedResponses.csv"
 "# Incorrect Items Testlet 4" = "CalculatedFields.ItemExpectedResponses.Testlet.4.FoundItems.Incorrect"
 [[fields]]
 "# Not Attempted Items Testlet 4" = "CalculatedFields.ItemExpectedResponses.Testlet.4.FoundItems.NotAttempted"
-# [[fields]] # no longer in rrd explicitly, by implication are in expected not found list
-# "# Not In Path Items testlet 1" = "CalculatedFields.ItemExpectedResponses.Testlet.1.FoundItems.NotInPath"
+[[fields]] # no longer in rrd explicitly, by implication are in expected not found list
+"# Not In Path Items testlet 1" = "CalculatedFields.ItemExpectedResponses.Testlet.1.FoundItems.NotInPath"
 [[fields]]
 "Expected Items Not Found Testlet 4" = "CalculatedFields.ItemExpectedResponses.Testlet.4.ExpectedItemsNotFound"
 [[fields]]

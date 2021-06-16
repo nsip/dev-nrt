@@ -25,11 +25,9 @@ outputFileName = "./out/item_printing/qcaa_napo_student_responses.csv"
 [[fields]]
 "PLATFORM_STUDENT_IDENTIFIER" = "NAPEventStudentLink.PlatformStudentIdentifier"
 [[fields]]
-# "TEST_ID" = "NAPTest.RefId"
-"TEST_ID" = "NAPTest.TestContent.NAPTestLocalId"
+"TEST_ID" = "NAPTest.RefId"
 [[fields]]
-# "TESTLET_ID" = "CalculatedFields.NAPTestletRefId"
-"TESTLET_ID" = "CalculatedFields.NAPTestletLocalId"
+"TESTLET_ID" = "CalculatedFields.NAPTestletRefId"
 [[fields]]
 "ITEM_ID" = "CalculatedFields.ItemResponse.NAPTestItemRefId"
 [[fields]]

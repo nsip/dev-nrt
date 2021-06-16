@@ -26,7 +26,7 @@ outputFileName = "./out/system_reports/nswWritingPearsonY9.csv"
 [[fields]]
 "4" = "NAPTest.TestContent.TestLevel.Code"
 [[fields]]
-"9" = "SchoolInfo.ACARAId"
+"09" = "SchoolInfo.ACARAId"
 [[fields]]
 "15" = "NAPEventStudentLink.PlatformStudentIdentifier"
 [[fields]]

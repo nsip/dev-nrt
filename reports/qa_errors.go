@@ -9,10 +9,10 @@ import "errors"
 
 var (
 	errUnexpectedItemResponse  = errors.New("Item response captured without student completing test")
-	errUnexpectedItemScore     = errors.New("Scored test item with p-code other than P or R")
-	errNonZeroItemScore        = errors.New("Non-zero scored test item with p-code of R")
-	errMissingItemScore        = errors.New("Unscored test with p-code of P or R")
-	errMissingItemWritingScore = errors.New("Unscored writing item with p-code of P")
+	errUnexpectedItemScore     = errors.New("Scored test item with status other than AF, P or R")
+	errNonZeroItemScore        = errors.New("Non-zero scored test item with status of R")
+	errMissingItemScore        = errors.New("Unscored test with status of AF, P or R")
+	errMissingItemWritingScore = errors.New("Unscored writing item with status of P or AF")
 )
 
 var (

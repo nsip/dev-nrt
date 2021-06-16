@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/nsip/dev-nrt/records"
+	"github.com/tidwall/sjson"
 )
 
 type NswAllPearsonY7 struct {
@@ -72,7 +73,11 @@ func (r *NswAllPearsonY7) ProcessStudentRecords(in chan *records.StudentOriented
 				if convErr != nil {
 					log.Println("WARNING: unexpected value for field length in ", r.configFileName, r.config.header[i])
 				}
-				paddedResult = PadLeft(result, length, defaultPaddingToken)
+				paddingToken := defaultPaddingToken
+				if r.config.header[i][0] == '0' {
+					paddingToken = zeroPaddingToken
+				}
+				paddedResult = PadLeft(result, length, paddingToken)
 				row.WriteString(paddedResult)
 			}
 			// write the row to the output file
@@ -94,5 +99,12 @@ func (r *NswAllPearsonY7) ProcessStudentRecords(in chan *records.StudentOriented
 //
 func (r *NswAllPearsonY7) calculateFields(sor *records.StudentOrientedRecord) []byte {
 
-	return sor.CalculatedFields
+	json := sor.CalculatedFields // keep any existing data
+
+	// create truncated format birthdate
+	fullDob := sor.GetValueString("StudentPersonal.PersonInfo.Demographics.BirthDate")
+	truncDob := strings.ReplaceAll(fullDob, "-", "")
+	json, _ = sjson.SetBytes(json, "CalculatedFields.TruncatedDOB", truncDob)
+
+	return json
 }
