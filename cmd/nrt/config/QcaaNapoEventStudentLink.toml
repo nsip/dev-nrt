@@ -33,7 +33,7 @@ outputFileName = "./out/system_reports/qcaa_napo_event_student_link.csv"
 [[fields]]
 "PARTICIPATION_TEXT" = "NAPEventStudentLink.ParticipationText"
 [[fields]]
-"ADJUSTMENT" = "NAPEventStudentLink.Adjustment.PNPCodeList.PNPCode"
+"ADJUSTMENT" = "CalculatedFields.NAPEventStudentLink.Adjustment.PNPCodeList.PNPCode"
 [[fields]]
 "DEVICE" = "NAPEventStudentLink.Device"
 [[fields]]

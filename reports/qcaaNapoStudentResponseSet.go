@@ -5,6 +5,8 @@ import (
 	"fmt"
 
 	"github.com/nsip/dev-nrt/records"
+	"github.com/tidwall/gjson"
+	"github.com/tidwall/sjson"
 )
 
 type QcaaNapoStudentResponseSet struct {
@@ -83,5 +85,13 @@ func (r *QcaaNapoStudentResponseSet) ProcessEventRecords(in chan *records.EventO
 //
 func (r *QcaaNapoStudentResponseSet) calculateFields(eor *records.EventOrientedRecord) []byte {
 
-	return eor.CalculatedFields
+	ir := gjson.GetBytes(eor.NAPStudentResponseSet, "NAPStudentResponseSet.DomainScore.PlausibleScaledValueList.PlausibleScaledValue").String()
+	if len(ir) == 0 {
+		ir = "[]"
+	}
+
+	json := eor.CalculatedFields
+	json, _ = sjson.SetBytes(json, "CalculatedFields.NAPStudentResponseSet.DomainScore.PlausibleScaledValueList.PlausibleScaledValue", ir)
+
+	return json
 }

@@ -5,6 +5,8 @@ import (
 	"fmt"
 
 	"github.com/nsip/dev-nrt/records"
+	"github.com/tidwall/gjson"
+	"github.com/tidwall/sjson"
 )
 
 type QcaaNapoEventStudentLink struct {
@@ -79,5 +81,13 @@ func (r *QcaaNapoEventStudentLink) ProcessEventRecords(in chan *records.EventOri
 //
 func (r *QcaaNapoEventStudentLink) calculateFields(eor *records.EventOrientedRecord) []byte {
 
-	return eor.CalculatedFields
+	ir := gjson.GetBytes(eor.NAPStudentResponseSet, "NAPEventStudentLink.Adjustment.PNPCodeList.PNPCode").String()
+	if len(ir) == 0 {
+		ir = "[]"
+	}
+
+	json := eor.CalculatedFields
+	json, _ = sjson.SetBytes(json, "CalculatedFields.NAPEventStudentLink.Adjustment.PNPCodeList.PNPCode", ir)
+
+	return json
 }

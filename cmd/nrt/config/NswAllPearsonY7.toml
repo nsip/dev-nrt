@@ -85,6 +85,14 @@ outputFileName = "./out/system_reports/nswAllPearsonY7.csv"
 [[fields]]
 "1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.11.fwResponseCorrectness"
 [[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.12.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.13.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.14.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.15.fwResponseCorrectness"
+[[fields]]
 "1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.0.fwResponseCorrectness"
 [[fields]]
 "1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.1.fwResponseCorrectness"
@@ -109,6 +117,14 @@ outputFileName = "./out/system_reports/nswAllPearsonY7.csv"
 [[fields]]
 "1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.11.fwResponseCorrectness"
 [[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.12.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.13.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.14.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.15.fwResponseCorrectness"
+[[fields]]
 "1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.0.fwResponseCorrectness"
 [[fields]]
 "1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.1.fwResponseCorrectness"
@@ -132,6 +148,14 @@ outputFileName = "./out/system_reports/nswAllPearsonY7.csv"
 "1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.10.fwResponseCorrectness"
 [[fields]]
 "1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.11.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.12.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.13.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.14.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Numeracy.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.15.fwResponseCorrectness"
 [[fields]]
 "1" = "Blank"
 [[fields]]
@@ -161,6 +185,12 @@ outputFileName = "./out/system_reports/nswAllPearsonY7.csv"
 [[fields]]
 "1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.12.fwResponseCorrectness"
 [[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.13.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.14.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.15.fwResponseCorrectness"
+[[fields]]
 "1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.0.fwResponseCorrectness"
 [[fields]]
 "1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.1.fwResponseCorrectness"
@@ -187,6 +217,12 @@ outputFileName = "./out/system_reports/nswAllPearsonY7.csv"
 [[fields]]
 "1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.12.fwResponseCorrectness"
 [[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.13.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.14.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.1.ItemResponseList.ItemResponse.15.fwResponseCorrectness"
+[[fields]]
 "1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.0.fwResponseCorrectness"
 [[fields]]
 "1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.1.fwResponseCorrectness"
@@ -212,6 +248,12 @@ outputFileName = "./out/system_reports/nswAllPearsonY7.csv"
 "1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.11.fwResponseCorrectness"
 [[fields]]
 "1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.12.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.13.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.14.fwResponseCorrectness"
+[[fields]]
+"1" = "CalculatedFields.Reading.NAPStudentResponseSet.TestletList.Testlet.2.ItemResponseList.ItemResponse.15.fwResponseCorrectness"
 [[fields]]
 "1" = "Blank"
 [[fields]]
@@ -315,7 +357,7 @@ outputFileName = "./out/system_reports/nswAllPearsonY7.csv"
 [[fields]]
 "1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.23.fwResponseCorrectness"
 [[fields]]
-"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.11.fwResponseCorrectness"
+"1" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.24.fwResponseCorrectness"
 [[fields]]
 "1" = "Blank"
 [[fields]]
