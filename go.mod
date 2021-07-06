@@ -36,4 +36,5 @@ require (
 	golang.org/x/net v0.0.0-20210510120150-4163338589ed // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	gopkg.in/cheggaaa/pb.v1 v1.0.28
+	gopkg.in/fatih/set.v0 v0.2.1
 )

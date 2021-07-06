@@ -7,6 +7,7 @@ import (
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
+	set "gopkg.in/fatih/set.v0"
 )
 
 type SystemObjectFrequency struct {
@@ -86,13 +87,18 @@ func (r *SystemObjectFrequency) calculateFields(sor *records.StudentOrientedReco
 	numResponses := 0
 
 	var path, flag string
+	prs_events_set := set.New(set.ThreadSafe).(*set.Set)
+	response_set := set.New(set.ThreadSafe).(*set.Set)
+
 	// analyse the events
 	for domain, event := range sor.GetEventsByDomain() {
 		numEvents++
 		path = fmt.Sprintf("CalculatedFields.ObjectFrequency.%s.NAPEventStudentLink", domain)
 		flag = "" // default, makes gaps easier to see in report than 'no'
+		response_set.Add(eventcode(event))
 		if prs(event) {
 			numPRSEvents++
+			prs_events_set.Add(eventcode(event))
 			flag = "yes"
 		}
 		json, _ = sjson.SetBytes(json, path, flag)
@@ -109,7 +115,14 @@ func (r *SystemObjectFrequency) calculateFields(sor *records.StudentOrientedReco
 	json, _ = sjson.SetBytes(json, "CalculatedFields.ObjectFrequency.PRSEventsCount", numPRSEvents)
 	json, _ = sjson.SetBytes(json, "CalculatedFields.ObjectFrequency.ResponsesCount", numResponses)
 
+	json, _ = sjson.SetBytes(json, "CalculatedFields.ObjectFrequency.PRS_Events_Without_Responses", set.Difference(prs_events_set, response_set).String())
+	json, _ = sjson.SetBytes(json, "CalculatedFields.ObjectFrequency.Responses_Without_PRS_Events", set.Difference(response_set, prs_events_set).String())
+
 	return json
+}
+
+func eventcode(event []byte) string {
+	return gjson.GetBytes(event, "SchoolDetails.ACARAId").String() + ":" + gjson.GetBytes(event, "NAPTest.TestContent.TestLevel").String() + ":" + gjson.GetBytes(event, "NAPTest.TestContent.TestDomain").String()
 }
 
 //
@@ -120,7 +133,7 @@ func prs(event []byte) bool {
 
 	particpationCode := gjson.GetBytes(event, "NAPEventStudentLink.ParticipationCode").String()
 	switch particpationCode {
-	case "P", "R", "S":
+	case "P", "R", "S", "F":
 		return true
 	}
 

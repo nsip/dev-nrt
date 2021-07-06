@@ -23,36 +23,36 @@ outputFileName = "./out/system_reports/systemSchools.csv"
 [[fields]]
 "School LGA" = "SchoolInfo.LocalGovernmentArea"
 [[fields]]
-# "School Type" = "SchoolInfo.SchoolSector"
+"School Type" = "SchoolInfo.SchoolSector"
 [[fields]]
 "Student Count" = "SchoolInfo.TotalEnrolments"
 [[fields]]
-# "Independent School" = "SchoolInfo.IndependentSchool"
+"Independent School" = "SchoolInfo.IndependentSchool"
 [[fields]]
 "School Sector" = "SchoolInfo.SchoolSector"
 [[fields]]
-# "System Indicator" = "System"
+"System Indicator" = "System"
 [[fields]]
-# "Non-Gov Systemic Status" = "NonGovSystemicStatus"
+"Non-Gov Systemic Status" = "NonGovSystemicStatus"
 [[fields]]
-# "Operational Status" = "OperationalStatus"
+"Operational Status" = "OperationalStatus"
 [[fields]]
-# "Co-Ed Status" = "SchoolCoEdStatus"
+"Co-Ed Status" = "SchoolCoEdStatus"
 [[fields]]
-# "Federal Electorate" = "FederalElectorate"
+"Federal Electorate" = "FederalElectorate"
 [[fields]]
 "Jurisdiction Lower House" = "JurisdictionLowerHouse"
 [[fields]]
-# "School Session Type" = "SessionType"
+"School Session Type" = "SessionType"
 [[fields]]
-# "Principal Name" = "PrincipalInfo.ContactName.FullName"
+"Principal Name" = "PrincipalInfo.ContactName.FullName"
 [[fields]]
-# "Religious Affiliation" = "ReligiousAffiliation"
+"Religious Affiliation" = "ReligiousAffiliation"
 [[fields]]
-# "SLA" = "SchoolInfo.SchoolDistrict"
+"SLA" = "SchoolInfo.SchoolDistrict"
 [[fields]]
-# "ARIA Code" = "ARIA"
+"ARIA Code" = "ARIA"
 [[fields]]
 "School Geographic Indicator" = "SchoolInfo.SchoolGeographicLocation"
 [[fields]]
-# "School URL" = "SchoolURL"
+"School URL" = "SchoolURL"

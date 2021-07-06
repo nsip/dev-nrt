@@ -73,6 +73,7 @@ func (r *QaSchoolsWritingExtract) ProcessEventRecords(in chan *records.EventOrie
 				out <- eor
 				continue
 			}
+			r.collectSummaryInitial(eor)
 
 			if !eor.IsWritingResponse() {
 				out <- eor
@@ -199,6 +200,17 @@ func (r *QaSchoolsWritingExtract) calculateFields(schoolAcaraId schoolId) []byte
 	return json
 }
 
+// summary statistics applicable to all records
+func (r *QaSchoolsWritingExtract) collectSummaryInitial(eor *records.EventOrientedRecord) {
+	schoolACARAId := eor.GetValueString("NAPEventStudentLink.SchoolACARAId")
+	studentId := eor.GetValueString("NAPEventStudentLink.PlatformStudentIdentifier")
+	ss := studentSchool{school: schoolACARAId, student: studentId}
+	if _, ok := r.students[ss]; !ok { // only update student counters on first encounter
+		r.students[ss] = struct{}{}
+		r.studentCounter[schoolACARAId]++
+	}
+}
+
 //
 // extract summary statistics from the record
 //
@@ -209,21 +221,14 @@ func (r *QaSchoolsWritingExtract) collectSummary(eor *records.EventOrientedRecor
 	r.schools[schoolACARAId] = eor.SchoolInfo
 
 	// student counters
-	studentId := eor.GetValueString("NAPEventStudentLink.PlatformStudentIdentifier")
 	studentTestLevel := eor.GetValueString("StudentPersonal.MostRecent.TestLevel.Code")
-	ss := studentSchool{school: schoolACARAId, student: studentId}
-	if _, ok := r.students[ss]; !ok { // only update student counters on first encounter
-		r.students[ss] = struct{}{}
-		r.studentCounter[schoolACARAId]++
-		// yrLevelCounter
-		studentYrLevel := eor.GetValueString("StudentPersonal.MostRecent.YearLevel.Code")
-		ssyl := studentSchoolYrLevel{school: schoolACARAId, year: studentYrLevel}
-		r.yrLevelCounter[ssyl]++
-		// testLevelCounter
-		sstl := studentSchoolTestLevel{school: schoolACARAId, level: studentTestLevel}
-		r.testLevelCounter[sstl]++
-
-	}
+	// yrLevelCounter
+	studentYrLevel := eor.GetValueString("StudentPersonal.MostRecent.YearLevel.Code")
+	ssyl := studentSchoolYrLevel{school: schoolACARAId, year: studentYrLevel}
+	r.yrLevelCounter[ssyl]++
+	// testLevelCounter
+	sstl := studentSchoolTestLevel{school: schoolACARAId, level: studentTestLevel}
+	r.testLevelCounter[sstl]++
 
 	// testAttemptsCounter
 	r.testAttemptsCounter[schoolACARAId]++
@@ -249,7 +254,7 @@ func (r *QaSchoolsWritingExtract) collectSummary(eor *records.EventOrientedRecor
 
 	// writingExtractCounter
 	switch studentPcode {
-	case "P": //, "R", "S", "E":
+	case "P", "F": //, "R", "S", "E":
 		sstlx := studentSchoolTestLevelExtract{school: schoolACARAId, level: studentTestLevel}
 		r.writingExtractCounter[sstlx]++
 	}
