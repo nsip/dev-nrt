@@ -54,5 +54,8 @@ outputFileName = "./out/qa/systemObjectFrequency.csv"
 [[fields]]
 "Numeracy Event Has Response" = "CalculatedFields.ObjectFrequency.Numeracy.NAPStudentResponseSet"
 
-
+[[fields]]
+"PRS_Events_Without_Responses" = "CalculatedFields.ObjectFrequency.PRS_Events_Without_Responses"
+[[fields]]
+"Responses_Without_PRS_Events" = "CalculatedFields.ObjectFrequency.Responses_Without_PRS_Events"
 

@@ -3,6 +3,7 @@ package reports
 import (
 	"encoding/csv"
 	"fmt"
+	"strings"
 
 	"github.com/iancoleman/strcase"
 	"github.com/nsip/dev-nrt/records"
@@ -94,7 +95,7 @@ func (r *QaSchools) ProcessEventRecords(in chan *records.EventOrientedRecord) ch
 			//
 			// generate any calculated fields required
 			//
-			summ.CalculatedFields = r.calculateFields(schoolid)
+			summ.CalculatedFields = r.calculateFields(schoolid, schoolinfo)
 			summ.SchoolInfo = schoolinfo
 
 			//
@@ -122,13 +123,38 @@ func (r *QaSchools) ProcessEventRecords(in chan *records.EventOrientedRecord) ch
 // record containing values that are not in the original data
 //
 //
-func (r *QaSchools) calculateFields(schoolAcaraId schoolId) []byte {
+func (r *QaSchools) calculateFields(schoolAcaraId schoolId, schoolinfo []byte) []byte {
 
 	json := []byte{}
 	var path string
+	var val string
 
 	// the school
 	json, _ = sjson.SetBytes(json, "CalculatedFields.QaSchools.SchoolACARAId", schoolAcaraId)
+
+	sector := gjson.GetBytes(schoolinfo, "SchoolInfo.SchoolSector").String()
+	switch {
+	case strings.EqualFold(sector, "ng"):
+		val = "Non-Government"
+	default:
+		val = "Government"
+	}
+	json, _ = sjson.SetBytes(json, "CalculatedFields.QaSchools.DerivedSector", val)
+
+	system := gjson.GetBytes(schoolinfo, "SchoolInfo.System").String()
+	switch system {
+	case "0001":
+		val = "Catholic"
+	case "0002":
+		val = "Anglican"
+	case "0003":
+		val = "Lutheran"
+	case "0004":
+		val = "Seventh Day Adventist"
+	default:
+		val = "Other"
+	}
+	json, _ = sjson.SetBytes(json, "CalculatedFields.QaSchools.DerivedSystem", val)
 
 	// studentCounter
 	studentCount := r.studentCounter[schoolAcaraId]
@@ -227,13 +253,13 @@ func (r *QaSchools) collectSummary(eor *records.EventOrientedRecord) {
 	ssp := studentSchoolParticipation{school: schoolACARAId, pcode: studentPcode}
 	r.participationCounter[ssp]++
 
-	switch studentPcode {
-	case "P", "R", "S":
-		domain := eor.GetValueString("NAPTest.TestContent.Domain")
-		ccDomain := strcase.ToCamel(domain)
-		sstd := studentSchoolTestLevelDomain{school: schoolACARAId, level: studentTestLevel, domain: testDomain(ccDomain)}
-		r.domainAttemptsCounter[sstd]++
-	}
+	//switch studentPcode {
+	//case "P", "R", "S":
+	domain := eor.GetValueString("NAPTest.TestContent.Domain")
+	ccDomain := strcase.ToCamel(domain)
+	sstd := studentSchoolTestLevelDomain{school: schoolACARAId, level: studentTestLevel, domain: testDomain(ccDomain)}
+	r.domainAttemptsCounter[sstd]++
+	//}
 
 	// disruptionsCounter
 	disruptions := gjson.GetBytes(eor.NAPEventStudentLink, "NAPEventStudentLink.TestDisruptionList.TestDisruption").Array()

@@ -23,7 +23,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/nats-io/nuid v1.0.1
-	github.com/nsip/dev-nrt-splitter v0.0.14
+	github.com/nsip/dev-nrt-splitter v0.0.15
 	github.com/nsip/sifxml2go v0.0.0-20210301053240-e6ece7304c58
 	github.com/pelletier/go-toml v1.9.1
 	github.com/pkg/errors v0.9.1 // indirect
@@ -36,4 +36,5 @@ require (
 	golang.org/x/net v0.0.0-20210510120150-4163338589ed // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	gopkg.in/cheggaaa/pb.v1 v1.0.28
+	gopkg.in/fatih/set.v0 v0.2.1
 )

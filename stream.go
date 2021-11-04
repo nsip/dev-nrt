@@ -178,6 +178,7 @@ func (tr *Transformer) simpleObjectReports() error {
 			reports.QaSystemScoreSummariesReport(tr.helper),    // qa
 			reports.OrphanScoreSummariesReport(),               // qa
 			reports.QaGuidCheckReport(tr.objecthelper),         // qa
+			reports.QaCodeframeCheckReport(tr.objecthelper),    // qa
 		}
 		rpt = append(rpt, qa...)
 	}
@@ -488,7 +489,7 @@ func (tr *Transformer) eventReports() error {
 		qa := []pipelines.EventPipe{
 			reports.QaSchoolsReport(),                                   // qa
 			reports.SystemTestCompletenessReport(),                      // qa
-			reports.QaCodeframeCheckReport(tr.helper),                   // qa
+			reports.QaStudentResultsCheckReport(tr.helper),              // qa
 			reports.OrphanStudentsReport(),                              // qa
 			reports.SystemResponsesReport(),                             // qa
 			reports.OrphanEventsReport(),                                // qa

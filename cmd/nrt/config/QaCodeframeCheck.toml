@@ -4,42 +4,11 @@ reportName = "(QA) Finds any discrepancies between codeframe strucure and studen
 activated = true
 outputFileName = "./out/qa/qaCodeframeCheck.csv"
 
-# Order of fields below is left to right order
-# columns will appear in final output, can be changed as needed.
-# Double brackets required to ensure map is created as array to preserve order
-# commenting out a key/value pair will remove that column from the
-# final report
-#
 [[fields]]
-"School" = "CalculatedFields.SchoolId"
+"ObjectID" = "CalculatedFields.ObjectID"
 [[fields]]
-"YrLevel" = "CalculatedFields.YrLevel"
+"LocalID" = "CalculatedFields.LocalID"
 [[fields]]
-"Domain" = "CalculatedFields.Domain"
-#
-# fields above are for report splitting 
-#
-
+"ObjectType" = "CalculatedFields.ObjectType"
 [[fields]]
-"Test Response RefId" = "NAPStudentResponseSet.RefId"
-[[fields]]
-"Response PSI" = "NAPStudentResponseSet.PlatformStudentIdentifier"
-[[fields]]
-"Test RefId" = "NAPTest.RefId"
-[[fields]]
-"Test LocalId" = "NAPTest.TestContent.NAPTestLocalId"
-[[fields]]
-"Testlet RefId" = "CalculatedFields.NAPTestlet.RefId"
-[[fields]]
-"Testlet LocalId" = "CalculatedFields.NAPTestlet.TestletContent.NAPTestletLocalId"
-[[fields]]
-"Test Item RefId" = "CalculatedFields.NAPTestItem.RefId"
-[[fields]]
-"Test Item LocalId" = "CalculatedFields.NAPTestItem.TestItemContent.NAPTestItemLocalId"
-[[fields]]
-"Codeframe Error Type" = "CalculatedFields.ErrorType"
-[[fields]]
-"Substitute Item RefId" = "CalculatedFields.SubstituteItemRefId"
-[[fields]]
-"Substitute Item LocalId" = "CalculatedFields.SubstituteItemLocalId"
-
+"ItemSubstitutedForList" = "CalculatedFields.SubstituteItemRefIds"

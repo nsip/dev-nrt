@@ -29,7 +29,7 @@ outputFileName = "./out/system_reports/isrPrinting.csv"
 [[fields]]
 "Year Level" = "CalculatedFields.YrLevel"
 [[fields]]
-"School Code" = "SchoolInfo.ACARAId"
+"School Code" = "SchoolInfo.LocalId"
 [[fields]]
 "School Name" = "SchoolInfo.SchoolName"
 [[fields]]

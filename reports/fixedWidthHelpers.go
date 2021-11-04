@@ -9,6 +9,7 @@ import (
 )
 
 var defaultPaddingToken byte = ' '
+var zeroPaddingToken byte = '0'
 
 var ItemCorrectness = map[string]string{
 	"NotAttempted": "9",

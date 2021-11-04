@@ -108,7 +108,7 @@ func missingTestlets(eor *records.EventOrientedRecord) bool {
 	case "Reading":
 		expectednodes = 3
 	case "Grammar and Punctuation":
-		expectednodes = 1
+		expectednodes = 3
 	case "Spelling":
 		expectednodes = 3
 	default:

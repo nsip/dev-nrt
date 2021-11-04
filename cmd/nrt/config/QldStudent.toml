@@ -15,7 +15,7 @@ outputFileName = "./out/system_reports/qldStudent.csv"
 [[fields]]
 "YearLevel" = "StudentPersonal.MostRecent.YearLevel.Code"
 [[fields]]
-"School" = "StudentPersonal.MostRecent.SchoolACARAId"
+"School ID" = "StudentPersonal.MostRecent.SchoolACARAId"
 [[fields]]
 "EQID" = "StudentPersonal.OtherIdList.OtherId.#[Type==SectorStudentId].value"
 [[fields]]
@@ -29,7 +29,7 @@ outputFileName = "./out/system_reports/qldStudent.csv"
 [[fields]]
 "IndigenousStatus" = "StudentPersonal.PersonInfo.Demographics.IndigenousStatus"
 [[fields]]
-"OtherLanguage" = "StudentPersonal.PersonInfo.Demographics.LanguageList.Language.0.Code"
+"OtherLanguage" = "StudentPersonal.PersonInfo.Demographics.LBOTE"
 [[fields]]
 "Sex" = "StudentPersonal.PersonInfo.Demographics.Sex"
 [[fields]]

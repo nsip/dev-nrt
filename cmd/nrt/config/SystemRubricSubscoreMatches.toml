@@ -40,8 +40,8 @@ outputFileName = "./out/qa/systemRubricSubscoreMatches.csv"
 "Test Item Local ID" = "CalculatedFields.RubricSubscoreMatches.TestItem.TestItemContent.NAPTestItemLocalId"
 [[fields]]
 "Test Item Name" = "CalculatedFields.RubricSubscoreMatches.TestItem.TestItemContent.ItemName"
+# no longer supported
 # [[fields]]
-# no longer present in dataset
 # "Testlet Score" = "Response.TestletList.Testlet.0.TestletScore"
 [[fields]]
 "Item Score" = "NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.Score"

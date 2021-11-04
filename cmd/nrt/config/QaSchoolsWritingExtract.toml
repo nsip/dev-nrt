@@ -27,30 +27,30 @@ outputFileName = "./out/writing_extract/qaSchoolsWritingExtract.csv"
 "Local ID" = "SchoolInfo.LocalId"
 [[fields]]
 "ACARA ID" = "CalculatedFields.QaSchoolsWritingExtract.SchoolACARAId"
+[[fields]] # no longer provided
+"State ID" = "SchoolInfo.StateProvinceId"
+[[fields]] # no longer provided
+"District" = "SchoolInfo.SchoolDistrict"
 # [[fields]] # no longer provided
-# "State ID" = "StateProvinceId"
-# [[fields]] # no longer provided
-# "District" = "SchoolDistrict"
-# [[fields]] # no longer provided
-# "Address" = "AddressList.Address"
+# "Address" = "SchoolInfo.AddressList.Address"
 # 
 [[fields]]
-"Total Student Events" = "CalculatedFields.QaSchoolsWritingExtract.TotalStudents"
+"Total Registered Students for Writing" = "CalculatedFields.QaSchoolsWritingExtract.TotalStudents"
 # 
 # [[fields]]
-# "Students in School Y3" = "CalculatedFields.QaSchoolsWritingExtract.YearLevel.3.TotalStudents"
-# [[fields]]
-# "Students in Test Y3" = "CalculatedFields.QaSchoolsWritingExtract.TestLevel.3.TotalStudents"
+"Students Reg. in School Y3" = "CalculatedFields.QaSchoolsWritingExtract.YearLevel.3.TotalStudents"
 [[fields]]
-"Students in School Y5" = "CalculatedFields.QaSchoolsWritingExtract.YearLevel.5.TotalStudents"
+"Students Reg. in School Y5" = "CalculatedFields.QaSchoolsWritingExtract.YearLevel.5.TotalStudents"
+[[fields]]
+"Students Reg. in School Y7" = "CalculatedFields.QaSchoolsWritingExtract.YearLevel.7.TotalStudents"
+[[fields]]
+"Students Reg. in School Y9" = "CalculatedFields.QaSchoolsWritingExtract.YearLevel.9.TotalStudents"
+[[fields]]
+"Students in Test Y3" = "CalculatedFields.QaSchoolsWritingExtract.TestLevel.3.TotalStudents"
 [[fields]]
 "Students in Test Y5" = "CalculatedFields.QaSchoolsWritingExtract.TestLevel.5.TotalStudents"
 [[fields]]
-"Students in School Y7" = "CalculatedFields.QaSchoolsWritingExtract.YearLevel.7.TotalStudents"
-[[fields]]
 "Students in Test Y7" = "CalculatedFields.QaSchoolsWritingExtract.TestLevel.7.TotalStudents"
-[[fields]]
-"Students in School Y9" = "CalculatedFields.QaSchoolsWritingExtract.YearLevel.9.TotalStudents"
 [[fields]]
 "Students in Test Y9" = "CalculatedFields.QaSchoolsWritingExtract.TestLevel.9.TotalStudents"
 # 

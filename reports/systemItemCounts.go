@@ -76,6 +76,20 @@ func SystemItemCountsReport(cfh helper.CodeframeHelper) *SystemItemCounts {
 		cfh:   cfh,
 		usage: make(itemUsage, 0),
 	}
+
+	itemstests := cfh.GetItemTests()
+	for k, v := range itemstests {
+		for _, v1 := range v {
+			ic := itemContext{
+				itemRefId:  k,
+				testDomain: v1["Domain"],
+				testLevel:  v1["Level"],
+				testName:   v1["Name"],
+			}
+			r.usage[ic] = 0
+		}
+	}
+
 	r.initialise("./config/SystemItemCounts.toml")
 	r.printStatus()
 
@@ -155,9 +169,10 @@ func (r *SystemItemCounts) ProcessEventRecords(in chan *records.EventOrientedRec
 //
 func (r *SystemItemCounts) countItem(eor *records.EventOrientedRecord) {
 
+	refid := eor.GetValueString("CalculatedFields.ItemResponse.NAPTestItemRefId")
 	// populate the context object
 	ic := itemContext{
-		itemRefId:  eor.GetValueString("CalculatedFields.ItemResponse.NAPTestItemRefId"),
+		itemRefId:  refid,
 		testDomain: eor.GetValueString("NAPTest.TestContent.Domain"),
 		testLevel:  eor.GetValueString("NAPTest.TestContent.TestLevel.Code"),
 		testName:   eor.GetValueString("NAPTest.TestContent.TestName"),
@@ -165,6 +180,15 @@ func (r *SystemItemCounts) countItem(eor *records.EventOrientedRecord) {
 
 	// capture the score
 	r.usage[ic]++
+
+	// and record 0 for all its substitutes, if not already populated
+	subRefIds, _ := r.cfh.HasSubstituteItem(refid)
+	for subRefId := range subRefIds {
+		ic.itemRefId = subRefId
+		if _, ok := r.usage[ic]; !ok {
+			r.usage[ic] = 0
+		}
+	}
 
 }
 

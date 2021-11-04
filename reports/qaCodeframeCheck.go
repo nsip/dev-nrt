@@ -15,21 +15,16 @@ import (
 // detected codeframe issue
 //
 type codeframeIssue struct {
-	eor            *records.EventOrientedRecord
-	testRefId      string
-	testLocalId    string
-	testletRefId   string
-	testletLocalId string
-	itemRefId      string
-	itemLocalId    string
-	itemSubRefIds  map[string]struct{}
-	itemSubLocalId string
-	substitue      bool
+	cfr           *records.ObjectRecord
+	id            string
+	localid       string
+	objtype       string
+	itemSubRefIds []string
 }
 
 type QaCodeframeCheck struct {
 	baseReport // embed common setup capability
-	cfh        helper.CodeframeHelper
+	cfh        helper.ObjectHelper
 	issues     []*codeframeIssue
 }
 
@@ -41,7 +36,7 @@ type QaCodeframeCheck struct {
 // only writes it out once all data has passed through.
 //
 //
-func QaCodeframeCheckReport(cfh helper.CodeframeHelper) *QaCodeframeCheck {
+func QaCodeframeCheckReport(cfh helper.ObjectHelper) *QaCodeframeCheck {
 
 	r := QaCodeframeCheck{cfh: cfh}
 	r.initialise("./config/QaCodeframeCheck.toml")
@@ -51,13 +46,9 @@ func QaCodeframeCheckReport(cfh helper.CodeframeHelper) *QaCodeframeCheck {
 
 }
 
-//
-// implement the EventPipe interface, core work of the
-// report engine.
-//
-func (r *QaCodeframeCheck) ProcessEventRecords(in chan *records.EventOrientedRecord) chan *records.EventOrientedRecord {
+func (r *QaCodeframeCheck) ProcessObjectRecords(in chan *records.ObjectRecord) chan *records.ObjectRecord {
 
-	out := make(chan *records.EventOrientedRecord)
+	out := make(chan *records.ObjectRecord)
 	go func() {
 		defer close(out)
 		// open the csv file writer, and set the header
@@ -66,28 +57,32 @@ func (r *QaCodeframeCheck) ProcessEventRecords(in chan *records.EventOrientedRec
 		w.Write(r.config.header)
 		defer w.Flush()
 
-		for eor := range in {
+		for cfr := range in {
 			if !r.config.activated { // only process if activated
-				out <- eor
+				out <- cfr
+				continue
+			}
+
+			if cfr.RecordType != "NAPCodeFrame" && cfr.RecordType != "NAPTest" && cfr.RecordType != "NAPTestlet" && cfr.RecordType != "NAPTestItem" {
+				out <- cfr
 				continue
 			}
 
 			//
 			// check for codeframe errors
 			//
-			r.validate(eor)
-
-			out <- eor
+			r.validate(cfr)
+			out <- cfr
 		}
-
 		//
 		// Write out issues collected
 		//
 		for _, issue := range r.issues {
+
 			//
 			// generate any calculated fields required
 			//
-			issue.eor.CalculatedFields = r.calculateFields(issue)
+			issue.cfr.CalculatedFields = r.calculateFields(issue)
 
 			//
 			// now loop through the ouput definitions to create a
@@ -96,7 +91,7 @@ func (r *QaCodeframeCheck) ProcessEventRecords(in chan *records.EventOrientedRec
 			var result string
 			var row []string = make([]string, 0, len(r.config.queries))
 			for _, query := range r.config.queries {
-				result = issue.eor.GetValueString(query)
+				result = issue.cfr.GetValueString(query)
 				row = append(row, result)
 			}
 			// write the row to the output file
@@ -104,7 +99,6 @@ func (r *QaCodeframeCheck) ProcessEventRecords(in chan *records.EventOrientedRec
 				fmt.Println("Warning: error writing record to csv:", r.config.name, err)
 			}
 		}
-
 	}()
 	return out
 }
@@ -116,26 +110,26 @@ func (r *QaCodeframeCheck) ProcessEventRecords(in chan *records.EventOrientedRec
 //
 func (r *QaCodeframeCheck) calculateFields(issue *codeframeIssue) []byte {
 
-	json := issue.eor.CalculatedFields
+	json := issue.cfr.CalculatedFields
 
 	// add details of any issues found
-	json, _ = sjson.SetBytes(json, "CalculatedFields.NAPTestlet.RefId", issue.testletRefId)
-	json, _ = sjson.SetBytes(json, "CalculatedFields.NAPTestlet.TestletContent.NAPTestletLocalId", issue.testletLocalId)
-	json, _ = sjson.SetBytes(json, "CalculatedFields.NAPTestItem.RefId", issue.itemRefId)
-	json, _ = sjson.SetBytes(json, "CalculatedFields.NAPTestItem.TestItemContent.NAPTestItemLocalId", issue.itemLocalId)
-	json, _ = sjson.SetBytes(json, "CalculatedFields.ErrorType", "item->testlet->test not found in codeframe")
+	json, _ = sjson.SetBytes(json, "CalculatedFields.ObjectID", issue.id)
+	json, _ = sjson.SetBytes(json, "CalculatedFields.LocalID", issue.localid)
+	json, _ = sjson.SetBytes(json, "CalculatedFields.ObjectType", issue.objtype)
 
-	//
-	// this will be true if a substitute item has been used as the primary reference in the
-	// codeframe - in effect the item/substitute refernces have been created the wrong way round
-	//
-	if issue.substitue {
-		json, _ = sjson.SetBytes(json, "CalculatedFields.SubstituteItemRefId", issue.itemSubRefIds)
-		json, _ = sjson.SetBytes(json, "CalculatedFields.SubstituteItemLocalId", issue.itemSubLocalId)
-		json, _ = sjson.SetBytes(json, "CalculatedFields.ErrorType", "codeframe acyclical use of substitute item")
+	if issue.itemSubRefIds != nil {
+		json, _ = sjson.SetBytes(json, "CalculatedFields.SubstituteItemRefIds", issue.itemSubRefIds)
 	}
 
 	return json
+}
+
+func gjsonArray2StringSlice(res []gjson.Result) []string {
+	ret := make([]string, 0)
+	for _, name := range res {
+		ret = append(ret, name.String())
+	}
+	return ret
 }
 
 //
@@ -146,77 +140,59 @@ func (r *QaCodeframeCheck) calculateFields(issue *codeframeIssue) []byte {
 // Mutiple issues may be detected in the same response.
 //
 //
-func (r *QaCodeframeCheck) validate(eor *records.EventOrientedRecord) {
+func (r *QaCodeframeCheck) validate(cfr *records.ObjectRecord) {
 
-	//
-	// iterate response testlets
-	//
-	gjson.GetBytes(eor.NAPStudentResponseSet, "NAPStudentResponseSet.TestletList.Testlet").
-		ForEach(func(key, value gjson.Result) bool {
-			cfi := &codeframeIssue{}
-			containers := make(map[string][]string, 0)
-			//
-			// get testlet identifiers
-			//
-			cfi.testletRefId = value.Get("NAPTestletRefId").String()
-			cfi.testletLocalId = value.Get("NAPTestletLocalId").String()
-			//
-			// now iterate testlet item responses
-			//
-			value.Get("ItemResponseList.ItemResponse").
-				ForEach(func(key, value gjson.Result) bool {
-					//
-					// get item identifiers
-					//
-					cfi.itemRefId = value.Get("NAPTestItemRefId").String()
-					cfi.itemLocalId = value.Get("NAPTestItemLocalId").String()
-					//
-					// first we need ot see if this is a substitute item
-					//
-					if cfi.itemSubRefIds, cfi.substitue = r.cfh.IsSubstituteItem(cfi.itemRefId); cfi.substitue {
+	switch cfr.RecordType {
+	case "NAPCodeFrame":
+		testid := cfr.GetValueString("NAPCodeFrame.NAPTestRefId")
+		testlocalid := cfr.GetValueString("NAPCodeFrame.TestContent.NAPTestLocalId")
+		objtype := r.cfh.GetTypeFromGuid(testid)
+		if objtype != "NAPTest" {
+			r.issues = append(r.issues, &codeframeIssue{id: testid, localid: testlocalid, objtype: "test", cfr: cfr})
+		}
+		gjson.GetBytes(cfr.Json, "NAPCodeFrame.TestletList.Testlet").
+			ForEach(func(key, value gjson.Result) bool {
+				testletRefId := value.Get("NAPTestletRefId").String()
+				testletlocalid := value.Get("TestletContent.NAPTestletLocalId").String()
+				objtype := r.cfh.GetTypeFromGuid(testletRefId)
+				if objtype != "NAPTestlet" {
+					r.issues = append(r.issues, &codeframeIssue{id: testletRefId, localid: testletlocalid, objtype: "testlet", cfr: cfr})
+				}
+				value.Get("TestItemList.TestItem").
+					ForEach(func(key, value gjson.Result) bool {
 						//
-						// if it is then use the substitute to look up the
-						// codeframe validity, codeframe itself doesn;t know about
-						// substitute items
+						// get item identifiers
 						//
-						for subRefId := range cfi.itemSubRefIds {
-							for k, v := range r.cfh.GetContainersForItem(subRefId) {
-								containers[k] = v // add testlet-test reference to lookup
-							}
+						itemRefId := value.Get("TestItemRefId").String()
+						itemlocalid := value.Get("TestItemContent.NAPTestItemLocalId").String()
+						objtype := r.cfh.GetTypeFromGuid(testletRefId)
+						if objtype != "NAPTestlet" {
+							subs := value.Get("TestItemContent.ItemSubstitutedForList.SubstituteItem.#.SubstituteItemRefId")
+
+							r.issues = append(r.issues, &codeframeIssue{id: itemRefId, localid: itemlocalid, objtype: "testitem", itemSubRefIds: gjsonArray2StringSlice(subs.Array()), cfr: cfr})
+
 						}
-						cfi.itemSubLocalId = r.cfh.GetCodeframeObjectValueString(cfi.itemRefId, "NAPTestItem.TestItemContent.NAPTestItemLocalId")
-					} else {
-						//
-						// if not we check the validity of the item as given
-						//
-						containers = r.cfh.GetContainersForItem(cfi.itemRefId)
-					}
-					// get test identifiers
-					//
-					cfi.testRefId = eor.GetValueString("NAPTest.RefId")
-					cfi.testLocalId = eor.GetValueString("NAPTest.TestContent.NAPTestLocalId")
-					//
-					// now we check that the available combinations of test and testlet
-					// in the codeframe for this item have at least one match with the
-					// combination captured in this response
-					//
-					for testlet, tests := range containers {
-						for _, test := range tests {
-							if testlet == cfi.testletRefId && test == cfi.testRefId {
-								return true // keep iterating - gjson equiv. of continue - to next item response
-							}
-						}
-					}
-					//
-					// if we got here then our item has an issue
-					// add to the issues list
-					//
-					cfi.eor = eor
-					r.issues = append(r.issues, cfi)
-					//
-					return true // keep iterating, move on to next item response
-				})
-			return true // keep iterating
-		})
+						return true // keep iterating, move on to next item response
+					})
+				return true // keep iterating
+			})
+	case "NAPTest":
+		testid := cfr.GetValueString("NAPTest.RefId")
+		if !r.cfh.InCodeFrame(testid) {
+			r.issues = append(r.issues, &codeframeIssue{id: testid, localid: "nil", objtype: "test", cfr: cfr})
+		}
+	case "NAPTestlet":
+		testid := cfr.GetValueString("NAPTestlet.RefId")
+		if !r.cfh.InCodeFrame(testid) {
+			r.issues = append(r.issues, &codeframeIssue{id: testid, localid: "nil", objtype: "testlet", cfr: cfr})
+		}
+	case "NAPTestItem":
+		testid := cfr.GetValueString("NAPTestItem.RefId")
+		if !r.cfh.InCodeFrame(testid) {
+			subs := gjson.GetBytes(cfr.Json, "NAPTestItem.TestItemContent.ItemSubstitutedForList.SubstituteItem.#.SubstituteItemRefId")
+			r.issues = append(r.issues, &codeframeIssue{id: testid, localid: "nil", objtype: "testitem", itemSubRefIds: gjsonArray2StringSlice(subs.Array()), cfr: cfr})
+		}
+
+	}
 
 }

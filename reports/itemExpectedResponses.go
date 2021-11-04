@@ -138,14 +138,25 @@ func (r *ItemExpectedResponses) calculateFields(eor *records.EventOrientedRecord
 					var ok bool
 					for subItem := range subItems {
 						if _, ok = expectedItems[subItem]; ok {
-							break
+							//	break
+							expectedItems[item] = struct{}{}
 						}
 					}
-					if ok {
-						continue
+				}
+			}
+			for item := range expectedItems {
+				// check in case this item has a reverse substitute - shouldn't be the case but in practice has happened
+				if subItems, validSub := r.cfh.IsSubstituteItem(item); validSub {
+					var ok bool
+					for subItem := range subItems {
+						if _, ok = seenItems[subItem]; ok {
+							//      break
+							seenItems[item] = struct{}{}
+						}
 					}
 				}
-
+			}
+			for item := range seenItems {
 				// check if expected
 				if _, ok := expectedItems[item]; !ok {
 					localId := r.cfh.GetCodeframeObjectValueString(item, "NAPTestItem.TestItemContent.NAPTestItemLocalId")
@@ -158,18 +169,6 @@ func (r *ItemExpectedResponses) calculateFields(eor *records.EventOrientedRecord
 			// check for expected not seen
 			//
 			for item := range expectedItems {
-				// check in case this item has a reverse substitute - shouldn't be the case but in practice has happened
-				if subItems, validSub := r.cfh.IsSubstituteItem(item); validSub {
-					var ok bool
-					for subItem := range subItems {
-						if _, ok = seenItems[subItem]; ok {
-							break
-						}
-					}
-					if ok {
-						continue
-					}
-				}
 				// check if seen
 				if _, ok := seenItems[item]; !ok {
 					localId := r.cfh.GetCodeframeObjectValueString(item, "NAPTestItem.TestItemContent.NAPTestItemLocalId")

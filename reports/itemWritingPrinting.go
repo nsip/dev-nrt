@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"html"
+	"strings"
 
 	"github.com/iancoleman/strcase"
 	"github.com/nsip/dev-nrt/helper"
@@ -51,6 +52,12 @@ func (r *ItemWritingPrinting) ProcessEventRecords(in chan *records.EventOriented
 			}
 
 			if !eor.IsWritingResponse() { // only deal with writing responses
+				out <- eor
+				continue
+			}
+
+			pc := eor.GetValueString("NAPEventStudentLink.ParticipationCode")
+			if !strings.EqualFold(pc, "P") && !strings.EqualFold(pc, "S") && !strings.EqualFold(pc, "F") {
 				out <- eor
 				continue
 			}

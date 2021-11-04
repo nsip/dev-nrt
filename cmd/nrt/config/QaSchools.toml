@@ -13,93 +13,91 @@ outputFileName = "./out/qa/qaSchools.csv"
 
 [[fields]]
 "SchoolName" = "SchoolInfo.SchoolName"
-# [[fields]] # no longer provided
-# "Sector" = "DerivedSector"
 [[fields]]
-"Sector" = "SchoolInfo.SchoolSector"
-# [[fields]] # no longer provided
-# "System" = "DerivedSystem"
-# [[fields]] # no longer provided
-# "Independent" = "IndependentSchool"
-# [[fields]] # no longer provided
-# "Type" = "SchoolType"
+"Sector" = "CalculatedFields.QaSchools.DerivedSector"
+[[fields]]
+"System" = "CalculatedFields.QaSchools.DerivedSystem"
+[[fields]]
+"Independent" = "IndependentSchool"
+[[fields]]
+"Type" = "SchoolType"
 [[fields]]
 "Local ID" = "SchoolInfo.LocalId"
 [[fields]]
 "ACARA ID" = "CalculatedFields.QaSchools.SchoolACARAId"
-# [[fields]] # no longer provided
-# "State ID" = "StateProvinceId"
-# [[fields]] # no longer provided
-# "District" = "SchoolDistrict"
-# [[fields]] # no longer provided
-# "Address" = "AddressList.Address"
+[[fields]]
+"State ID" = "StateProvinceId"
+[[fields]]
+"District" = "SchoolDistrict"
+[[fields]]
+"Address" = "AddressList.Address"
 # 
 [[fields]]
-"Total Student Events" = "CalculatedFields.QaSchools.TotalStudents"
+"Total Reg. Students" = "CalculatedFields.QaSchools.TotalStudents"
 # 
 [[fields]]
-"Students in School Y3" = "CalculatedFields.QaSchools.YearLevel.3.TotalStudents"
+"Students Reg. yr3" = "CalculatedFields.QaSchools.YearLevel.3.TotalStudents"
 [[fields]]
-"Students in Test Y3" = "CalculatedFields.QaSchools.TestLevel.3.TotalStudents"
+"Students Reg. yr5" = "CalculatedFields.QaSchools.YearLevel.5.TotalStudents"
 [[fields]]
-"Students in School Y5" = "CalculatedFields.QaSchools.YearLevel.5.TotalStudents"
+"Students Reg. yr7" = "CalculatedFields.QaSchools.YearLevel.7.TotalStudents"
 [[fields]]
-"Students in Test Y5" = "CalculatedFields.QaSchools.TestLevel.5.TotalStudents"
+"Students Reg. yr9" = "CalculatedFields.QaSchools.YearLevel.9.TotalStudents"
 [[fields]]
-"Students in School Y7" = "CalculatedFields.QaSchools.YearLevel.7.TotalStudents"
+"Students Reg. Test lvl3" = "CalculatedFields.QaSchools.TestLevel.3.TotalStudents"
 [[fields]]
-"Students in Test Y7" = "CalculatedFields.QaSchools.TestLevel.7.TotalStudents"
+"Students Reg. Test lvl5" = "CalculatedFields.QaSchools.TestLevel.5.TotalStudents"
 [[fields]]
-"Students in School Y9" = "CalculatedFields.QaSchools.YearLevel.9.TotalStudents"
+"Students Reg. Test lvl7" = "CalculatedFields.QaSchools.TestLevel.7.TotalStudents"
 [[fields]]
-"Students in Test Y9" = "CalculatedFields.QaSchools.TestLevel.9.TotalStudents"
+"Students Reg. Test lvl9" = "CalculatedFields.QaSchools.TestLevel.9.TotalStudents"
 # 
 [[fields]]
 "Total Test Attempts" = "CalculatedFields.QaSchools.TotalTestAttempts"
 # 
 [[fields]]
-"Y3 G&P" = "CalculatedFields.QaSchools.TestLevel.3.TestDomain.GrammarAndPunctuation.TotalAttempts"
+"Yr 3 G&P" = "CalculatedFields.QaSchools.TestLevel.3.TestDomain.GrammarAndPunctuation.TotalAttempts"
 [[fields]]
-"Y3 Writing" = "CalculatedFields.QaSchools.TestLevel.3.TestDomain.Writing.TotalAttempts"
+"Yr 3 Writing" = "CalculatedFields.QaSchools.TestLevel.3.TestDomain.Writing.TotalAttempts"
 [[fields]]
-"Y3 Numeracy" = "CalculatedFields.QaSchools.TestLevel.3.TestDomain.Numeracy.TotalAttempts"
+"Yr 3 Numeracy" = "CalculatedFields.QaSchools.TestLevel.3.TestDomain.Numeracy.TotalAttempts"
 [[fields]]
-"Y3 Reading" = "CalculatedFields.QaSchools.TestLevel.3.TestDomain.Reading.TotalAttempts"
+"Yr 3 Reading" = "CalculatedFields.QaSchools.TestLevel.3.TestDomain.Reading.TotalAttempts"
 [[fields]]
-"Y3 Spelling" = "CalculatedFields.QaSchools.TestLevel.3.TestDomain.Spelling.TotalAttempts"
+"Yr 3 Spelling" = "CalculatedFields.QaSchools.TestLevel.3.TestDomain.Spelling.TotalAttempts"
 # 
 [[fields]]
-"Y5 G&P" = "CalculatedFields.QaSchools.TestLevel.5.TestDomain.GrammarAndPunctuation.TotalAttempts"
+"Yr 5 G&P" = "CalculatedFields.QaSchools.TestLevel.5.TestDomain.GrammarAndPunctuation.TotalAttempts"
 [[fields]]
-"Y5 Writing" = "CalculatedFields.QaSchools.TestLevel.5.TestDomain.Writing.TotalAttempts"
+"Yr 5 Writing" = "CalculatedFields.QaSchools.TestLevel.5.TestDomain.Writing.TotalAttempts"
 [[fields]]
-"Y5 Numeracy" = "CalculatedFields.QaSchools.TestLevel.5.TestDomain.Numeracy.TotalAttempts"
+"Yr 5 Numeracy" = "CalculatedFields.QaSchools.TestLevel.5.TestDomain.Numeracy.TotalAttempts"
 [[fields]]
-"Y5 Reading" = "CalculatedFields.QaSchools.TestLevel.5.TestDomain.Reading.TotalAttempts"
+"Yr 5 Reading" = "CalculatedFields.QaSchools.TestLevel.5.TestDomain.Reading.TotalAttempts"
 [[fields]]
-"Y5 Spelling" = "CalculatedFields.QaSchools.TestLevel.5.TestDomain.Spelling.TotalAttempts"
+"Yr 5 Spelling" = "CalculatedFields.QaSchools.TestLevel.5.TestDomain.Spelling.TotalAttempts"
 # 
 [[fields]]
-"Y7 G&P" = "CalculatedFields.QaSchools.TestLevel.7.TestDomain.GrammarAndPunctuation.TotalAttempts"
+"Yr 7 G&P" = "CalculatedFields.QaSchools.TestLevel.7.TestDomain.GrammarAndPunctuation.TotalAttempts"
 [[fields]]
-"Y7 Writing" = "CalculatedFields.QaSchools.TestLevel.7.TestDomain.Writing.TotalAttempts"
+"Yr 7 Writing" = "CalculatedFields.QaSchools.TestLevel.7.TestDomain.Writing.TotalAttempts"
 [[fields]]
-"Y7 Numeracy" = "CalculatedFields.QaSchools.TestLevel.7.TestDomain.Numeracy.TotalAttempts"
+"Yr 7 Numeracy" = "CalculatedFields.QaSchools.TestLevel.7.TestDomain.Numeracy.TotalAttempts"
 [[fields]]
-"Y7 Reading" = "CalculatedFields.QaSchools.TestLevel.7.TestDomain.Reading.TotalAttempts"
+"Yr 7 Reading" = "CalculatedFields.QaSchools.TestLevel.7.TestDomain.Reading.TotalAttempts"
 [[fields]]
-"Y7 Spelling" = "CalculatedFields.QaSchools.TestLevel.7.TestDomain.Spelling.TotalAttempts"
+"Yr 7 Spelling" = "CalculatedFields.QaSchools.TestLevel.7.TestDomain.Spelling.TotalAttempts"
 # 
 [[fields]]
-"Y9 G&P" = "CalculatedFields.QaSchools.TestLevel.9.TestDomain.GrammarAndPunctuation.TotalAttempts"
+"Yr 9 G&P" = "CalculatedFields.QaSchools.TestLevel.9.TestDomain.GrammarAndPunctuation.TotalAttempts"
 [[fields]]
-"Y9 Writing" = "CalculatedFields.QaSchools.TestLevel.9.TestDomain.Writing.TotalAttempts"
+"Yr 9 Writing" = "CalculatedFields.QaSchools.TestLevel.9.TestDomain.Writing.TotalAttempts"
 [[fields]]
-"Y9 Numeracy" = "CalculatedFields.QaSchools.TestLevel.9.TestDomain.Numeracy.TotalAttempts"
+"Yr 9 Numeracy" = "CalculatedFields.QaSchools.TestLevel.9.TestDomain.Numeracy.TotalAttempts"
 [[fields]]
-"Y9 Reading" = "CalculatedFields.QaSchools.TestLevel.9.TestDomain.Reading.TotalAttempts"
+"Yr 9 Reading" = "CalculatedFields.QaSchools.TestLevel.9.TestDomain.Reading.TotalAttempts"
 [[fields]]
-"Y9 Spelling" = "CalculatedFields.QaSchools.TestLevel.9.TestDomain.Spelling.TotalAttempts"
+"Yr 9 Spelling" = "CalculatedFields.QaSchools.TestLevel.9.TestDomain.Spelling.TotalAttempts"
 # 
 [[fields]]
 "Not Enrolled (X)" = "CalculatedFields.QaSchools.ParticipationCode.X.TotalAttempts"

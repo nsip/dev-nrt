@@ -42,7 +42,9 @@ func (r *SystemDomainScores) ProcessEventRecords(in chan *records.EventOrientedR
 		for eor := range in {
 			if r.config.activated { // only process if active
 
-				if eor.ParticipatedInTest() {
+				score := eor.GetValueString("NAPStudentResponseSet.DomainScore.RawScore")
+				if score != "" {
+
 					//
 					// generate any calculated fields required
 					//
