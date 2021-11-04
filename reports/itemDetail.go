@@ -66,9 +66,12 @@ func (r *ItemDetail) ProcessEventRecords(in chan *records.EventOrientedRecord) c
 func (r *ItemDetail) calculateFields(eor *records.EventOrientedRecord) []byte {
 
 	itemRefId := eor.GetValueString("CalculatedFields.ItemResponse.NAPTestItemRefId")
+	testletRefId := eor.GetValueString("CalculatedFields.NAPTestletRefId")
 	_, itemBytes := r.cfh.GetItem(itemRefId)
 	itemDetail := gjson.GetBytes(itemBytes, "NAPTestItem")
-	json, _ := sjson.SetRawBytes(eor.CalculatedFields, "CalculatedFields.NAPTestItem", []byte(itemDetail.String()))
-
+	json := eor.CalculatedFields
+	json, _ = sjson.SetRawBytes(json, "CalculatedFields.NAPTestItem", []byte(itemDetail.String()))
+	itemSeqNo := r.cfh.GetItemTestletSequenceNumber(itemRefId, testletRefId)
+	json, _ = sjson.SetBytes(json, "CalculatedFields.NAPTestItemSequenceNumber", itemSeqNo)
 	return json
 }
