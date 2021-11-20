@@ -254,7 +254,7 @@ func (r *QaSchoolsWritingExtract) collectSummary(eor *records.EventOrientedRecor
 
 	// writingExtractCounter
 	switch studentPcode {
-	case "P", "F": //, "R", "S", "E":
+	case "P", "F", "R", "S": //, "E":
 		sstlx := studentSchoolTestLevelExtract{school: schoolACARAId, level: studentTestLevel}
 		r.writingExtractCounter[sstlx]++
 	}
