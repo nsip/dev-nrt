@@ -33,7 +33,7 @@ outputFileName = "./out/system_reports/nswAllPearsonY9.csv"
 [[fields]]
 "1" = "StudentPersonal.PersonInfo.Demographics.IndigenousStatus"
 [[fields]]
-"1" = "StudentPersonal.PersonInfo.Demographics.LanguageList.Language.0.Code"
+"1" = "StudentPersonal.PersonInfo.Demographics.LBOTE"
 [[fields]]
 "1" = "StudentPersonal.MostRecent.Parent1SchoolEducationLevel"
 [[fields]]
