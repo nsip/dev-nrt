@@ -413,6 +413,6 @@ outputFileName = "./out/system_reports/nswAllPearsonY9.csv"
 [[fields]]
 "1" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Spelling.SubscoreValue"
 [[fields]]
-"54" = "Blank"
+"28" = "Blank"
 [[fields]]
 "60" = "SchoolInfo.SchoolName"
