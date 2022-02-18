@@ -7,8 +7,10 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/iancoleman/strcase"
 	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
+	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
 
@@ -122,17 +124,14 @@ func (r *NswWritingPearsonY9) calculateFields(eor *records.EventOrientedRecord) 
 	// create blank placeholder
 	json, _ = sjson.SetBytes(json, "CalculatedFields.BlankToken", " ")
 
-	// get writing subscores according to the codeframe ordering
-	for i, rt := range r.cfh.WritingRubricTypes() {
-		// get response value for each rubric
-		query := fmt.Sprintf(`NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.#[SubscoreType==%s].SubscoreValue`, rt)
-		result := eor.GetValueString(query)
-		// add each result to calulated fields
-		rubricPath := fmt.Sprintf("CalculatedFields.WritingSubscore.%d.Rubric", i)
-		resultPath := fmt.Sprintf("CalculatedFields.WritingSubscore.%d.Score", i)
-		json, _ = sjson.SetBytes(json, rubricPath, rt)
-		json, _ = sjson.SetBytes(json, resultPath, result)
-	}
+	gjson.GetBytes(eor.NAPStudentResponseSet, "NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore").
+		ForEach(func(key, value gjson.Result) bool {
+			ssType := strcase.ToCamel(value.Get("SubscoreType").String())
+			ssValue := value.Get("SubscoreValue").String()
+			path := fmt.Sprintf("CalculatedFields.WritingSubscore.%s.Score", ssType)
+			json, _ = sjson.SetBytes(json, path, ssValue)
+			return true // keep iterating
+		})
 
 	return json
 }
