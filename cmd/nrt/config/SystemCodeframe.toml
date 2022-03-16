@@ -44,3 +44,5 @@ outputFileName = "./out/system_reports/systemCodeframe.csv"
 "Exemplar URL" = "NAPTestItem.TestItemContent.ExemplarURL"
 [[fields]]
 "Item RefID" = "NAPTestItem.RefId"
+[[fields]]
+"Item Local ID" = "NAPTestItem.TestItemContent.NAPTestItemLocalId"

@@ -59,36 +59,27 @@ outputFileName = "./out/system_reports/nswWritingPearsonY3.csv"
 "1" = "NAPEventStudentLink.ParticipationCode"
 [[fields]]
 "10" = "CalculatedFields.BlankToken"
+# NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.#[SubscoreType==%s].SubscoreValue
 [[fields]]
-"1" = "CalculatedFields.WritingSubscore.0.Score"
-# "1" = "CalculatedFields.WritingSubscore.0.Rubric"
+"1" = "CalculatedFields.WritingSubscore.Audience.Score"
 [[fields]]
-"1" = "CalculatedFields.WritingSubscore.1.Score"
-# "1" = "CalculatedFields.WritingSubscore.1.Rubric"
+"1" = "CalculatedFields.WritingSubscore.TextStructure.Score"
 [[fields]]
-"1" = "CalculatedFields.WritingSubscore.2.Score"
-# "1" = "CalculatedFields.WritingSubscore.2.Rubric"
+"1" = "CalculatedFields.WritingSubscore.Ideas.Score"
 [[fields]]
-"1" = "CalculatedFields.WritingSubscore.3.Score"
-# "1" = "CalculatedFields.WritingSubscore.3.Rubric"
+"1" = "CalculatedFields.WritingSubscore.PersuasiveDevices.Score"
 [[fields]]
-"1" = "CalculatedFields.WritingSubscore.4.Score"
-# "1" = "CalculatedFields.WritingSubscore.4.Rubric"
+"1" = "CalculatedFields.WritingSubscore.Vocabulary.Score"
 [[fields]]
-"1" = "CalculatedFields.WritingSubscore.5.Score"
-# "1" = "CalculatedFields.WritingSubscore.5.Rubric"
+"1" = "CalculatedFields.WritingSubscore.Cohesion.Score"
 [[fields]]
-"1" = "CalculatedFields.WritingSubscore.6.Score"
-# "1" = "CalculatedFields.WritingSubscore.6.Rubric"
+"1" = "CalculatedFields.WritingSubscore.Paragraphing.Score"
 [[fields]]
-"1" = "CalculatedFields.WritingSubscore.7.Score"
-# "1" = "CalculatedFields.WritingSubscore.7.Rubric"
+"1" = "CalculatedFields.WritingSubscore.SentenceStructure.Score"
 [[fields]]
-"1" = "CalculatedFields.WritingSubscore.8.Score"
-# "1" = "CalculatedFields.WritingSubscore.8.Rubric"
+"1" = "CalculatedFields.WritingSubscore.Punctuation.Score"
 [[fields]]
-"1" = "CalculatedFields.WritingSubscore.9.Score"
-# "1" = "CalculatedFields.WritingSubscore.9.Rubric"
+"1" = "CalculatedFields.WritingSubscore.Spelling.Score"
 [[fields]]
 "74" = "CalculatedFields.BlankToken"
 [[fields]]

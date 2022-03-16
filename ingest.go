@@ -122,16 +122,18 @@ func streamToRepo(xmlFileName string, db *repo.BadgerRepo) (repo.ObjectStats, er
 		r := result
 		switch r.Name {
 		case "NAPStudentResponseSet":
-			db.Store(r, repo.IdxByTypeStudentAndTest())
+			err = db.Store(r, repo.IdxByTypeStudentAndTest())
 		case "NAPEventStudentLink":
-			db.Store(r, repo.IdxByTypeStudentAndTest())
+			err = db.Store(r, repo.IdxByTypeStudentAndTest())
 		case "NAPTestScoreSummary":
-			db.Store(r, repo.IdxByTypeSchoolAndTest())
+			err = db.Store(r, repo.IdxByTypeSchoolAndTest())
 		default:
-			db.Store(r, repo.IdxSifObjectByTypeAndRefId())
+			err = db.Store(r, repo.IdxSifObjectByTypeAndRefId())
 		}
-		totals[r.Name]++
-		count++
+		if err == nil {
+			totals[r.Name]++
+			count++
+		}
 	}
 	fmt.Printf("\n\t%d data-objects parsed\n\n", count)
 

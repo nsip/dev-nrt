@@ -2,12 +2,17 @@ package main
 
 import (
 	"flag"
+	"io"
 	"log"
+	"os"
 
 	nrt "github.com/nsip/dev-nrt"
 )
 
 func main() {
+
+	f := setuplog()
+	defer f.Close()
 
 	//
 	// set of command-line flags to support, inlcuding n2 flags as aliases
@@ -83,10 +88,19 @@ func main() {
 	if err != nil {
 		log.Println("Error building transformer", err)
 	}
-
 	err = tr.Run()
 	if err != nil {
 		log.Println("Error running transformer", err)
 	}
 
+}
+
+func setuplog() *os.File {
+	f, err := os.OpenFile("./naprrql.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("error opening file: %v", err)
+	}
+	wrt := io.MultiWriter(os.Stdout, f)
+	log.SetOutput(wrt)
+	return f
 }

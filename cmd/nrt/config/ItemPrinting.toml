@@ -33,6 +33,8 @@ outputFileName = "./out/item_printing/itemResults.csv"
 [[fields]]
 "Test Item Name" = "CalculatedFields.ItemResponse.NAPTestItemLocalId"
 [[fields]]
+"Sequence Number" = "CalculatedFields.NAPTestItemSequenceNumber"
+[[fields]]
 "Subdomain" = "CalculatedFields.NAPTestItem.TestItemContent.Subdomain"
 [[fields]]
 "Writing Genre" = "CalculatedFields.NAPTestItem.TestItemContent.WritingGenre"
