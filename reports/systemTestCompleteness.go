@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/iancoleman/strcase"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
@@ -172,7 +173,7 @@ func (r *SystemTestCompleteness) calculateFields(key stcrKey) []byte {
 	json, _ = sjson.SetBytes(json, "CalculatedFields.SystemTestCompleteness.NAPTest.TestContent.TestLevel.Code", key.testLevel)
 	// maintain the splitter block
 	json, _ = sjson.SetBytes(json, "CalculatedFields.SchoolId", key.schoolACARAId)
-	json, _ = sjson.SetBytes(json, "CalculatedFields.Domain", key.testDomain)
+	json, _ = sjson.SetBytes(json, "CalculatedFields.Domain", strcase.ToCamel(key.testDomain))
 	json, _ = sjson.SetBytes(json, "CalculatedFields.YrLevel", key.testLevel)
 
 	// set the totals for attempts & responses for this row
