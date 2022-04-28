@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/nsip/dev-nrt/records"
-	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
 
@@ -86,12 +85,12 @@ func (r *QldStudent) ProcessObjectRecords(in chan *records.ObjectRecord) chan *r
 func (r *QldStudent) calculateFields(or *records.ObjectRecord) []byte {
 
 	schoolid := or.GetValueString("StudentPersonal.MostRecent.SchoolACARAId")
-	yrlvl := gjson.GetBytes(or.StudentPersonal, "StudentPersonal.MostRecent.TestLevel.Code")
+	yrlvl := or.GetValueString("StudentPersonal.MostRecent.TestLevel.Code")
 	domain := "AllDomains"
 
 	json := or.CalculatedFields // keep any exisiting settings
-	json, _ = sjson.SetBytes(json, "CalculatedFields.SchoolId", schoolid.String())
-	json, _ = sjson.SetBytes(json, "CalculatedFields.YrLevel", yrlvl.String())
+	json, _ = sjson.SetBytes(json, "CalculatedFields.SchoolId", schoolid)
+	json, _ = sjson.SetBytes(json, "CalculatedFields.YrLevel", yrlvl)
 	json, _ = sjson.SetBytes(json, "CalculatedFields.Domain", domain)
 
 	return json
