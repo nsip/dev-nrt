@@ -98,7 +98,7 @@ func (we *WritingExtract) calculateFields(eor *records.EventOrientedRecord) []by
 	anonid := nuid.Next()
 	ir := eor.GetValueString("NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.Response")
 	ir = html.UnescapeString(ir) // html of writing response needs unescaping
-	wc := strconv.Itoa(countwords(strings.Replace(ir, "\\n", "\n", -1)))
+	wc := strconv.Itoa(countwords(strings.Replace(strings.Replace(ir, "\\n", "\n", -1), "\\r", "\r", -1)))
 
 	json := eor.CalculatedFields
 	json, _ = sjson.SetBytes(json, "CalculatedFields.AnonId", anonid)

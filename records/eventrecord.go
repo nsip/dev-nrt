@@ -85,5 +85,7 @@ func (eor *EventOrientedRecord) GetValueString(queryPath string) string {
 		return ""
 	}
 
-	return strings.Replace(gjson.GetBytes(data, queryPath).String(), "\n", "\\n", -1)
+	return strings.Replace(
+		strings.Replace(gjson.GetBytes(data, queryPath).String(), "\n", "\\n", -1),
+		"\r", "\\r", -1)
 }
