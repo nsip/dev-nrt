@@ -2827,7 +2827,7 @@ outputFileName = "./out/item_printing/printAll.csv"
 [[fields]]
 "Writing Testlet 1 Item 1 Ideas" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Ideas.SubscoreValue"
 [[fields]]
-"Writing Testlet 1 Item 1 Character and setting" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.PersuasiveDevices.SubscoreValue"
+"Writing Testlet 1 Item 1 Character and setting" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.CharacterAndSetting.SubscoreValue"
 [[fields]]
 "Writing Testlet 1 Item 1 Vocabulary" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Vocabulary.SubscoreValue"
 [[fields]]

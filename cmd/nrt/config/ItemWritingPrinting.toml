@@ -75,7 +75,7 @@ outputFileName = "./out/qa/itemWritingPrinting.csv"
 [[fields]]
 "Ideas Score" = "CalculatedFields.ItemWritingPrinting.Ideas.Score"
 [[fields]]
-"Persuasive Devices Score" = "CalculatedFields.ItemWritingPrinting.PersuasiveDevices.Score"
+"Character and Setting Score" = "CalculatedFields.ItemWritingPrinting.CharacterAndSetting.Score"
 [[fields]]
 "Vocabulary Score" = "CalculatedFields.ItemWritingPrinting.Vocabulary.Score"
 [[fields]]
