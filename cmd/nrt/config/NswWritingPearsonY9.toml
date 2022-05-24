@@ -67,7 +67,7 @@ outputFileName = "./out/system_reports/nswWritingPearsonY9.csv"
 [[fields]]
 "1" = "CalculatedFields.WritingSubscore.Ideas.Score"
 [[fields]]
-"1" = "CalculatedFields.WritingSubscore.PersuasiveDevices.Score"
+"1" = "CalculatedFields.WritingSubscore.CharacterAndSetting.Score"
 [[fields]]
 "1" = "CalculatedFields.WritingSubscore.Vocabulary.Score"
 [[fields]]

@@ -337,7 +337,7 @@ outputFileName = "./out/system_reports/nswAllPearsonY5.csv"
 [[fields]]
 "1" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Ideas.SubscoreValue"
 [[fields]]
-"1" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.PersuasiveDevices.SubscoreValue"
+"1" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.CharacterAndSetting.SubscoreValue"
 [[fields]]
 "1" = "CalculatedFields.Writing.NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.SubscoreList.Subscore.Vocabulary.SubscoreValue"
 [[fields]]

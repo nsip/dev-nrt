@@ -111,7 +111,9 @@ func validate(eor *records.EventOrientedRecord) error {
 	// not a writing response, but no adaptive pathway
 	if eor.GetValueString("NAPStudentResponseSet.PathTakenForDomain") == "" ||
 		eor.GetValueString("NAPStudentResponseSet.ParallelTest") == "" {
-		return errNonAdaptive
+		if eor.GetValueString("NAPStudentResponseSet.DomainScore.RawScore") != "0" {
+			return errNonAdaptive
+		}
 	}
 
 	return nil
