@@ -99,6 +99,12 @@ func (r *DomainResponsesScores) calculateFields(sor *records.StudentOrientedReco
 		path = fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.DomainScore.StudentDomainBand", domain)
 		json, _ = sjson.SetBytes(json, path, domb)
 		//
+		// get the proficiency
+		//
+		prof := gjson.GetBytes(event, "NAPStudentResponseSet.DomainScore.StudentProficiency").String()
+		path = fmt.Sprintf("CalculatedFields.%s.NAPStudentResponseSet.DomainScore.StudentProficiency", domain)
+		json, _ = sjson.SetBytes(json, path, prof)
+		//
 		// get the refid
 		//
 		refid := gjson.GetBytes(event, "NAPStudentResponseSet.RefId").String()
@@ -114,6 +120,16 @@ func (r *DomainResponsesScores) calculateFields(sor *records.StudentOrientedReco
 		avg := gjson.GetBytes(summ, "NAPTestScoreSummary.DomainNationalAverage").String()
 		path := fmt.Sprintf("CalculatedFields.%s.NAPTestScoreSummary.DomainNationalAverage", domain)
 		json, _ = sjson.SetBytes(json, path, avg)
+	}
+
+	// iterate the tests of this student, are keyed by camel-case rendering of test domain
+	for domain, test := range sor.GetTestsByDomain() {
+		//
+		// get the test year
+		//
+		yr := gjson.GetBytes(test, "NAPTest.TestContent.TestYear").String()
+		path := fmt.Sprintf("CalculatedFields.%s.TestContent.TestYear", domain)
+		json, _ = sjson.SetBytes(json, path, yr)
 	}
 
 	return json
