@@ -79,6 +79,26 @@ outputFileName = "./out/system_reports/studentProficiency.csv"
 [[fields]]
 "Participation Code: Spelling" = "CalculatedFields.Spelling.NAPEventStudentLink.ParticipationCode"
 [[fields]]
+"Scaled Score: Numeracy" = "CalculatedFields.Numeracy.NAPStudentResponseSet.DomainScore.ScaledScoreValue"
+[[fields]]
+"Scaled Score: Reading" = "CalculatedFields.Reading.NAPStudentResponseSet.DomainScore.ScaledScoreValue"
+[[fields]]
+"Scaled Score: Writing" = "CalculatedFields.Writing.NAPStudentResponseSet.DomainScore.ScaledScoreValue"
+[[fields]]
+"Scaled Score: G&P" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.DomainScore.ScaledScoreValue"
+[[fields]]
+"Scaled Score: Spelling" = "CalculatedFields.Spelling.NAPStudentResponseSet.DomainScore.ScaledScoreValue"
+[[fields]]
+"Student Band: Numeracy" = "CalculatedFields.Numeracy.NAPStudentResponseSet.DomainScore.StudentDomainBand"
+[[fields]]
+"Student Band: Reading" = "CalculatedFields.Reading.NAPStudentResponseSet.DomainScore.StudentDomainBand"
+[[fields]]
+"Student Band: Writing" = "CalculatedFields.Writing.NAPStudentResponseSet.DomainScore.StudentDomainBand"
+[[fields]]
+"Student Band: G&P" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.DomainScore.StudentDomainBand"
+[[fields]]
+"Student Band: Spelling" = "CalculatedFields.Spelling.NAPStudentResponseSet.DomainScore.StudentDomainBand"
+[[fields]]
 "Student Proficiency: Numeracy" = "CalculatedFields.Numeracy.NAPStudentResponseSet.DomainScore.StudentProficiency"
 [[fields]]
 "Student Proficiency: Reading" = "CalculatedFields.Reading.NAPStudentResponseSet.DomainScore.StudentProficiency"
