@@ -39,7 +39,7 @@ outputFileName = "./out/system_reports/studentProficiency.csv"
 [[fields]]
 "Other School Name" = "StudentPersonal.MostRecent.OtherSchoolName"
 [[fields]]
-"Reporting School ID" = "StudentPersonal.MostRecent.ReportingSchool"
+"Reporting School ID" = "StudentPersonal.MostRecent.ReportingSchoolId"
 [[fields]]
 "PSI" = "StudentPersonal.OtherIdList.OtherId.#[Type==NAPPlatformStudentId].value"
 [[fields]]

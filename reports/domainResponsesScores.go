@@ -128,7 +128,7 @@ func (r *DomainResponsesScores) calculateFields(sor *records.StudentOrientedReco
 		// get the test year
 		//
 		yr := gjson.GetBytes(test, "NAPTest.TestContent.TestYear").String()
-		path := fmt.Sprintf("CalculatedFields.%s.TestContent.TestYear", domain)
+		path := fmt.Sprintf("CalculatedFields.%s.NAPTest.TestContent.TestYear", domain)
 		json, _ = sjson.SetBytes(json, path, yr)
 	}
 
