@@ -35,6 +35,8 @@ outputFileName = "./out/system_reports/studentProficiency.csv"
 [[fields]]
 "School Local ID" = "SchoolInfo.LocalId"
 [[fields]]
+"Main School Flag" = "StudentPersonal.MostRecent.MembershipType"
+[[fields]]
 "Other School ID" = "StudentPersonal.MostRecent.OtherEnrollmentSchoolACARAId"
 [[fields]]
 "Other School Name" = "StudentPersonal.MostRecent.OtherSchoolName"
@@ -54,6 +56,8 @@ outputFileName = "./out/system_reports/studentProficiency.csv"
 "Preferred Name" = "StudentPersonal.PersonInfo.Name.PreferredGivenName"
 [[fields]]
 "DOB" = "StudentPersonal.PersonInfo.Demographics.BirthDate"
+[[fields]]
+"Sector Student ID" = "StudentPersonal.OtherIdList.OtherId.#[Type==SectorStudentId].value"
 [[fields]]
 "Diocesan Student ID" = "StudentPersonal.OtherIdList.OtherId.#[Type==DiocesanStudentId].value"
 [[fields]]
