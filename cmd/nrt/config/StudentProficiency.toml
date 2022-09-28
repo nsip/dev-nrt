@@ -1,0 +1,115 @@
+
+[usage]
+reportName = "Student proficiency report"
+activated = true
+outputFileName = "./out/system_reports/studentProficiency.csv"
+
+# Order of fields below is left to right order
+# columns will appear in final output, can be changed as needed.
+# Double brackets required to ensure map is created as array to preserve order
+# commenting out a key/value pair will remove that column from the
+# final report
+#
+[[fields]]
+"School" = "CalculatedFields.SchoolId"
+[[fields]]
+"YrLevel" = "CalculatedFields.YrLevel"
+[[fields]]
+"Domain" = "CalculatedFields.Domain"
+#
+# fields above are for report splitting 
+#
+
+[[fields]]
+"Jurisdiction" = "StudentPersonal.OtherIdList.OtherId.#[Type==JurisdictionId].value"
+[[fields]]
+"ASL School ID" = "SchoolInfo.ACARAId"
+[[fields]]
+"School name" = "SchoolInfo.SchoolName"
+[[fields]]
+"Local Campus ID" = "SchoolInfo.Campus.SchoolCampusId"
+[[fields]]
+"School Suburb" = "SchoolInfo.AddressList.Address.0.City"
+[[fields]]
+"School Post Code" = "SchoolInfo.AddressList.Address.0.PostalCode"
+[[fields]]
+"School Local ID" = "SchoolInfo.LocalId"
+[[fields]]
+"Main School Flag" = "StudentPersonal.MostRecent.MembershipType"
+[[fields]]
+"Other School ID" = "StudentPersonal.MostRecent.OtherEnrollmentSchoolACARAId"
+[[fields]]
+"Other School Name" = "StudentPersonal.MostRecent.OtherSchoolName"
+[[fields]]
+"Reporting School ID" = "StudentPersonal.MostRecent.ReportingSchoolId"
+[[fields]]
+"PSI" = "StudentPersonal.OtherIdList.OtherId.#[Type==NAPPlatformStudentId].value"
+[[fields]]
+"Local School Student ID" = "StudentPersonal.LocalId"
+[[fields]]
+"Surname" = "StudentPersonal.PersonInfo.Name.FamilyName"
+[[fields]]
+"First Name" = "StudentPersonal.PersonInfo.Name.GivenName"
+[[fields]]
+"Middle Name" = "StudentPersonal.PersonInfo.Name.MiddleName"
+[[fields]]
+"Preferred Name" = "StudentPersonal.PersonInfo.Name.PreferredGivenName"
+[[fields]]
+"DOB" = "StudentPersonal.PersonInfo.Demographics.BirthDate"
+[[fields]]
+"Sector Student ID" = "StudentPersonal.OtherIdList.OtherId.#[Type==SectorStudentId].value"
+[[fields]]
+"Diocesan Student ID" = "StudentPersonal.OtherIdList.OtherId.#[Type==DiocesanStudentId].value"
+[[fields]]
+"TAA Student ID" = "StudentPersonal.OtherIdList.OtherId.#[Type==TAAStudentId].value"
+[[fields]]
+"Jurisdiction Student ID" = "StudentPersonal.StateProvinceId"
+[[fields]]
+"Test Year" = "CalculatedFields.Reading.NAPTest.TestContent.TestYear"
+[[fields]]
+"Year Level" = "StudentPersonal.MostRecent.YearLevel.Code"
+[[fields]]
+"Test Level" = "StudentPersonal.MostRecent.TestLevel.Code"
+[[fields]]
+"Class Group" = "StudentPersonal.MostRecent.ClassCode"
+[[fields]]
+"Participation Code: Numeracy" = "CalculatedFields.Numeracy.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"Participation Code: Reading" = "CalculatedFields.Reading.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"Participation Code: Writing" = "CalculatedFields.Writing.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"Participation Code: G&P" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"Participation Code: Spelling" = "CalculatedFields.Spelling.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"Scaled Score: Numeracy" = "CalculatedFields.Numeracy.NAPStudentResponseSet.DomainScore.ScaledScoreValue"
+[[fields]]
+"Scaled Score: Reading" = "CalculatedFields.Reading.NAPStudentResponseSet.DomainScore.ScaledScoreValue"
+[[fields]]
+"Scaled Score: Writing" = "CalculatedFields.Writing.NAPStudentResponseSet.DomainScore.ScaledScoreValue"
+[[fields]]
+"Scaled Score: G&P" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.DomainScore.ScaledScoreValue"
+[[fields]]
+"Scaled Score: Spelling" = "CalculatedFields.Spelling.NAPStudentResponseSet.DomainScore.ScaledScoreValue"
+[[fields]]
+"Student Band: Numeracy" = "CalculatedFields.Numeracy.NAPStudentResponseSet.DomainScore.StudentDomainBand"
+[[fields]]
+"Student Band: Reading" = "CalculatedFields.Reading.NAPStudentResponseSet.DomainScore.StudentDomainBand"
+[[fields]]
+"Student Band: Writing" = "CalculatedFields.Writing.NAPStudentResponseSet.DomainScore.StudentDomainBand"
+[[fields]]
+"Student Band: G&P" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.DomainScore.StudentDomainBand"
+[[fields]]
+"Student Band: Spelling" = "CalculatedFields.Spelling.NAPStudentResponseSet.DomainScore.StudentDomainBand"
+[[fields]]
+"Student Proficiency: Numeracy" = "CalculatedFields.Numeracy.NAPStudentResponseSet.DomainScore.StudentProficiency"
+[[fields]]
+"Student Proficiency: Reading" = "CalculatedFields.Reading.NAPStudentResponseSet.DomainScore.StudentProficiency"
+[[fields]]
+"Student Proficiency: Writing" = "CalculatedFields.Writing.NAPStudentResponseSet.DomainScore.StudentProficiency"
+[[fields]]
+"Student Proficiency: G&P" = "CalculatedFields.GrammarAndPunctuation.NAPStudentResponseSet.DomainScore.StudentProficiency"
+[[fields]]
+"Student Proficiency: Spelling" = "CalculatedFields.Spelling.NAPStudentResponseSet.DomainScore.StudentProficiency"
+

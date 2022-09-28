@@ -147,6 +147,28 @@ func (sor *StudentOrientedRecord) GetEventsByDomain() map[string][]byte {
 }
 
 //
+// Returns a map of tests for this student where
+// map key is the CamelCase name of the test doamin
+// map value is the json blob of the response
+//
+func (sor *StudentOrientedRecord) GetTestsByDomain() map[string][]byte {
+
+	rbd := make(map[string][]byte, 0)
+
+	for _, records := range sor.naplanOutputs {
+		// get the domain from the test record
+		test := records[rtTest]
+		domain := gjson.GetBytes(test, "NAPTest.TestContent.Domain").String()
+		// camel-case the domain name for use in json 'Grammar and Punctuation' -> 'GrannarAndPunctuation'
+		ccdomain := strcase.ToCamel(domain)
+		// create the domain/response pair
+		rbd[ccdomain] = test
+	}
+
+	return rbd
+}
+
+//
 // Adds a NAPTestEvent to the record
 //
 func (sor *StudentOrientedRecord) AddEvent(jsonNAPEventStudentLink []byte) error {

@@ -258,6 +258,7 @@ func (tr *Transformer) studentReports() error {
 		//
 		reports.IsrPrintingExpandedReport(),
 		reports.NswPrintReport(),
+		reports.StudentProficiencyReport(),
 	}
 	// create single processor list, in desired order
 	rpt = append(rpt, rpt2...)

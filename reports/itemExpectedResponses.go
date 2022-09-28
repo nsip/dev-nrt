@@ -104,14 +104,20 @@ func (r *ItemExpectedResponses) calculateFields(eor *records.EventOrientedRecord
 	gjson.GetBytes(eor.NAPStudentResponseSet, "NAPStudentResponseSet.TestletList.Testlet").
 		ForEach(func(key, value gjson.Result) bool { // handle testlets
 
-			seenItems := make(map[string]struct{}, 0) // set of seen items
-			expectedNotSeen := make([]string, 0)      // expected but not seen items
-			seenNotExpected := make([]string, 0)      // seen but not expected items
+			seenItems := make(map[string]struct{}, 0)           // set of seen items
+			expectedNotSeen := make([]string, 0)                // expected but not seen items
+			seenNotExpected := make([]string, 0)                // seen but not expected items
+			seenSubstituteItems := make(map[string]struct{}, 0) // set of seen subtitue items
 			correctnessCounter := make(map[string]int, 0)
 			testletCount++
 			testletRefId = value.Get("NAPTestletRefId").String() // get the testlet refid
 
-			value.Get("ItemResponseList.ItemResponse").
+			responseItems := value.Get("ItemResponseList.ItemResponse")
+			if len(responseItems.Array()) == 0 { // response with no content so don't process
+				return true
+			}
+
+			responseItems.
 				ForEach(func(key, value gjson.Result) bool { // handle items
 					itemCorrectness = value.Get("ResponseCorrectness").String()
 					// update the status counter
@@ -140,6 +146,8 @@ func (r *ItemExpectedResponses) calculateFields(eor *records.EventOrientedRecord
 						if _, ok = expectedItems[subItem]; ok {
 							//	break
 							expectedItems[item] = struct{}{}
+							seenSubstituteItems[subItem] = struct{}{}
+
 						}
 					}
 				}
@@ -171,11 +179,12 @@ func (r *ItemExpectedResponses) calculateFields(eor *records.EventOrientedRecord
 			for item := range expectedItems {
 				// check if seen
 				if _, ok := seenItems[item]; !ok {
-					localId := r.cfh.GetCodeframeObjectValueString(item, "NAPTestItem.TestItemContent.NAPTestItemLocalId")
-					expectedNotSeen = append(expectedNotSeen, localId)
+					if _, ok := seenSubstituteItems[item]; !ok {
+						localId := r.cfh.GetCodeframeObjectValueString(item, "NAPTestItem.TestItemContent.NAPTestItemLocalId")
+						expectedNotSeen = append(expectedNotSeen, localId)
+					}
 				}
 			}
-
 			//
 			// now write out the report for each testlet
 			//
