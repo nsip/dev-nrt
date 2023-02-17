@@ -610,7 +610,11 @@ func (tr *Transformer) xmlExtractReports() error {
 	// create the pipeline members
 	// regular reports
 	rpt := []pipelines.ObjectPipe{
+		// pre-processors
 		reports.XmlRedactionReport(),
+
+		// reports
+		reports.XmlSingleOutputReport(),
 	}
 
 	// create the object report pipeline

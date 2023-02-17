@@ -1,8 +1,8 @@
 
 [usage]
-reportName = "XML redaction"
+reportName = "XML single file output"
 activated = true
-outputFileName = "./out/null/sif.xml"
+outputFileName = "./out/redacted_xml/sif.xml"
 
 # Fields in this report are ignored
 #
