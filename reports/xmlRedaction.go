@@ -3,6 +3,8 @@ package reports
 import (
 	"encoding/json"
 	"encoding/xml"
+	"fmt"
+
 	//"log"
 	"strings"
 
@@ -41,9 +43,13 @@ func (r *XMLReport) ProcessObjectRecords(in chan *records.ObjectRecord) chan *re
 		_, _ = r.outF.Write([]byte("<sif xmlns=\"http://www.sifassociation.org/datamodel/au/3.4\">\n"))
 
 		// In this report, the queries are fields to redact, not individual CSV columns
-		filters, ok := r.config.tree.Get("options.filters").([]string)
-		if !ok {
-			filters = []string{}
+		filters := []string{}
+		filters1, ok := r.config.tree.Get("options.filters").([]interface{})
+		if filters1 != nil && ok {
+			filters = make([]string, len(filters1))
+			for i, v := range filters1 {
+				filters[i] = fmt.Sprint(v)
+			}
 		}
 
 		for or := range in {
@@ -108,7 +114,7 @@ func (r *XMLReport) ProcessObjectRecords(in chan *records.ObjectRecord) chan *re
 			//
 			doc := xmldom.Must(xmldom.ParseXML("<sif>" + string(xml_out) + "</sif>"))
 			for _, path := range filters {
-				nodelist := doc.Root.Query(path)
+				nodelist := doc.Root.Query("/." + path)
 				for _, c := range nodelist {
 					c.SetAttributeValue("xsi:nil", "true")
 					c.Text = ""

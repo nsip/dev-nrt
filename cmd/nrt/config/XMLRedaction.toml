@@ -10,7 +10,7 @@ outputFileName = "./out/redacted_xml/sif.xml"
 "School ACARA Id" = "SchoolInfo.ACARAId"
 
 [options]
-filter = [
+filters = [
 "/NAPStudentResponseSet[PathTakenForDomain != '']/TestletList/Testlet/ItemResponseList/ItemResponse/Response",
 "/NAPCodeFrame/TestletList/Testlet/TestItemList/TestItem/TestItemContent/CorrectAnswer",
 "/NAPTestItem/TestItemContent/CorrectAnswer"
