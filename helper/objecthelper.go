@@ -8,6 +8,9 @@
 package helper
 
 import (
+	"log"
+	"sync"
+
 	"github.com/tidwall/gjson"
 
 	"github.com/nsip/dev-nrt/pipelines"
@@ -20,21 +23,27 @@ import (
 // working with objects easier
 //
 type ObjectHelper struct {
-	data        map[string]map[string][]byte
-	incodeframe map[string]bool
-	toACARAId   map[string]string
+	data         map[string]map[string][]byte
+	incodeframe  map[string]bool
+	toACARAId    map[string]string
+	schoolRefIds map[string]bool
+	mu           sync.Mutex
+	wg           *sync.WaitGroup
 }
 
 //
 // Creates a new object helper instance.
 // r - a repository containing the rrd data
 //
-func NewObjectHelper(r *repository.BadgerRepo) (ObjectHelper, error) {
+func NewObjectHelper(r *repository.BadgerRepo, wg *sync.WaitGroup) (ObjectHelper, error) {
 
 	h := ObjectHelper{
-		data:        make(map[string]map[string][]byte, 0),
-		incodeframe: make(map[string]bool),
-		toACARAId:   make(map[string]string),
+		data:         make(map[string]map[string][]byte, 0),
+		incodeframe:  make(map[string]bool),
+		toACARAId:    make(map[string]string),
+		schoolRefIds: make(map[string]bool),
+		mu:           sync.Mutex{},
+		wg:           wg,
 	} // initialise the internal maps
 
 	// wrap repo in emitter
@@ -102,6 +111,8 @@ func (cfh ObjectHelper) ProcessObjectRecords(in chan *records.ObjectRecord) chan
 			}
 
 			switch cfr.RecordType {
+			case "SchoolInfo":
+				cfh.toACARAId[cfr.RefId()] = cfr.GetValueString("SchoolInfo.ACARAId")
 			case "NAPEventStudentLink":
 				cfh.toACARAId[cfr.RefId()] = cfr.GetValueString("NAPEventStudentLink.SchoolACARAId")
 			case "NAPTestScoreSummary":
@@ -124,7 +135,12 @@ func (cfh ObjectHelper) ProcessObjectRecords(in chan *records.ObjectRecord) chan
 				cfh.toACARAId[resp] = cfh.toACARAId[k] // result belongs to same school as its student
 			}
 		}
+		for k, _ := range cfh.data["SchoolInfo"] {
+			cfh.schoolRefIds[k] = true
+		}
+		log.Printf("LEN %d\n", len(cfh.schoolRefIds))
 
+		cfh.wg.Done()
 	}()
 	return out
 
@@ -155,4 +171,18 @@ func (cfh ObjectHelper) GetSchoolFromGuid(guid string) string {
 	} else {
 		return ""
 	}
+}
+
+// return all school ref IDs registered
+func (cfh ObjectHelper) GetSchoolRefIds() []string {
+	log.Printf("REQLEN %d\n", len(cfh.schoolRefIds))
+	log.Printf("REQLEN %d\n", len(cfh.toACARAId))
+	log.Printf("REQLEN %d\n", len(cfh.data))
+	keys := make([]string, len(cfh.schoolRefIds))
+	i := 0
+	for k := range cfh.schoolRefIds {
+		keys[i] = k
+		i++
+	}
+	return keys
 }

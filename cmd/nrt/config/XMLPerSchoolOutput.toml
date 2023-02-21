@@ -1,0 +1,12 @@
+
+[usage]
+reportName = "XML output per school"
+activated = true
+# leave the placeholder "dummy" alone
+outputFileName = "./out/redacted_xml/dummy"
+
+# Fields in this report are ignored
+#
+[[fields]]
+"School ACARA Id" = "SchoolInfo.ACARAId"
+

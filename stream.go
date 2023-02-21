@@ -615,13 +615,16 @@ func (tr *Transformer) xmlExtractReports() error {
 
 		// reports
 		reports.XmlSingleOutputReport(),
+		reports.XmlPerSchoolOutputReport(tr.objecthelper),
 	}
 
 	// create the object report pipeline
 	objpl := pipelines.NewObjectPipeline(rpt...)
 
 	// create a progress bar
-	barsize := tr.stats["SchoolInfo"] + tr.stats["StudentPersonal"] + tr.stats["NAPTestScoreSummary"]
+	barsize := tr.stats["SchoolInfo"] + tr.stats["StudentPersonal"] + tr.stats["NAPTestScoreSummary"] +
+		tr.stats["NAPCodeFrame"] + tr.stats["NAPTest"] + tr.stats["NAPTestlet"] + tr.stats["NAPTestItem"] +
+		tr.stats["NAPEventStudentLink"] + tr.stats["NAPStudentRsponseSet"]
 	bar := tr.uip.AddBar(barsize)
 	bar.AppendCompleted().PrependElapsed()
 	bar.PrependFunc(func(b *uiprogress.Bar) string {

@@ -3,6 +3,7 @@ package nrt
 import (
 	"fmt"
 	"os"
+	"sync"
 
 	"github.com/gosuri/uiprogress"
 	splitter "github.com/nsip/dev-nrt-splitter"
@@ -110,11 +111,14 @@ func (tr *Transformer) Run() error {
 	}
 	fmt.Println()
 
+	var w sync.WaitGroup
+
 	// ====================================
 	//
 	// Build the codeframe helper
 	//
-	cfh, err := helper.NewCodeframeHelper(r)
+	w.Add(1)
+	cfh, err := helper.NewCodeframeHelper(r, &w)
 	if err != nil {
 		return err
 	}
@@ -124,11 +128,14 @@ func (tr *Transformer) Run() error {
 	//
 	// Build the object helper
 	//
-	oh, err := helper.NewObjectHelper(r)
+	w.Add(1)
+	oh, err := helper.NewObjectHelper(r, &w)
 	if err != nil {
 		return err
 	}
 	tr.objecthelper = oh
+
+	w.Wait()
 
 	// ==================================
 	//
