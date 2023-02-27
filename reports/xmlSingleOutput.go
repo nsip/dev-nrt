@@ -1,6 +1,7 @@
 package reports
 
 import (
+	"bytes"
 	"strconv"
 
 	"github.com/nsip/dev-nrt/records"
@@ -34,7 +35,7 @@ func (r *XMLSingleOutput) ProcessObjectRecords(in chan *records.ObjectRecord) ch
 	go func() {
 
 		defer r.outF.Close()
-		_, _ = r.outF.Write([]byte("<sif xmlns=\"http://www.sifassociation.org/datamodel/au/3.4\">\n"))
+		_, _ = r.outF.Write([]byte("<sif xmlns=\"http://www.sifassociation.org/datamodel/au/3.4\">\r\n"))
 
 		for or := range in {
 			if !r.config.activated { // only process if activated
@@ -53,7 +54,8 @@ func (r *XMLSingleOutput) ProcessObjectRecords(in chan *records.ObjectRecord) ch
 			} else {
 				raw = []byte(result.Raw)
 			}
-			out1, _ := strconv.Unquote(string(raw))
+			out2, _ := strconv.Unquote(string(raw))
+			out1 := bytes.Replace([]byte(out2), []byte("\n"), []byte("\r\n"), -1)
 			/*
 				raw = bytes.Replace(raw, []byte("\\u003c"), []byte("<"), -1)
 				raw = bytes.Replace(raw, []byte("\\u003e"), []byte(">"), -1)
@@ -66,7 +68,7 @@ func (r *XMLSingleOutput) ProcessObjectRecords(in chan *records.ObjectRecord) ch
 
 			out <- or
 		}
-		_, _ = r.outF.Write([]byte("</sif>\n"))
+		_, _ = r.outF.Write([]byte("</sif>\r\n"))
 	}()
 	return out
 }

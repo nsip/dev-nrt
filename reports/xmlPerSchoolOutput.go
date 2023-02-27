@@ -1,6 +1,8 @@
 package reports
 
 import (
+	"bytes"
+	"log"
 	"os"
 	"path"
 	"strconv"
@@ -32,28 +34,47 @@ func XmlPerSchoolOutputReport(cfh helper.ObjectHelper) *XMLPerSchoolOutput {
 // report engine.
 //
 func (r *XMLPerSchoolOutput) ProcessObjectRecords(in chan *records.ObjectRecord) chan *records.ObjectRecord {
-
+	var err error
+	var f *os.File
 	out := make(chan *records.ObjectRecord)
 	schools := r.cfh.GetSchoolRefIds()
 	r.outF.Close()
 	os.Remove(r.config.outputFileName)
-	files := make(map[string]*os.File, 0)
+	files := make(map[string]string, 0)
 
 	for _, refid := range schools {
 		filename := path.Dir(r.config.outputFileName) + "/schooldata_" + refid + ".xml"
 		acaraid := r.cfh.GetSchoolFromGuid(refid)
-		files[acaraid], _ = os.Create(filename)
-		_, _ = files[acaraid].Write([]byte("<sif xmlns=\"http://www.sifassociation.org/datamodel/au/3.4\">\n"))
+		files[acaraid] = filename
+		if f, err = os.Create(files[acaraid]); err != nil {
+			log.Fatal(err)
+		}
+		if _, err = f.Write([]byte("<sif xmlns=\"http://www.sifassociation.org/datamodel/au/3.4\">\r\n")); err != nil {
+			log.Fatal(err)
+		}
+		f.Close()
 	}
 	filename := path.Dir(r.config.outputFileName) + "/testdata.xml"
-	testdata, _ := os.Create(filename)
-	_, _ = testdata.Write([]byte("<sif xmlns=\"http://www.sifassociation.org/datamodel/au/3.4\">\n"))
+	testdata, err := os.Create(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+	//defer testdata.Close()
+	if _, err = testdata.Write([]byte("<sif xmlns=\"http://www.sifassociation.org/datamodel/au/3.4\">\r\n")); err != nil {
+		log.Fatal(err)
+	}
 	filename = path.Dir(r.config.outputFileName) + "/schoollist.xml"
-	schoollist, _ := os.Create(filename)
-	_, _ = schoollist.Write([]byte("<sif xmlns=\"http://www.sifassociation.org/datamodel/au/3.4\">\n"))
+	schoollist, err := os.Create(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+	//defer schoollist.Close()
+	if _, err = schoollist.Write([]byte("<sif xmlns=\"http://www.sifassociation.org/datamodel/au/3.4\">\r\n")); err != nil {
+		log.Fatal(err)
+	}
 
 	go func() {
-
+		var err error
 		for or := range in {
 			if !r.config.activated { // only process if activated
 				out <- or
@@ -71,30 +92,53 @@ func (r *XMLPerSchoolOutput) ProcessObjectRecords(in chan *records.ObjectRecord)
 			} else {
 				raw = []byte(result.Raw)
 			}
-			out1, _ := strconv.Unquote(string(raw))
+			out2, err := strconv.Unquote(string(raw))
+			if err != nil {
+				log.Fatal(err)
+			}
+			out1 := bytes.Replace([]byte(out2), []byte("\n"), []byte("\r\n"), -1)
 
 			switch or.RecordType {
 			case "SchoolInfo":
-				_, _ = schoollist.Write([]byte(out1))
+				if _, err = schoollist.Write(out1); err != nil {
+					log.Fatal(err)
+				}
 			case "StudentPersonal", "NAPStudentResponseSet",
 				"NAPTestScoreSummary", "NAPEventStudentLink":
 				school := r.cfh.GetSchoolFromGuid(or.RefId())
-				_, _ = files[school].Write([]byte(out1))
+				f, err := os.OpenFile(files[school], os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+				if err != nil {
+					log.Fatal(err)
+				}
+				if _, err = f.Write(out1); err != nil {
+					log.Fatal(err)
+				}
+				f.Close()
 			case "NAPCodeFrame", "NAPTest",
 				"NAPTestlet", "NAPTestItem":
-				_, _ = testdata.Write([]byte(out1))
+				if _, err = testdata.Write(out1); err != nil {
+					log.Fatal(err)
+				}
 			}
 
 			out <- or
 		}
-		for _, f := range files {
-			_, _ = f.Write([]byte("</sif>\n"))
+		for _, n := range files {
+			f, err := os.OpenFile(n, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+			if err != nil {
+				log.Fatal(err)
+			}
+			if _, err = f.Write([]byte("</sif>\r\n")); err != nil {
+				log.Fatal(err)
+			}
 			f.Close()
 		}
-		_, _ = testdata.Write([]byte("</sif>\n"))
-		testdata.Close()
-		_, _ = schoollist.Write([]byte("</sif>\n"))
-		schoollist.Close()
+		if _, err = testdata.Write([]byte("</sif>\r\n")); err != nil {
+			log.Fatal(err)
+		}
+		if _, err = schoollist.Write([]byte("</sif>\r\n")); err != nil {
+			log.Fatal(err)
+		}
 
 	}()
 	return out

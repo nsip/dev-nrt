@@ -8,7 +8,6 @@
 package helper
 
 import (
-	"log"
 	"sync"
 
 	"github.com/tidwall/gjson"
@@ -138,7 +137,6 @@ func (cfh ObjectHelper) ProcessObjectRecords(in chan *records.ObjectRecord) chan
 		for k, _ := range cfh.data["SchoolInfo"] {
 			cfh.schoolRefIds[k] = true
 		}
-		log.Printf("LEN %d\n", len(cfh.schoolRefIds))
 
 		cfh.wg.Done()
 	}()
@@ -175,9 +173,6 @@ func (cfh ObjectHelper) GetSchoolFromGuid(guid string) string {
 
 // return all school ref IDs registered
 func (cfh ObjectHelper) GetSchoolRefIds() []string {
-	log.Printf("REQLEN %d\n", len(cfh.schoolRefIds))
-	log.Printf("REQLEN %d\n", len(cfh.toACARAId))
-	log.Printf("REQLEN %d\n", len(cfh.data))
 	keys := make([]string, len(cfh.schoolRefIds))
 	i := 0
 	for k := range cfh.schoolRefIds {
