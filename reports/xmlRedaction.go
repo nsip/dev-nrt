@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"log"
 
 	//"log"
 	"strings"
@@ -38,18 +39,21 @@ func XmlRedactionReport() *XMLReport {
 //
 func (r *XMLReport) ProcessObjectRecords(in chan *records.ObjectRecord) chan *records.ObjectRecord {
 
-	out := make(chan *records.ObjectRecord)
-	go func() {
-
-		// In this report, the queries are fields to redact, not individual CSV columns
-		r.filters = []string{}
-		filters1, ok := r.config.tree.Get("options.filters").([]interface{})
-		if filters1 != nil && ok {
-			r.filters = make([]string, len(filters1))
-			for i, v := range filters1 {
-				r.filters[i] = fmt.Sprint(v)
+	// In this report, the queries are fields to redact, not individual CSV columns
+	r.filters = []string{}
+	filters1, ok := r.config.tree.Get("options.filters").([]interface{})
+	if filters1 != nil && ok {
+		r.filters = make([]string, 0)
+		for _, v := range filters1 {
+			x := strings.TrimSpace(fmt.Sprint(v))
+			if !strings.HasPrefix(x, "#") && x != "" {
+				r.filters = append(r.filters, x)
 			}
 		}
+	}
+
+	out := make(chan *records.ObjectRecord)
+	go func() {
 
 		for or := range in {
 			if !r.config.activated { // only process if activated
@@ -64,6 +68,7 @@ func (r *XMLReport) ProcessObjectRecords(in chan *records.ObjectRecord) chan *re
 
 			out <- or
 		}
+		log.Printf("%d XML filters realised: %+v\n", len(r.filters), r.filters)
 	}()
 	return out
 }
@@ -124,15 +129,28 @@ func (r *XMLReport) calculateFields(or *records.ObjectRecord) []byte {
 	//
 	// now loop through the output definitions to create XML output
 	//
-	doc := xmldom.Must(xmldom.ParseXML("<sif>" + string(xml_out) + "</sif>"))
-	for _, path := range r.filters {
-		nodelist := doc.Root.Query("/." + path)
-		for _, c := range nodelist {
-			c.SetAttributeValue("xsi:nil", "true")
-			c.Text = ""
+	var out0 string
+	if len(r.filters) == 0 {
+		out0 = string(xml_out)
+	} else {
+		var b strings.Builder
+		fmt.Fprintf(&b, "<sif>")
+		fmt.Fprintf(&b, string(xml_out))
+		fmt.Fprintf(&b, "</sif>")
+		doc := xmldom.Must(xmldom.ParseXML(b.String()))
+		// XPath implementation in golang not coping with roots, we will do // instead
+		for i, path := range r.filters {
+			nodelist := doc.Root.Query(path)
+			if len(nodelist) > 0 {
+				log.Printf("%d nodes match '%s'\n", len(nodelist), path, i, len(r.filters))
+			}
+			for _, c := range nodelist {
+				c.SetAttributeValue("xsi:nil", "true")
+				c.Text = ""
+			}
 		}
+		out0 = doc.Root.FirstChild().XMLPretty()
 	}
-	out0 := doc.Root.FirstChild().XMLPretty()
 	out0 = strings.Replace(out0, "&#xA;", "\n", -1)
 	out0 = strings.Replace(out0, "&#xD;", "\r", -1)
 	out0 = strings.Replace(out0, "&#x9;", "\t", -1)
