@@ -3,6 +3,7 @@ package nrt
 import (
 	"context"
 	"fmt"
+	"sync"
 	"sync/atomic"
 	"time"
 
@@ -71,6 +72,11 @@ func (tr *Transformer) streamResults() error {
 	// allow time for flush of large csv files to complete
 	//
 	time.Sleep(time.Millisecond * 1200)
+
+	// we have a separate wait group just for xml reports, because of how time consuming they are
+	if tr.xmlReports {
+		//tr.xmlWaitGroup.Wait()
+	}
 
 	if tr.showProgress {
 		tr.uip.Stop()
@@ -606,6 +612,7 @@ func (tr *Transformer) xmlExtractReports() error {
 	if err != nil {
 		return err
 	}
+	tr.xmlWaitGroup = new(sync.WaitGroup)
 
 	// create the pipeline members
 	// regular reports
@@ -614,8 +621,8 @@ func (tr *Transformer) xmlExtractReports() error {
 		reports.XmlRedactionReport(),
 
 		// reports
-		reports.XmlSingleOutputReport(),
-		reports.XmlPerSchoolOutputReport(tr.objecthelper),
+		reports.XmlSingleOutputReport(tr.xmlWaitGroup),
+		reports.XmlPerSchoolOutputReport(tr.objecthelper, tr.xmlWaitGroup),
 	}
 
 	// create the object report pipeline

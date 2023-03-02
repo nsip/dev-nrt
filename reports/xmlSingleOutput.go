@@ -3,6 +3,7 @@ package reports
 import (
 	"bytes"
 	"strconv"
+	"sync"
 
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/gjson"
@@ -10,14 +11,15 @@ import (
 
 type XMLSingleOutput struct {
 	baseReport // embed common setup capability
+	wg         *sync.WaitGroup
 }
 
 //
 // XML redaction
 //
-func XmlSingleOutputReport() *XMLSingleOutput {
+func XmlSingleOutputReport(wg *sync.WaitGroup) *XMLSingleOutput {
 
-	r := XMLSingleOutput{}
+	r := XMLSingleOutput{wg: wg}
 	r.initialise("./config/XMLSingleOutput.toml")
 	r.printStatus()
 
@@ -32,9 +34,12 @@ func XmlSingleOutputReport() *XMLSingleOutput {
 func (r *XMLSingleOutput) ProcessObjectRecords(in chan *records.ObjectRecord) chan *records.ObjectRecord {
 
 	out := make(chan *records.ObjectRecord)
-	go func() {
+	r.wg.Add(1)
 
-		defer r.outF.Close()
+	go func() {
+		defer close(out)
+
+		//defer r.outF.Close()
 		_, _ = r.outF.Write([]byte("<sif xmlns=\"http://www.sifassociation.org/datamodel/au/3.4\">\r\n"))
 
 		for or := range in {
@@ -69,6 +74,8 @@ func (r *XMLSingleOutput) ProcessObjectRecords(in chan *records.ObjectRecord) ch
 			out <- or
 		}
 		_, _ = r.outF.Write([]byte("</sif>\r\n"))
+		r.wg.Done()
+		r.outF.Close()
 	}()
 	return out
 }

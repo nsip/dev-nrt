@@ -4,9 +4,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
-	"log"
 
-	//"log"
 	"strings"
 
 	"github.com/nsip/dev-nrt/records"
@@ -53,6 +51,7 @@ func (r *XMLReport) ProcessObjectRecords(in chan *records.ObjectRecord) chan *re
 	}
 
 	out := make(chan *records.ObjectRecord)
+
 	go func() {
 
 		for or := range in {
@@ -68,7 +67,7 @@ func (r *XMLReport) ProcessObjectRecords(in chan *records.ObjectRecord) chan *re
 
 			out <- or
 		}
-		log.Printf("%d XML filters realised: %+v\n", len(r.filters), r.filters)
+		close(out)
 	}()
 	return out
 }
@@ -139,10 +138,10 @@ func (r *XMLReport) calculateFields(or *records.ObjectRecord) []byte {
 		fmt.Fprintf(&b, "</sif>")
 		doc := xmldom.Must(xmldom.ParseXML(b.String()))
 		// XPath implementation in golang not coping with roots, we will do // instead
-		for i, path := range r.filters {
+		for _, path := range r.filters {
 			nodelist := doc.Root.Query(path)
 			if len(nodelist) > 0 {
-				log.Printf("%d nodes match '%s'\n", len(nodelist), path, i, len(r.filters))
+				//log.Printf("%d nodes match '%s' for redaction\n", len(nodelist), path, i, len(r.filters))
 			}
 			for _, c := range nodelist {
 				c.SetAttributeValue("xsi:nil", "true")

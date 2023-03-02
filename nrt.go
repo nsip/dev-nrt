@@ -40,6 +40,7 @@ type Transformer struct {
 	stopAfterIngest  bool
 	showProgress     bool
 	stats            repository.ObjectStats
+	xmlWaitGroup     *sync.WaitGroup
 }
 
 func NewTransformer(userOpts ...Option) (*Transformer, error) {

@@ -6,6 +6,7 @@ import (
 	"os"
 	"path"
 	"strconv"
+	"sync"
 
 	"github.com/nsip/dev-nrt/helper"
 	"github.com/nsip/dev-nrt/records"
@@ -15,14 +16,15 @@ import (
 type XMLPerSchoolOutput struct {
 	baseReport // embed common setup capability
 	cfh        helper.ObjectHelper
+	wg         *sync.WaitGroup
 }
 
 //
 // XML redaction, emulating NAPLAN API output
 //
-func XmlPerSchoolOutputReport(cfh helper.ObjectHelper) *XMLPerSchoolOutput {
+func XmlPerSchoolOutputReport(cfh helper.ObjectHelper, wg *sync.WaitGroup) *XMLPerSchoolOutput {
 
-	r := XMLPerSchoolOutput{cfh: cfh}
+	r := XMLPerSchoolOutput{cfh: cfh, wg: wg}
 	r.initialise("./config/XMLPerSchoolOutput.toml")
 	r.printStatus()
 
@@ -41,6 +43,7 @@ func (r *XMLPerSchoolOutput) ProcessObjectRecords(in chan *records.ObjectRecord)
 	r.outF.Close()
 	os.Remove(r.config.outputFileName)
 	files := make(map[string]string, 0)
+	r.wg.Add(1)
 
 	for _, refid := range schools {
 		filename := path.Dir(r.config.outputFileName) + "/schooldata_" + refid + ".xml"
@@ -75,6 +78,7 @@ func (r *XMLPerSchoolOutput) ProcessObjectRecords(in chan *records.ObjectRecord)
 
 	go func() {
 		var err error
+		defer close(out)
 		for or := range in {
 			if !r.config.activated { // only process if activated
 				out <- or
@@ -136,9 +140,12 @@ func (r *XMLPerSchoolOutput) ProcessObjectRecords(in chan *records.ObjectRecord)
 		if _, err = testdata.Write([]byte("</sif>\r\n")); err != nil {
 			log.Fatal(err)
 		}
+		testdata.Close()
 		if _, err = schoollist.Write([]byte("</sif>\r\n")); err != nil {
 			log.Fatal(err)
 		}
+		schoollist.Close()
+		r.wg.Done()
 
 	}()
 	return out
