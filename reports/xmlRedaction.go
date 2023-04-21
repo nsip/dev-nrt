@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"log"
 
 	"strings"
 
@@ -129,14 +130,21 @@ func (r *XMLReport) calculateFields(or *records.ObjectRecord) []byte {
 	// now loop through the output definitions to create XML output
 	//
 	var out0 string
+	var b strings.Builder
 	if len(r.filters) == 0 {
 		out0 = string(xml_out)
 	} else {
-		var b strings.Builder
-		fmt.Fprintf(&b, "<sif>")
-		fmt.Fprintf(&b, string(xml_out))
-		fmt.Fprintf(&b, "</sif>")
-		doc := xmldom.Must(xmldom.ParseXML(b.String()))
+		b.Reset()
+		b.WriteString("<sif>")
+		b.WriteString(string(xml_out))
+		b.WriteString("</sif>")
+		doc, err := xmldom.ParseXML(b.String())
+		if err != nil {
+			log.Println(string(or.Json))
+			log.Println(string(xml_out))
+			log.Println(b.String())
+			log.Fatal(err)
+		}
 		// XPath implementation in golang not coping with roots, we will do // instead
 		for _, path := range r.filters {
 			nodelist := doc.Root.Query(path)
