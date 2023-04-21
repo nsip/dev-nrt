@@ -28,9 +28,9 @@ func NswItemDescriptorsReport() *NswItemDescriptors {
 // implement the EventPipe interface, core work of the
 // report engine.
 //
-func (r *NswItemDescriptors) ProcessCodeframeRecords(in chan *records.CodeframeRecord) chan *records.CodeframeRecord {
+func (r *NswItemDescriptors) ProcessObjectRecords(in chan *records.ObjectRecord) chan *records.ObjectRecord {
 
-	out := make(chan *records.CodeframeRecord)
+	out := make(chan *records.ObjectRecord)
 	go func() {
 		defer close(out)
 		// open the csv file writer, and set the header

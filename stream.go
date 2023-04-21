@@ -172,6 +172,8 @@ func (tr *Transformer) simpleObjectReports() error {
 		reports.SystemObjectsCountReport(),
 		reports.QcaaNapoSchoolsReport(),
 		reports.QcaaNapoStudentsReport(),
+		reports.QcaaNapoItemsReport(),
+		reports.NswItemDescriptorsReport(),
 		reports.QcaaTestScoreSummaryReport(),
 		reports.SystemSchoolsReport(),
 		reports.SystemScoreSummariesReport(),
@@ -324,7 +326,6 @@ func (tr *Transformer) codeframeReports() error {
 		// report
 		//
 		reports.QcaaNapoTestletsReport(tr.helper),
-		reports.NswItemDescriptorsReport(),
 		//
 		// pre-processor
 		// remaining codeframe reports need htis item-test-link multiplexer to
@@ -333,7 +334,6 @@ func (tr *Transformer) codeframeReports() error {
 		//
 		// reports
 		//
-		reports.QcaaNapoItemsReport(),
 		reports.QcaaNapoTestsReport(),
 		reports.QcaaNapoTestletItemsReport(),
 		reports.SystemCodeframeReport(tr.helper),
