@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/nats-io/nuid"
+	gonanoid "github.com/matoous/go-nanoid/v2"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/sjson"
 )
@@ -95,7 +95,7 @@ func (we *WritingExtract) ProcessEventRecords(in chan *records.EventOrientedReco
 //
 func (we *WritingExtract) calculateFields(eor *records.EventOrientedRecord) []byte {
 
-	anonid := nuid.Next()
+	anonid := gonanoid.MustGenerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", 16)
 	ir := eor.GetValueString("NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.Response")
 	ir = html.UnescapeString(ir) // html of writing response needs unescaping
 	wc := strconv.Itoa(countwords(strings.Replace(strings.Replace(ir, "\\n", "\n", -1), "\\r", "\r", -1)))

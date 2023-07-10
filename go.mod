@@ -19,8 +19,10 @@ require (
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/gosuri/uiprogress v0.0.1
 	github.com/iancoleman/strcase v0.2.0
+	github.com/jaevor/go-nanoid v1.3.0 // indirect
 	github.com/json-iterator/go v1.1.12
 	github.com/klauspost/compress v1.15.9 // indirect
+	github.com/matoous/go-nanoid/v2 v2.0.0 // indirect
 	github.com/mattn/go-runewidth v0.0.12 // indirect
 	github.com/microcosm-cc/bluemonday v1.0.20 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect

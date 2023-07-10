@@ -1,7 +1,7 @@
 
 [usage]
 reportName = "XML output per school"
-activated = true
+activated = false
 # leave the placeholder "dummy" alone
 outputFileName = "./out/redacted_xml/dummy"
 
