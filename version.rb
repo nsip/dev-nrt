@@ -2,9 +2,6 @@ original_directory = Dir::pwd
 nias_version = "N/A"
 splitter_version = "N/A"
 begin
-Dir::chdir("../dev-nrt-splitter") do
-  splitter2version = `git describe --tags`
-end
 Dir::chdir("..") do
   nias2version = `git describe --tags`
 end
@@ -26,7 +23,6 @@ import (
 
 func showVersion() {
         fmt.Println("nias2 Version: #{nias_version.strip}")
-        fmt.Println("dev-nrt-splitter Version: #{splitter_version.strip}")
         fmt.Println("dev-nrt Version: #{devnrt_version.strip}")
         fmt.Println("dev-nrt code branch: #{devnrt_branch.strip}")
         fmt.Println("dev-nrt last commit:\\n\\n#{devnrt_commit.strip.gsub(/\n/, "\\n")}")
