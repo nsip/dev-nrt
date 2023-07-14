@@ -1,11 +1,12 @@
+require "debug"; binding.b
 original_directory = Dir::pwd
 nias_version = "N/A"
-splitter_version = "N/A"
 begin
 Dir::chdir("..") do
-  nias2version = `git describe --tags`
+  nias_version = `git describe --tags`
 end
 rescue
+  warn "Could not cd!"
 end
 Dir::chdir(original_directory)
 
