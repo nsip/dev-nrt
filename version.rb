@@ -1,4 +1,3 @@
-require "debug"; binding.b
 original_directory = Dir::pwd
 nias_version = "N/A"
 begin
