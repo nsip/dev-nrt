@@ -19,9 +19,7 @@ type XMLReport struct {
 	filters    []string
 }
 
-//
 // XML redaction
-//
 func XmlRedactionReport() *XMLReport {
 
 	r := XMLReport{}
@@ -32,10 +30,8 @@ func XmlRedactionReport() *XMLReport {
 
 }
 
-//
 // implement the ...Pipe interface, core work of the
 // report engine.
-//
 func (r *XMLReport) ProcessObjectRecords(in chan *records.ObjectRecord) chan *records.ObjectRecord {
 
 	// In this report, the queries are fields to redact, not individual CSV columns
@@ -73,11 +69,8 @@ func (r *XMLReport) ProcessObjectRecords(in chan *records.ObjectRecord) chan *re
 	return out
 }
 
-//
 // generates a block of json that can be added to the
 // record containing values that are not in the original data
-//
-//
 func (r *XMLReport) calculateFields(or *records.ObjectRecord) []byte {
 	var err error
 	var xml_out []byte
