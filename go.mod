@@ -1,6 +1,6 @@
 module github.com/nsip/dev-nrt
 
-go 1.19
+go 1.20
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.1
@@ -11,7 +11,7 @@ require (
 	github.com/iancoleman/strcase v0.3.0
 	github.com/json-iterator/go v1.1.12
 	github.com/matoous/go-nanoid/v2 v2.0.0
-	github.com/nsip/dev-nrt-splitter v1.0.3
+	github.com/nsip/dev-nrt-splitter v1.0.4-0.20230719021842-cc8542c37785
 	github.com/nsip/sifxml2go v0.0.1
 	github.com/pelletier/go-toml v1.9.5
 	github.com/subchen/go-xmldom v1.1.2
