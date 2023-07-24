@@ -11,7 +11,7 @@ require (
 	github.com/iancoleman/strcase v0.3.0
 	github.com/json-iterator/go v1.1.12
 	github.com/matoous/go-nanoid/v2 v2.0.0
-	github.com/nsip/dev-nrt-splitter v1.0.4-0.20230719021842-cc8542c37785
+	github.com/nsip/dev-nrt-splitter v1.0.6
 	github.com/nsip/sifxml2go v0.0.1
 	github.com/pelletier/go-toml v1.9.5
 	github.com/subchen/go-xmldom v1.1.2
@@ -32,29 +32,29 @@ require (
 	github.com/clipperhouse/uax29 v1.12.5 // indirect
 	github.com/dgraph-io/ristretto v0.1.1 // indirect
 	github.com/dgryski/go-farm v0.0.0-20200201041132-a6ae2369ad13 // indirect
-	github.com/digisan/csv-tool v0.2.5 // indirect
-	github.com/digisan/fileflatter v0.0.14 // indirect
-	github.com/digisan/go-config v0.2.6 // indirect
-	github.com/digisan/go-generics v0.3.5 // indirect
-	github.com/digisan/gotk v0.3.8 // indirect
-	github.com/digisan/logkit v0.2.5 // indirect
+	github.com/digisan/csv-tool v0.2.7 // indirect
+	github.com/digisan/fileflatter v0.0.15 // indirect
+	github.com/digisan/go-config v0.2.7 // indirect
+	github.com/digisan/go-generics v0.3.6 // indirect
+	github.com/digisan/gotk v0.3.9 // indirect
+	github.com/digisan/logkit v0.2.6 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fatih/color v1.10.0 // indirect
 	github.com/golang/glog v1.1.1 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
-	github.com/gookit/color v1.5.3 // indirect
+	github.com/gookit/color v1.5.4 // indirect
 	github.com/gosuri/uilive v0.0.4 // indirect
 	github.com/h2non/filetype v1.1.3 // indirect
 	github.com/klauspost/compress v1.16.7 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
-	github.com/mattn/go-runewidth v0.0.12 // indirect
+	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/qdm12/reprint v0.0.0-20200326205758-722754a53494 // indirect
-	github.com/rivo/uniseg v0.2.0 // indirect
+	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/tamerh/xpath v1.0.0 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
