@@ -14,3 +14,15 @@ Enabled = false # (bool), turn on/off Split function.
 IgnoreFolder = "./out_split/ignore/" # (string), If not empty string, dump unsplittable csv file into this folder. If empty, ignore unsplittable csv files.
 OutFolder = "./out_split/" # (string), in which folder split results should be output.
 Schema = ["School", "YrLevel", "Domain"] # (string array), header sequence for splitting. Each header creates its split category folder.
+SplitVer2 = true # (bool), split on fields which should then be removed from output.
+
+[[Merge]]
+Enabled = true
+MergedName = "GrammarAndPunctuation"
+Schema = ["GrammarAndPunctuation", "Grammar And Punctuation", "GRAMMARANDPUNCTUATION"]
+
+[[Merge]]
+Enabled = true
+MergedName = "Grammar"
+Schema = ["Grammar", "GRAMMAR"]
+

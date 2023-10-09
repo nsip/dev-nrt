@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/nats-io/nuid"
+	gonanoid "github.com/matoous/go-nanoid/v2"
 	"github.com/nsip/dev-nrt/records"
 	"github.com/tidwall/sjson"
 )
@@ -16,10 +16,8 @@ type WritingExtract struct {
 	baseReport // embed common setup capability
 }
 
-//
 // creates file used to feed student writing responses into
 // local marking systems
-//
 func WritingExtractReport() *WritingExtract {
 
 	we := WritingExtract{}
@@ -30,10 +28,8 @@ func WritingExtractReport() *WritingExtract {
 
 }
 
-//
 // implement the EventPipe interface, core work of the
 // report engine.
-//
 func (we *WritingExtract) ProcessEventRecords(in chan *records.EventOrientedRecord) chan *records.EventOrientedRecord {
 
 	out := make(chan *records.EventOrientedRecord)
@@ -88,14 +84,11 @@ func (we *WritingExtract) ProcessEventRecords(in chan *records.EventOrientedReco
 
 }
 
-//
 // generates a block of json that can be added to the
 // record containing values that are not in the original data
-//
-//
 func (we *WritingExtract) calculateFields(eor *records.EventOrientedRecord) []byte {
 
-	anonid := nuid.Next()
+	anonid := gonanoid.MustGenerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", 16)
 	ir := eor.GetValueString("NAPStudentResponseSet.TestletList.Testlet.0.ItemResponseList.ItemResponse.0.Response")
 	ir = html.UnescapeString(ir) // html of writing response needs unescaping
 	wc := strconv.Itoa(countwords(strings.Replace(strings.Replace(ir, "\\n", "\n", -1), "\\r", "\r", -1)))

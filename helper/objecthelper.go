@@ -8,6 +8,8 @@
 package helper
 
 import (
+	"sync"
+
 	"github.com/tidwall/gjson"
 
 	"github.com/nsip/dev-nrt/pipelines"
@@ -20,19 +22,27 @@ import (
 // working with objects easier
 //
 type ObjectHelper struct {
-	data        map[string]map[string][]byte
-	incodeframe map[string]bool
+	data         map[string]map[string][]byte
+	incodeframe  map[string]bool
+	toACARAId    map[string]string
+	schoolRefIds map[string]bool
+	mu           sync.Mutex
+	wg           *sync.WaitGroup
 }
 
 //
 // Creates a new object helper instance.
 // r - a repository containing the rrd data
 //
-func NewObjectHelper(r *repository.BadgerRepo) (ObjectHelper, error) {
+func NewObjectHelper(r *repository.BadgerRepo, wg *sync.WaitGroup) (ObjectHelper, error) {
 
 	h := ObjectHelper{
-		data:        make(map[string]map[string][]byte, 0),
-		incodeframe: make(map[string]bool),
+		data:         make(map[string]map[string][]byte, 0),
+		incodeframe:  make(map[string]bool),
+		toACARAId:    make(map[string]string),
+		schoolRefIds: make(map[string]bool),
+		mu:           sync.Mutex{},
+		wg:           wg,
 	} // initialise the internal maps
 
 	// wrap repo in emitter
@@ -63,6 +73,8 @@ func (cfh ObjectHelper) ProcessObjectRecords(in chan *records.ObjectRecord) chan
 	out := make(chan *records.ObjectRecord)
 	go func() {
 		defer close(out)
+
+		studentresponses := make(map[string][]string)
 
 		// collect all object data
 		for cfr := range in {
@@ -97,9 +109,36 @@ func (cfh ObjectHelper) ProcessObjectRecords(in chan *records.ObjectRecord) chan
 
 			}
 
+			switch cfr.RecordType {
+			case "SchoolInfo":
+				cfh.toACARAId[cfr.RefId()] = cfr.GetValueString("SchoolInfo.ACARAId")
+			case "NAPEventStudentLink":
+				cfh.toACARAId[cfr.RefId()] = cfr.GetValueString("NAPEventStudentLink.SchoolACARAId")
+			case "NAPTestScoreSummary":
+				cfh.toACARAId[cfr.RefId()] = cfr.GetValueString("NAPTestScoreSummary.SchoolACARAId")
+			case "StudentPersonal":
+				cfh.toACARAId[cfr.RefId()] = cfr.GetValueString("StudentPersonal.MostRecent.SchoolACARAId")
+			case "NAPStudentResponseSet":
+				s := cfr.GetValueString("NAPStudentResponseSet.StudentPersonalRefId")
+				if _, ok := studentresponses[s]; !ok {
+					studentresponses[s] = make([]string, 0)
+				}
+				studentresponses[s] = append(studentresponses[s], cfr.RefId())
+			}
+
 			out <- cfr
 		}
 
+		for k, v := range studentresponses {
+			for _, resp := range v {
+				cfh.toACARAId[resp] = cfh.toACARAId[k] // result belongs to same school as its student
+			}
+		}
+		for k, _ := range cfh.data["SchoolInfo"] {
+			cfh.schoolRefIds[k] = true
+		}
+
+		cfh.wg.Done()
 	}()
 	return out
 
@@ -121,4 +160,24 @@ func (cfh ObjectHelper) GetTypeFromGuid(guid string) string {
 func (cfh ObjectHelper) InCodeFrame(guid string) bool {
 	_, ok := cfh.incodeframe[guid]
 	return ok
+}
+
+// given object return school ID
+func (cfh ObjectHelper) GetSchoolFromGuid(guid string) string {
+	if ret, ok := cfh.toACARAId[guid]; ok {
+		return ret
+	} else {
+		return ""
+	}
+}
+
+// return all school ref IDs registered
+func (cfh ObjectHelper) GetSchoolRefIds() []string {
+	keys := make([]string, len(cfh.schoolRefIds))
+	i := 0
+	for k := range cfh.schoolRefIds {
+		keys[i] = k
+		i++
+	}
+	return keys
 }

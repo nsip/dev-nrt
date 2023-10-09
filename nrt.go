@@ -3,6 +3,7 @@ package nrt
 import (
 	"fmt"
 	"os"
+	"sync"
 
 	"github.com/gosuri/uiprogress"
 	splitter "github.com/nsip/dev-nrt-splitter"
@@ -17,12 +18,10 @@ import (
 // ingest currently stops flow.
 //
 
-//
 // the core nrt engine, passes the streams of
 // rrd data through pipelines of report processors
 // creating tabluar and fixed-width reports from the
 // xml data
-//
 type Transformer struct {
 	repository       *repository.BadgerRepo
 	inputFolder      string
@@ -38,7 +37,9 @@ type Transformer struct {
 	skipIngest       bool
 	stopAfterIngest  bool
 	showProgress     bool
+	split            bool
 	stats            repository.ObjectStats
+	xmlWaitGroup     *sync.WaitGroup
 }
 
 func NewTransformer(userOpts ...Option) (*Transformer, error) {
@@ -56,9 +57,7 @@ func NewTransformer(userOpts ...Option) (*Transformer, error) {
 
 }
 
-//
 // Ingest and process data from RRD files
-//
 func (tr *Transformer) Run() error {
 
 	// ======================================
@@ -110,33 +109,43 @@ func (tr *Transformer) Run() error {
 	}
 	fmt.Println()
 
-	// ====================================
-	//
-	// Build the codeframe helper
-	//
-	cfh, err := helper.NewCodeframeHelper(r)
-	if err != nil {
-		return err
-	}
-	tr.helper = cfh
+	var w sync.WaitGroup
 
-	// ====================================
-	//
-	// Build the object helper
-	//
-	oh, err := helper.NewObjectHelper(r)
-	if err != nil {
-		return err
-	}
-	tr.objecthelper = oh
+	if !tr.split {
 
-	// ==================================
-	//
-	// run the report processing streams
-	//
-	err = tr.streamResults()
-	if err != nil {
-		return err
+		// ====================================
+		//
+		// Build the codeframe helper
+		//
+		w.Add(1)
+		cfh, err := helper.NewCodeframeHelper(r, &w)
+		if err != nil {
+			return err
+		}
+		tr.helper = cfh
+
+		// ====================================
+		//
+		// Build the object helper
+		//
+		w.Add(1)
+		oh, err := helper.NewObjectHelper(r, &w)
+		if err != nil {
+			return err
+		}
+		tr.objecthelper = oh
+
+		w.Wait()
+
+		// ==================================
+		//
+		// run the report processing streams
+		//
+		err = tr.streamResults()
+		if err != nil {
+			return err
+		}
+
 	}
 
 	// =================================
@@ -164,10 +173,8 @@ func (tr *Transformer) Run() error {
 // Options
 //
 
-//
 // set the default options for a transformer
 // basic reports, no pause after ingest, does show progress bars
-//
 func defaultOptions() []Option {
 	return []Option{
 		InputFolder("./in/"),
@@ -179,15 +186,14 @@ func defaultOptions() []Option {
 		ForceIngest(true),
 		StopAfterIngest(false),
 		ShowProgress(true),
+		Split(false),
 	}
 }
 
 type Option func(*Transformer) error
 
-//
 // apply all supplied options to the transformer
 // returns any error encountered while applying the options
-//
 func (tr *Transformer) setOptions(options ...Option) error {
 	for _, opt := range options {
 		if err := opt(tr); err != nil {
@@ -197,7 +203,6 @@ func (tr *Transformer) setOptions(options ...Option) error {
 	return nil
 }
 
-//
 // Show progress bars for report processing.
 // (The progress bar for data ingest is always shown)
 // Defaults to true.
@@ -206,7 +211,6 @@ func (tr *Transformer) setOptions(options ...Option) error {
 // progress bars. Also if piping the output to a file
 // the progress bars are witten out sequentially producing a lot
 // of unnecessary noise data in the file.
-//
 func ShowProgress(sp bool) Option {
 	return func(tr *Transformer) error {
 		tr.showProgress = sp
@@ -214,13 +218,11 @@ func ShowProgress(sp bool) Option {
 	}
 }
 
-//
 // Make transformer stop once data ingest is complete
 // various report configurations can then be run
 // independently without reloading the results data
 // Default is false, tranformer will ingest data and move
 // directly to report processing
-//
 func StopAfterIngest(sai bool) Option {
 	return func(tr *Transformer) error {
 		tr.stopAfterIngest = sai
@@ -228,13 +230,11 @@ func StopAfterIngest(sai bool) Option {
 	}
 }
 
-//
 // Even if an existing datastore has been created
 // in the past, this option ensures that the old data
 // is removed and the ingest cycle is run again
 // reading all data files from the input folder.
 // Default is true.
-//
 func ForceIngest(fi bool) Option {
 	return func(tr *Transformer) error {
 		tr.forceIngest = fi
@@ -242,11 +242,9 @@ func ForceIngest(fi bool) Option {
 	}
 }
 
-//
 // Tells NRT to go straight the the report processing
 // activity, as data has already been ingested at
 // an earlier point in time
-//
 func SkipIngest(si bool) Option {
 	return func(tr *Transformer) error {
 		tr.skipIngest = si
@@ -255,11 +253,9 @@ func SkipIngest(si bool) Option {
 	}
 }
 
-//
 // indicate whether the writing-extract reports
 // (input to downstream writing marking systems)
 // will be included in this run of the transformer
-//
 func WritingExtractReports(wx bool) Option {
 	return func(tr *Transformer) error {
 		tr.wxReports = wx
@@ -270,11 +266,9 @@ func WritingExtractReports(wx bool) Option {
 	}
 }
 
-//
 // indicate whether the XML reports
 // (output of ingested files back as XML, with redaction)
 // will be included in this run of the transformer
-//
 func XmlExtractReports(xml bool) Option {
 	return func(tr *Transformer) error {
 		tr.xmlReports = xml
@@ -285,12 +279,10 @@ func XmlExtractReports(xml bool) Option {
 	}
 }
 
-//
 // indicate whether the most heavyweight/detailed
 // reports will be included in this run of the
 // transformer, including these has the largest effect
 // on overall processing time
-//
 func ItemLevelReports(ilevel bool) Option {
 	return func(tr *Transformer) error {
 		tr.itemLevelReports = ilevel
@@ -298,11 +290,9 @@ func ItemLevelReports(ilevel bool) Option {
 	}
 }
 
-//
 // indicate whether the most-used common
 // reports will be included in this run of the
 // transformer
-//
 func CoreReports(core bool) Option {
 	return func(tr *Transformer) error {
 		tr.coreReports = core
@@ -310,10 +300,8 @@ func CoreReports(core bool) Option {
 	}
 }
 
-//
 // indicate whether qa reports will be included
 // in this run of the transformer
-//
 func QAReports(qa bool) Option {
 	return func(tr *Transformer) error {
 		tr.qaReports = qa
@@ -321,10 +309,17 @@ func QAReports(qa bool) Option {
 	}
 }
 
-//
+// indicate whether trimmer/splitter will be run on its own
+// in this run of the transformer
+func Split(split bool) Option {
+	return func(tr *Transformer) error {
+		tr.split = split
+		return nil
+	}
+}
+
 // the folder contaning RRD xml data files for
 // processing
-//
 func InputFolder(path string) Option {
 	return func(tr *Transformer) error {
 		// try to create the folder if it doesn't exist
@@ -338,9 +333,7 @@ func InputFolder(path string) Option {
 	}
 }
 
-//
 // the key-value store cotaining the ingested RRD data
-//
 func Repository(repo *repository.BadgerRepo) Option {
 	return func(tr *Transformer) error {
 		tr.repository = repo

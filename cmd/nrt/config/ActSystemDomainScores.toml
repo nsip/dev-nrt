@@ -36,7 +36,7 @@ outputFileName = "./out/system_reports/actSystemDomainScores.csv"
 [[fields]]
 "Test Domain" = "NAPTest.TestContent.Domain"
 [[fields]]
-"Domain Band" = "NAPStudentResponseSet.DomainScore.StudentDomainBand"
+"Domain Proficiency" = "NAPStudentResponseSet.DomainScore.StudentProficiency"
 [[fields]]
 "Raw Score"	= "NAPStudentResponseSet.DomainScore.RawScore"
 [[fields]]
