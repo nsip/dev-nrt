@@ -13,6 +13,7 @@ package helper
 import (
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/nsip/dev-nrt/pipelines"
 	"github.com/nsip/dev-nrt/records"
@@ -41,7 +42,7 @@ type CodeframeHelper struct {
 // Creates a new codeframe helper instance.
 // r - a repository containing the rrd data
 //
-func NewCodeframeHelper(r *repository.BadgerRepo) (CodeframeHelper, error) {
+func NewCodeframeHelper(r *repository.BadgerRepo, wg *sync.WaitGroup) (CodeframeHelper, error) {
 
 	// defer utils.TimeTrack(time.Now(), "codeframe NewCodeframeHelper()")
 
@@ -103,6 +104,7 @@ func NewCodeframeHelper(r *repository.BadgerRepo) (CodeframeHelper, error) {
 	//
 	h.extractExpectedTestletItems()
 
+	wg.Done()
 	return h, nil
 
 }

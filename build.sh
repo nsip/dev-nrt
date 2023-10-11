@@ -29,6 +29,8 @@ for b in ${DEPENDS[@]}; do
   fi
 done
 
+ruby version.rb > cmd/nrt/version.go
+
 go get gopkg.in/cheggaaa/pb.v1
 cd tools; go build release.go; cd ..
 
@@ -106,6 +108,7 @@ rsync -av config "$ORIGINALPATH"/build/
 rsync -av config_split "$ORIGINALPATH"/build/
 # remove golang files copied
 rm "$ORIGINALPATH"/build/main.go || true
+rm "$ORIGINALPATH"/build/version.go || true
 
 # include test data samples in distribution
 cd "$ORIGINALPATH"

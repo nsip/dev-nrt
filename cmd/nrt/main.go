@@ -17,7 +17,7 @@ func main() {
 	//
 	// set of command-line flags to support, inlcuding n2 flags as aliases
 	//
-	var qa, ingest, itemLevel, coreReports, writingExtract, xmlExtract, showProgress, forceIngest, skipIngest, allReports bool
+	var qa, ingest, itemLevel, coreReports, writingExtract, xmlExtract, showProgress, forceIngest, skipIngest, allReports, split, version bool
 	var inputFolder string
 	flag.BoolVar(&qa, "qa", false, "include QA reports in results processing")
 	flag.BoolVar(&ingest, "ingest", false, "halt processing after data has been ingested")
@@ -33,11 +33,19 @@ func main() {
 	flag.BoolVar(&showProgress, "showProgress", true, "show progress bars in console for report processing")
 	flag.StringVar(&inputFolder, "inputFolder", "./in/", "folder containing results data files for processing")
 	flag.BoolVar(&allReports, "allReports", false, "runs every report including qa reports")
+	flag.BoolVar(&split, "split", false, "runs trimmer/splitter only")
+	flag.BoolVar(&version, "version", false, "print code version information")
 
 	//
 	// read any supplied flags
 	//
 	flag.Parse()
+
+	// preeempt execution if version flag
+	if version {
+		showVersion()
+		os.Exit(0)
+	}
 
 	//
 	// convert supplied flags into nrt options
@@ -71,6 +79,9 @@ func main() {
 	}
 	if inputFolder != "./in/" {
 		opts = append(opts, nrt.InputFolder(inputFolder))
+	}
+	if split {
+		opts = append(opts, nrt.Split(split))
 	}
 	if allReports { // run everything
 		all := []nrt.Option{

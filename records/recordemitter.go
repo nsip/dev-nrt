@@ -397,6 +397,15 @@ func (e *Emitter) emitCodeframeRecords() {
 					return txnErr
 				}
 				cfr := CodeframeRecord{RecordType: objType, Json: jsonBytes}
+				/*
+					if objType == "NAPTestItem" {
+						local := gjson.GetBytes(jsonBytes, "NAPTestItem.TestItemContent.NAPTestItemLocalId").String()
+						if local == "x00102866-04-AIA" {
+							log.Printf("Emitted: %s\n", local)
+						}
+					}
+				*/
+
 				e.cfstream <- &cfr
 			}
 		}

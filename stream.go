@@ -3,6 +3,7 @@ package nrt
 import (
 	"context"
 	"fmt"
+	"sync"
 	"sync/atomic"
 	"time"
 
@@ -71,6 +72,11 @@ func (tr *Transformer) streamResults() error {
 	// allow time for flush of large csv files to complete
 	//
 	time.Sleep(time.Millisecond * 1200)
+
+	// we have a separate wait group just for xml reports, because of how time consuming they are
+	if tr.xmlReports {
+		//tr.xmlWaitGroup.Wait()
+	}
 
 	if tr.showProgress {
 		tr.uip.Stop()
@@ -166,6 +172,8 @@ func (tr *Transformer) simpleObjectReports() error {
 		reports.SystemObjectsCountReport(),
 		reports.QcaaNapoSchoolsReport(),
 		reports.QcaaNapoStudentsReport(),
+		reports.QcaaNapoItemsReport(),
+		reports.NswItemDescriptorsReport(),
 		reports.QcaaTestScoreSummaryReport(),
 		reports.SystemSchoolsReport(),
 		reports.SystemScoreSummariesReport(),
@@ -318,7 +326,6 @@ func (tr *Transformer) codeframeReports() error {
 		// report
 		//
 		reports.QcaaNapoTestletsReport(tr.helper),
-		reports.NswItemDescriptorsReport(),
 		//
 		// pre-processor
 		// remaining codeframe reports need htis item-test-link multiplexer to
@@ -327,7 +334,6 @@ func (tr *Transformer) codeframeReports() error {
 		//
 		// reports
 		//
-		reports.QcaaNapoItemsReport(),
 		reports.QcaaNapoTestsReport(),
 		reports.QcaaNapoTestletItemsReport(),
 		reports.SystemCodeframeReport(tr.helper),
@@ -606,18 +612,26 @@ func (tr *Transformer) xmlExtractReports() error {
 	if err != nil {
 		return err
 	}
+	tr.xmlWaitGroup = new(sync.WaitGroup)
 
 	// create the pipeline members
 	// regular reports
 	rpt := []pipelines.ObjectPipe{
+		// pre-processors
 		reports.XmlRedactionReport(),
+
+		// reports
+		reports.XmlSingleOutputReport(tr.xmlWaitGroup),
+		reports.XmlPerSchoolOutputReport(tr.objecthelper, tr.xmlWaitGroup),
 	}
 
 	// create the object report pipeline
 	objpl := pipelines.NewObjectPipeline(rpt...)
 
 	// create a progress bar
-	barsize := tr.stats["SchoolInfo"] + tr.stats["StudentPersonal"] + tr.stats["NAPTestScoreSummary"]
+	barsize := tr.stats["SchoolInfo"] + tr.stats["StudentPersonal"] + tr.stats["NAPTestScoreSummary"] +
+		tr.stats["NAPCodeFrame"] + tr.stats["NAPTest"] + tr.stats["NAPTestlet"] + tr.stats["NAPTestItem"] +
+		tr.stats["NAPEventStudentLink"] + tr.stats["NAPStudentRsponseSet"]
 	bar := tr.uip.AddBar(barsize)
 	bar.AppendCompleted().PrependElapsed()
 	bar.PrependFunc(func(b *uiprogress.Bar) string {

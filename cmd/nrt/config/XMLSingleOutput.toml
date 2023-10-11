@@ -1,0 +1,11 @@
+
+[usage]
+reportName = "XML single file output"
+activated = true
+outputFileName = "./out/redacted_xml/sif.xml"
+
+# Fields in this report are ignored
+#
+[[fields]]
+"School ACARA Id" = "SchoolInfo.ACARAId"
+
