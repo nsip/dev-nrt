@@ -40,23 +40,15 @@ outputFileName = "./out/system_reports/saStudentParticipation.csv"
 [[fields]]
 "Year Level" = "StudentPersonal.MostRecent.YearLevel.Code"
 [[fields]]
-"Writing Test Level" = "CalculatedFields.Writing.TestLevel"
+"Test Level" = "CalculatedFields.TestLevel"
 [[fields]]
-"Reading Test Level" = "CalculatedFields.Reading.TestLevel"
+"Writing Status" = "CalculatedFields.Writing.NAPEventStudentLink.ParticipationCode"
 [[fields]]
-"Grammar & Punctuation Test Level" = "CalculatedFields.GrammarAndPunctuation.TestLevel"
+"Reading Status" = "CalculatedFields.Reading.NAPEventStudentLink.ParticipationCode"
 [[fields]]
-"Spelling Test Level" = "CalculatedFields.Spelling.TestLevel"
+"CoL Status" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.ParticipationCode"
 [[fields]]
-"Numeracy Test Level" = "CalculatedFields.Numeracy.TestLevel"
-[[fields]]
-"Writing Status" = "CalculatedFields.WritingStatus"
-[[fields]]
-"Reading Status" = "CalculatedFields.ReadingStatus"
-[[fields]]
-"CoL Status" = "CalculatedFields.CoLStatus"
-[[fields]]
-"Numeracy Status" = "CalculatedFields.NumeracyStatus"
+"Numeracy Status" = "CalculatedFields.Numeracy.NAPEventStudentLink.ParticipationCode"
 [[fields]]
 "Date of Birth"= "StudentPersonal.PersonInfo.Demographics.BirthDate"
 [[fields]]

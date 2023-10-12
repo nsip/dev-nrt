@@ -76,6 +76,7 @@ func (r *SaStudentParticipation) calculateFields(sor *records.StudentOrientedRec
 
 	json := sor.CalculatedFields // maintain exsting calc fields
 
+	/* Not currenty using these, they are bogus
 	ir := sor.GetValueString("CalculatedFields.Writing.NAPEventStudentLink.ParticipationCode")
 	if ir == "P" || ir == "S" {
 		ir = "Marking"
@@ -99,12 +100,13 @@ func (r *SaStudentParticipation) calculateFields(sor *records.StudentOrientedRec
 		ir = "Marking"
 	}
 	json, _ = sjson.SetBytes(json, "CalculatedFields.CoLStatus", ir)
+	*/
 
-	for domain, test := range sor.GetTestsByDomain() {
+	for _, test := range sor.GetTestsByDomain() {
 		testlvl := gjson.GetBytes(test, "NAPTest.TestContent.TestLevel.Code").String()
-		path := fmt.Sprintf("CalculatedFields.%s.TestLevel", domain)
-		// finally assign the event code back into the domain-specific lookup in calc fields
+		path := "CalculatedFields.TestLevel"
 		json, _ = sjson.SetBytes(json, path, testlvl)
+		break
 	}
 
 	return json
