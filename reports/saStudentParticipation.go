@@ -5,8 +5,6 @@ import (
 	"fmt"
 
 	"github.com/nsip/dev-nrt/records"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 type SaStudentParticipation struct {
@@ -102,12 +100,14 @@ func (r *SaStudentParticipation) calculateFields(sor *records.StudentOrientedRec
 	json, _ = sjson.SetBytes(json, "CalculatedFields.CoLStatus", ir)
 	*/
 
-	for _, test := range sor.GetTestsByDomain() {
-		testlvl := gjson.GetBytes(test, "NAPTest.TestContent.TestLevel.Code").String()
-		path := "CalculatedFields.TestLevel"
-		json, _ = sjson.SetBytes(json, path, testlvl)
-		break
-	}
+	/*
+		for _, test := range sor.GetTestsByDomain() {
+			testlvl := gjson.GetBytes(test, "NAPTest.TestContent.TestLevel.Code").String()
+			path := "CalculatedFields.TestLevel"
+			json, _ = sjson.SetBytes(json, path, testlvl)
+			break
+		}
+	*/
 
 	return json
 }

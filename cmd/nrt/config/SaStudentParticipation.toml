@@ -40,7 +40,7 @@ outputFileName = "./out/system_reports/saStudentParticipation.csv"
 [[fields]]
 "Year Level" = "StudentPersonal.MostRecent.YearLevel.Code"
 [[fields]]
-"Test Level" = "CalculatedFields.TestLevel"
+"Test Level" = "StudentPersonal.MostRecent.TestLevel.Code"
 [[fields]]
 "Writing Status" = "CalculatedFields.Writing.NAPEventStudentLink.ParticipationCode"
 [[fields]]
