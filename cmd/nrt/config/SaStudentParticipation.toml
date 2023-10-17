@@ -1,0 +1,66 @@
+[usage]
+reportName = "School Test Participants (SA spec.)"
+activated = true
+outputFileName = "./out/system_reports/saStudentParticipation.csv"
+
+# order of fileds below is left to right order
+# columns will appear in final output, can be changed as needed.
+# commenting out a ke/value pair will remove that column from the
+# final report
+[[fields]]
+"School" = "CalculatedFields.SchoolId"
+[[fields]]
+"YrLevel" = "CalculatedFields.YrLevel"
+[[fields]]
+"Domain" = "CalculatedFields.Domain"
+#
+# fields above are for report splitting 
+#
+
+[[fields]]
+"School Sector" = "SchoolInfo.SchoolSector"
+[[fields]]
+"School ACARA ID" = "SchoolInfo.ACARAId"
+[[fields]]
+"Local School ID" = "SchoolInfo.LocalId"
+[[fields]]
+"School name" = "SchoolInfo.SchoolName"
+[[fields]]
+"PSI" = "StudentPersonal.OtherIdList.OtherId.#[Type==NAPPlatformStudentId].value"
+[[fields]]
+"TAA Student ID" = "StudentPersonal.OtherIdList.OtherId.#[Type==TAAStudentId].value"
+[[fields]]
+"First name" = "StudentPersonal.PersonInfo.Name.GivenName"
+[[fields]]
+"Middle name" = "StudentPersonal.PersonInfo.Name.MiddleName"
+[[fields]]
+"Last name" = "StudentPersonal.PersonInfo.Name.FamilyName"
+[[fields]]
+"Preferred name" = "StudentPersonal.PersonInfo.Name.PreferredGivenName"
+[[fields]]
+"Year Level" = "StudentPersonal.MostRecent.YearLevel.Code"
+[[fields]]
+"Test Level" = "StudentPersonal.MostRecent.TestLevel.Code"
+[[fields]]
+"Writing Status" = "CalculatedFields.Writing.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"Reading Status" = "CalculatedFields.Reading.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"CoL Status" = "CalculatedFields.GrammarAndPunctuation.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"Numeracy Status" = "CalculatedFields.Numeracy.NAPEventStudentLink.ParticipationCode"
+[[fields]]
+"Date of Birth"= "StudentPersonal.PersonInfo.Demographics.BirthDate"
+[[fields]]
+"Sex" = "StudentPersonal.PersonInfo.Demographics.Sex"
+[[fields]]
+"Class Group" = "StudentPersonal.MostRecent.ClassCode"
+[[fields]]
+"Home School Flag" = "StudentPersonal.HomeSchooledStudent"
+[[fields]]
+"FFPOS" = "StudentPersonal.MostRecent.FFPOS"
+[[fields]]
+"Indigenous Status" = "StudentPersonal.PersonInfo.Demographics.IndigenousStatus"
+[[fields]]
+"LBOTE" = "StudentPersonal.PersonInfo.Demographics.LBOTE"
+

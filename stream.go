@@ -16,10 +16,8 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-//
 // extracts streams of results from the repository
 // and feeds them through pipelines of reports
-//
 func (tr *Transformer) streamResults() error {
 
 	defer utils.TimeTrack(time.Now(), "Report processing")
@@ -87,11 +85,9 @@ func (tr *Transformer) streamResults() error {
 
 }
 
-//
 // Student-oriented reports processor - heavy item level reports
 // each record contains all test responses and events
 // for a given student
-//
 func (tr *Transformer) studentItemReports() error {
 
 	// create a record emitter
@@ -227,11 +223,9 @@ func (tr *Transformer) simpleObjectReports() error {
 
 }
 
-//
 // Student-oriented reports processor
 // each record contains all test responses and events
 // for a given student
-//
 func (tr *Transformer) studentReports() error {
 
 	// create a record emitter
@@ -267,6 +261,7 @@ func (tr *Transformer) studentReports() error {
 		reports.IsrPrintingExpandedReport(),
 		reports.NswPrintReport(),
 		reports.StudentProficiencyReport(),
+		reports.SaStudentParticipationReport(),
 	}
 	// create single processor list, in desired order
 	rpt = append(rpt, rpt2...)
@@ -306,11 +301,9 @@ func (tr *Transformer) studentReports() error {
 
 }
 
-//
 // CodeFrame reports processor
 // reports that use just the objects from the codeframe
 // test, teslet, item etc.
-//
 func (tr *Transformer) codeframeReports() error {
 
 	// create a record emitter
@@ -397,13 +390,10 @@ func (tr *Transformer) codeframeReports() error {
 
 }
 
-//
-//
 // Item-level reports processor
 // Special case of event-oriented record processor
 // produces huge number of rows, one for every item seen
 // by any student in any test
-//
 func (tr *Transformer) eventItemReports() error {
 
 	// create a record emitter
@@ -461,10 +451,8 @@ func (tr *Transformer) eventItemReports() error {
 
 }
 
-//
 // Event-based report processor
 // each record is the test, school, student, event & response
-//
 func (tr *Transformer) eventReports() error {
 
 	// create a record emitter
@@ -479,7 +467,6 @@ func (tr *Transformer) eventReports() error {
 		reports.QldStudentScoreReport(),
 		reports.SystemDomainScoresReport(),
 		reports.CompareRRDtestsReport(),
-		reports.SaHomeschooledTestsReport(),
 		reports.CompareItemWritingReport(),
 		reports.NswWritingPearsonY3Report(tr.helper),
 		reports.NswWritingPearsonY5Report(tr.helper),
@@ -550,10 +537,8 @@ func (tr *Transformer) eventReports() error {
 
 }
 
-//
 // specilaised event-based processor to create
 // input files for jurisdictional marking systems
-//
 func (tr *Transformer) writingExtractReports() error {
 
 	// create a record emitter
