@@ -27,13 +27,15 @@ outputFileName = "./out/system_reports/nswPrint.csv"
 [[fields]]
 "School Local Id" = "SchoolInfo.LocalId"
 [[fields]]
-"Local Campus Id" = "SchoolInfo.Campus"
+"Local Campus Id" = "SchoolInfo.Campus.SchoolCampusId"
 [[fields]]
 "ACARA ID" = "SchoolInfo.ACARAId"
 [[fields]]
 "School Name" = "SchoolInfo.SchoolName"
 [[fields]]
 "SRN" = "StudentPersonal.LocalId"
+[[fields]]
+"CeIder" = "StudentPersonal.OtherIdList.OtherId.#[Type==SectorStudentId].value"
 [[fields]]
 "Platform Student ID" = "StudentPersonal.OtherIdList.OtherId.#[Type==NAPPlatformStudentId].value"
 [[fields]]
@@ -46,6 +48,8 @@ outputFileName = "./out/system_reports/nswPrint.csv"
 "Geolocation" = "SchoolInfo.SchoolGeographicLocation"
 [[fields]]
 "Test Level" = "StudentPersonal.MostRecent.TestLevel.Code"
+[[fields]]
+"Class Group" = "StudentPersonal.MostRecent.ClassCode"
 [[fields]]
 "Sex" = "StudentPersonal.PersonInfo.Demographics.Sex"
 [[fields]]
