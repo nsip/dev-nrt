@@ -13,7 +13,7 @@ outputFileName = "./out/system_reports/qcaa_napo_items.csv"
 [[fields]]
 "REF_ID" = "NAPTestItem.RefId"
 [[fields]]
-"TEST_ID" = "CalculatedFields.NAPTestRefId"
+"TEST_ID" = "CalculatedFields.NAPTestLocalId"
 [[fields]]
 "ITEM_ID" = "NAPTestItem.TestItemContent.NAPTestItemLocalId"
 [[fields]]
