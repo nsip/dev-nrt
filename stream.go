@@ -168,7 +168,6 @@ func (tr *Transformer) simpleObjectReports() error {
 		reports.SystemObjectsCountReport(),
 		reports.QcaaNapoSchoolsReport(),
 		reports.QcaaNapoStudentsReport(),
-		reports.QcaaNapoItemsReport(),
 		reports.NswItemDescriptorsReport(),
 		reports.QcaaTestScoreSummaryReport(),
 		reports.SystemSchoolsReport(),
@@ -327,6 +326,7 @@ func (tr *Transformer) codeframeReports() error {
 		//
 		// reports
 		//
+		reports.QcaaNapoItemsReport(),
 		reports.QcaaNapoTestsReport(),
 		reports.QcaaNapoTestletItemsReport(),
 		reports.SystemCodeframeReport(tr.helper),
