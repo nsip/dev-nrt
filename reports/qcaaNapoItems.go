@@ -11,9 +11,7 @@ type QcaaNapoItems struct {
 	baseReport // embed common setup capability
 }
 
-//
 // Detailed breakdown of each TestITem
-//
 func QcaaNapoItemsReport() *QcaaNapoItems {
 
 	r := QcaaNapoItems{}
@@ -24,13 +22,11 @@ func QcaaNapoItemsReport() *QcaaNapoItems {
 
 }
 
-//
 // implement the EventPipe interface, core work of the
 // report engine.
-//
-func (r *QcaaNapoItems) ProcessObjectRecords(in chan *records.ObjectRecord) chan *records.ObjectRecord {
+func (r *QcaaNapoItems) ProcessCodeframeRecords(in chan *records.CodeframeRecord) chan *records.CodeframeRecord {
 
-	out := make(chan *records.ObjectRecord)
+	out := make(chan *records.CodeframeRecord)
 	go func() {
 		defer close(out)
 		// open the csv file writer, and set the header
