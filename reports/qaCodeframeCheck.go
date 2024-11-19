@@ -10,10 +10,8 @@ import (
 	"github.com/tidwall/sjson"
 )
 
-//
 // capture the connected graph of any
 // detected codeframe issue
-//
 type codeframeIssue struct {
 	cfr           *records.ObjectRecord
 	id            string
@@ -28,14 +26,11 @@ type QaCodeframeCheck struct {
 	issues     []*codeframeIssue
 }
 
-//
 // Checks that items-testlets-tests seen in responses
 // are all in the codeframe
 //
 // NOTE: This is a Collector report, it harvests data from the stream but
 // only writes it out once all data has passed through.
-//
-//
 func QaCodeframeCheckReport(cfh helper.ObjectHelper) *QaCodeframeCheck {
 
 	r := QaCodeframeCheck{cfh: cfh}
@@ -103,11 +98,8 @@ func (r *QaCodeframeCheck) ProcessObjectRecords(in chan *records.ObjectRecord) c
 	return out
 }
 
-//
 // generates a block of json that can be added to the
 // record containing values that are not in the original data
-//
-//
 func (r *QaCodeframeCheck) calculateFields(issue *codeframeIssue) []byte {
 
 	json := issue.cfr.CalculatedFields
@@ -132,14 +124,11 @@ func gjsonArray2StringSlice(res []gjson.Result) []string {
 	return ret
 }
 
-//
 // checks integrity of codeframe assets in the response member of the record
 // iterates each item-testlet-test triplet and tests against the data in the
 // codeframe helper.
 // Any discrepancies in the members or the linkage will be reported.
 // Mutiple issues may be detected in the same response.
-//
-//
 func (r *QaCodeframeCheck) validate(cfr *records.ObjectRecord) {
 
 	switch cfr.RecordType {
@@ -179,18 +168,21 @@ func (r *QaCodeframeCheck) validate(cfr *records.ObjectRecord) {
 	case "NAPTest":
 		testid := cfr.GetValueString("NAPTest.RefId")
 		if !r.cfh.InCodeFrame(testid) {
-			r.issues = append(r.issues, &codeframeIssue{id: testid, localid: "nil", objtype: "test", cfr: cfr})
+			localid := cfr.GetValueString("NAPTest.TestContent.NAPTestLocalId")
+			r.issues = append(r.issues, &codeframeIssue{id: testid, localid: localid, objtype: "test", cfr: cfr})
 		}
 	case "NAPTestlet":
 		testid := cfr.GetValueString("NAPTestlet.RefId")
 		if !r.cfh.InCodeFrame(testid) {
-			r.issues = append(r.issues, &codeframeIssue{id: testid, localid: "nil", objtype: "testlet", cfr: cfr})
+			localid := cfr.GetValueString("NAPTestlet.TestletContent.NAPTestletLocalId")
+			r.issues = append(r.issues, &codeframeIssue{id: testid, localid: localid, objtype: "testlet", cfr: cfr})
 		}
 	case "NAPTestItem":
 		testid := cfr.GetValueString("NAPTestItem.RefId")
 		if !r.cfh.InCodeFrame(testid) {
 			subs := gjson.GetBytes(cfr.Json, "NAPTestItem.TestItemContent.ItemSubstitutedForList.SubstituteItem.#.SubstituteItemRefId")
-			r.issues = append(r.issues, &codeframeIssue{id: testid, localid: "nil", objtype: "testitem", itemSubRefIds: gjsonArray2StringSlice(subs.Array()), cfr: cfr})
+			localid := cfr.GetValueString("NAPTestItem.TestItemContent.NAPTestItemLocalId")
+			r.issues = append(r.issues, &codeframeIssue{id: testid, localid: localid, objtype: "testitem", itemSubRefIds: gjsonArray2StringSlice(subs.Array()), cfr: cfr})
 		}
 
 	}

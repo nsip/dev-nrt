@@ -33,6 +33,8 @@ outputFileName = "./out/system_reports/compareRRDtests.csv"
 [[fields]]
 "Test Level" = "NAPTest.TestContent.TestLevel.Code"
 [[fields]]
+"Test Local ID" = "NAPTest.TestContent.NAPTestLocalId"
+[[fields]]
 "Test Domain" = "NAPTest.TestContent.Domain"
 [[fields]]
 "Parallel Path" = "NAPStudentResponseSet.ParallelTest"

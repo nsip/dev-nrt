@@ -23,7 +23,7 @@ outputFileName = "./out/system_reports/systemSchools.csv"
 [[fields]]
 "School LGA" = "SchoolInfo.LocalGovernmentArea"
 [[fields]]
-"School Type" = "SchoolInfo.SchoolSector"
+"School Type" = "SchoolInfo.SchoolType"
 [[fields]]
 "Student Count" = "SchoolInfo.TotalEnrolments"
 [[fields]]
