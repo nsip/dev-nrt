@@ -9,17 +9,17 @@ import "errors"
 
 var (
 	errUnexpectedItemResponse  = errors.New("Item response captured without student completing test")
-	errUnexpectedItemScore     = errors.New("Scored test item with status other than AF, P or R")
+	errUnexpectedItemScore     = errors.New("Scored test item with status other than F, P or R")
 	errNonZeroItemScore        = errors.New("Non-zero scored test item with status of R")
-	errMissingItemScore        = errors.New("Unscored test with status of AF, P or R")
-	errMissingItemWritingScore = errors.New("Unscored writing item with status of P or AF")
+	errMissingItemScore        = errors.New("Unscored test with status of F, P or R")
+	errMissingItemWritingScore = errors.New("Unscored writing item with status of P or F")
 )
 
 var (
 	errUnexpectedAdaptivePathway = errors.New("Adaptive pathway without student undertaking test")
-	errUnexpectedScore           = errors.New("Scored test with status other than P or R")
+	errUnexpectedScore           = errors.New("Scored test with status other than P, F or R")
 	errRefusedScore              = errors.New("Non-zero score with status of R")
-	errMissingScore              = errors.New("Unscored test with status of P or R")
+	errMissingScore              = errors.New("Unscored test with status of P, F or R")
 )
 
 var (
