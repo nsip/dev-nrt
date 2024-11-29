@@ -11,7 +11,7 @@ var (
 	errUnexpectedItemResponse  = errors.New("Item response captured without student completing test")
 	errUnexpectedItemScore     = errors.New("Scored test item with status other than F, P or R")
 	errNonZeroItemScore        = errors.New("Non-zero scored test item with status of R")
-	errMissingItemScore        = errors.New("Unscored test with status of F, P or R")
+	errMissingItemScore        = errors.New("Unscored test item with status of F, P or R")
 	errMissingItemWritingScore = errors.New("Unscored writing item with status of P or F")
 )
 
