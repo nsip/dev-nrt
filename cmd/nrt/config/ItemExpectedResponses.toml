@@ -25,6 +25,8 @@ outputFileName = "./out/qa/itemExpectedResponses.csv"
 [[fields]]
 "Test" = "NAPTest.TestContent.TestName"
 [[fields]]
+"Test Domain" = "CalculatedFields.Domain"
+[[fields]]
 "Participation Code" = "NAPEventStudentLink.ParticipationCode"
 # 
 # testlet 1

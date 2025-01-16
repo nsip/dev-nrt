@@ -12,10 +12,8 @@ type SystemParticipationCodeImpacts struct {
 	baseReport // embed common setup capability
 }
 
-//
 // Reports errors when responses contain unexpected information based on the
 // participation code
-//
 func SystemParticipationCodeImpactsReport() *SystemParticipationCodeImpacts {
 
 	r := SystemParticipationCodeImpacts{}
@@ -26,10 +24,8 @@ func SystemParticipationCodeImpactsReport() *SystemParticipationCodeImpacts {
 
 }
 
-//
 // implement the EventPipe interface, core work of the
 // report engine.
-//
 func (r *SystemParticipationCodeImpacts) ProcessEventRecords(in chan *records.EventOrientedRecord) chan *records.EventOrientedRecord {
 
 	out := make(chan *records.EventOrientedRecord)
@@ -79,11 +75,9 @@ func (r *SystemParticipationCodeImpacts) ProcessEventRecords(in chan *records.Ev
 	return out
 }
 
-//
 // checks for anomalies in the record.
 //
 // same checks as n2.
-//
 func participationImpact(eor *records.EventOrientedRecord) error {
 
 	//
@@ -99,13 +93,13 @@ func participationImpact(eor *records.EventOrientedRecord) error {
 	// test logic ported from n2
 	//
 	if pathTaken > "" || parallelTest > "" {
-		if participationCode != "P" && participationCode != "S" {
+		if participationCode != "P" && participationCode != "F" && participationCode != "S" {
 			return errUnexpectedAdaptivePathway
 		}
 	}
 	//
 	if rawScore > "" || scaledScore > "" {
-		if participationCode != "P" && participationCode != "R" {
+		if participationCode != "P" && participationCode != "F" && participationCode != "R" {
 			return errUnexpectedScore
 		}
 	}
@@ -117,7 +111,7 @@ func participationImpact(eor *records.EventOrientedRecord) error {
 	}
 	//
 	if rawScore == "" || scaledScore == "" {
-		if participationCode == "P" || participationCode == "R" {
+		if participationCode == "P" || participationCode != "F" && participationCode == "R" {
 			return errMissingScore
 		}
 	}
@@ -125,11 +119,8 @@ func participationImpact(eor *records.EventOrientedRecord) error {
 	return nil
 }
 
-//
 // generates a block of json that can be added to the
 // record containing values that are not in the original data
-//
-//
 func (r *SystemParticipationCodeImpacts) calculateFields(eor *records.EventOrientedRecord, err error) []byte {
 
 	json := eor.CalculatedFields

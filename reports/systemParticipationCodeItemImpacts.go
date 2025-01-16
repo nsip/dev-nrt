@@ -16,10 +16,8 @@ type SystemParticipationCodeItemImpacts struct {
 	cfh        helper.CodeframeHelper
 }
 
-//
 // Reports errors when response items contain unexpected information based on the
 // participation code
-//
 func SystemParticipationCodeItemImpactsReport(cfh helper.CodeframeHelper) *SystemParticipationCodeItemImpacts {
 
 	r := SystemParticipationCodeItemImpacts{cfh: cfh}
@@ -30,10 +28,8 @@ func SystemParticipationCodeItemImpactsReport(cfh helper.CodeframeHelper) *Syste
 
 }
 
-//
 // implement the EventPipe interface, core work of the
 // report engine.
-//
 func (r *SystemParticipationCodeItemImpacts) ProcessEventRecords(in chan *records.EventOrientedRecord) chan *records.EventOrientedRecord {
 
 	out := make(chan *records.EventOrientedRecord)
@@ -61,7 +57,7 @@ func (r *SystemParticipationCodeItemImpacts) ProcessEventRecords(in chan *record
 				eor.CalculatedFields = r.calculateFields(eor, itemError)
 
 				//
-				// now loop through the ouput definitions to create a
+				// now loop through the output definitions to create a
 				// row of results
 				//
 				var result string
@@ -82,11 +78,9 @@ func (r *SystemParticipationCodeItemImpacts) ProcessEventRecords(in chan *record
 	return out
 }
 
-//
 // checks for anomalies in the record.
 //
 // same checks as n2.
-//
 func participationItemImpact(eor *records.EventOrientedRecord) []*itemError {
 
 	//
@@ -163,11 +157,8 @@ func participationItemImpact(eor *records.EventOrientedRecord) []*itemError {
 	return itemErrors
 }
 
-//
 // generates a block of json that can be added to the
 // record containing values that are not in the original data
-//
-//
 func (r *SystemParticipationCodeItemImpacts) calculateFields(eor *records.EventOrientedRecord, ierr *itemError) []byte {
 
 	json := eor.CalculatedFields // maintain existing calculated fields

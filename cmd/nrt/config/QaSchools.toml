@@ -18,19 +18,17 @@ outputFileName = "./out/qa/qaSchools.csv"
 [[fields]]
 "System" = "CalculatedFields.QaSchools.DerivedSystem"
 [[fields]]
-"Independent" = "IndependentSchool"
+"Independent" = "SchoolInfo.IndependentSchool"
 [[fields]]
-"Type" = "SchoolType"
+"Type" = "SchoolInfo.SchoolType"
 [[fields]]
 "Local ID" = "SchoolInfo.LocalId"
 [[fields]]
 "ACARA ID" = "CalculatedFields.QaSchools.SchoolACARAId"
 [[fields]]
-"State ID" = "StateProvinceId"
+"State ID" = "SchoolInfo.StateProvinceId"
 [[fields]]
-"District" = "SchoolDistrict"
-[[fields]]
-"Address" = "AddressList.Address"
+"District" = "SchoolInfo.SchoolDistrict"
 # 
 [[fields]]
 "Total Reg. Students" = "CalculatedFields.QaSchools.TotalStudents"

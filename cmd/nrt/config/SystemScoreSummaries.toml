@@ -13,7 +13,7 @@ outputFileName = "./out/system_reports/systemScoreSummaries.csv"
 [[fields]]
 "School ACARA ID" = "NAPTestScoreSummary.SchoolACARAId"
 [[fields]]
-"Local Test Name" = "NAPTestScoreSummary.NAPTestLocalId"
+"Local Test ID" = "NAPTestScoreSummary.NAPTestLocalId"
 [[fields]]
 "Domain School Average" = "NAPTestScoreSummary.DomainSchoolAverage"
 [[fields]]

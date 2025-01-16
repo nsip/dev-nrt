@@ -5,7 +5,7 @@ activated = true
 outputFileName = "./out/qa/qaCodeframeCheck.csv"
 
 [[fields]]
-"ObjectID" = "CalculatedFields.ObjectID"
+"RefID" = "CalculatedFields.ObjectID"
 [[fields]]
 "LocalID" = "CalculatedFields.LocalID"
 [[fields]]
