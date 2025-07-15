@@ -2,7 +2,7 @@
 [usage]
 reportName = "(QA) System Codeframe - breakdown of test->testlet->item details"
 activated = true
-outputFileName = "./out/qa/systemCodeframe.csv"
+outputFileName = "./out/qa/QasystemCodeframe.csv"
 
 # Order of fields below is left to right order
 # columns will appear in final output, can be changed as needed.
