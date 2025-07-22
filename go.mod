@@ -1,6 +1,8 @@
 module github.com/nsip/dev-nrt
 
-go 1.20
+go 1.23.0
+
+toolchain go1.24.5
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.1
@@ -18,7 +20,7 @@ require (
 	github.com/tamerh/xml-stream-parser v1.4.0
 	github.com/tidwall/gjson v1.14.4
 	github.com/tidwall/sjson v1.2.5
-	golang.org/x/sync v0.10.0
+	golang.org/x/sync v0.12.0
 	gopkg.in/cheggaaa/pb.v1 v1.0.28
 	gopkg.in/fatih/set.v0 v0.2.1
 )
@@ -59,9 +61,9 @@ require (
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
-	golang.org/x/net v0.33.0 // indirect
-	golang.org/x/sys v0.28.0 // indirect
-	golang.org/x/text v0.21.0 // indirect
+	golang.org/x/net v0.38.0 // indirect
+	golang.org/x/sys v0.31.0 // indirect
+	golang.org/x/text v0.23.0 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
