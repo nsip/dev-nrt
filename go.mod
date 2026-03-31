@@ -28,7 +28,7 @@ require (
 require (
 	github.com/BurntSushi/toml v1.3.2 // indirect
 	github.com/andybalholm/cascadia v1.3.2 // indirect
-	github.com/antchfx/xpath v1.2.4 // indirect
+	github.com/antchfx/xpath v1.3.6 // indirect
 	github.com/cespare/xxhash v1.1.0 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/clipperhouse/uax29 v1.12.5 // indirect
