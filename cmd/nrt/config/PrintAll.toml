@@ -57,7 +57,7 @@ outputFileName = "./out/item_printing/printAll.csv"
 [[fields]]
 "Geolocation" = "SchoolInfo.SchoolGeographicLocation"
 [[fields]]
-"Year Level" = "StudentPersonal.MostRecent.TestLevel.Code"
+"Year Level" = "StudentPersonal.MostRecent.YearLevel.Code"
 [[fields]]
 "Test Level" = "StudentPersonal.MostRecent.TestLevel.Code"
 [[fields]]
