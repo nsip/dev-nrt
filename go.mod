@@ -40,7 +40,7 @@ require (
 	github.com/gookit/color v1.5.4 // indirect
 	github.com/gosuri/uilive v0.0.4 // indirect
 	github.com/h2non/filetype v1.1.3 // indirect
-	github.com/klauspost/compress v1.16.7 // indirect
+	github.com/klauspost/compress v1.18.7 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
